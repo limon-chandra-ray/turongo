@@ -1,0 +1,390 @@
+{% extends 'customer/layouts/index.html' %}
+{% block customertitle %}{{customertitle}}{% endblock customertitle %}
+
+{% block customerbody %}
+<style>
+    .review-card{
+        padding: 7px 0px
+    }
+    .review-header{
+        display: flex;
+        border-bottom: 1px solid gray;
+        padding-bottom: 10px;
+    }
+    .review-header-left{
+        flex: 1 1 auto;
+    }
+    .review-header-right{
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+    }
+    .average-rating{
+        display: flex;
+        column-gap: 7px;
+    }
+    .average-rating svg{
+        font-size: 20px;
+    }
+    
+    .rating_active{
+        color:orange
+    }
+    .slide-item-list li {
+        width:100%
+    }
+    .slide-item-list li a{
+        width:100%;
+        border: 1px solid; 
+        border-color:white
+    }
+    .slide-item-list li a:hover, 
+    .slide-item-list li a:focus,
+    .slide-item-list li a:active{
+        border: 1px solid #302c2c;
+    }
+    
+    /* WebKit-based browsers (Chrome, Safari) */
+    ::-webkit-scrollbar {
+    width: 10px; /* vertical scroll bar width */
+    height: 10px; /* horizontal scroll bar height */
+    }
+
+    /* Mozilla Firefox */
+    ::-moz-scrollbar {
+    width: 10px; /* vertical scroll bar width */
+    height: 10px; /* horizontal scroll bar height */
+    }
+</style>
+    <div class="row page-titles">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active"><a href="javascript:void(0)">Home</a></li>
+            <li class="breadcrumb-item"><a href="javascript:void(0)">{{product.name}}</a></li>
+        </ol>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-6 col-xxl-6 col-12">
+                            <div class="d-flex flex-column flex-md-row">
+                                <div class="flex-grow-1">
+                                    <div class="tab-content">
+                                        
+                                        {% for image in product.product_images.all %}
+                                            {% if image.pimage_type == 'phone' %}
+                                                {% if image.pimage_priority == 1 %}
+                                                    <div role="tabpanel" class="tab-pane fade show active" id="tab{{image.pimage_priority}}">
+                                                        <img class="img-fluid" src="{{image.p_image.url}}" alt="">
+                                                    </div>
+                                                    {% else %}
+                                                    <div role="tabpanel" class="tab-pane fade float-end"  id="tab{{image.pimage_priority}}">
+                                                        <img class="img-fluid" src="{{image.p_image.url}}" alt="">
+                                                    </div>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+                                        
+                                    </div>
+                                </div>
+                                <div class="">
+                                    
+                                    <div class="tab-slide-content new-arrival-product mb-4 mb-xl-0 overflow-auto">
+                                        <!-- Nav tabs -->
+                                        <ul class="nav slide-item-list d-flex flex-sm-row flex-md-column align-items-end" style="row-gap: 10px;" role="tablist">
+                                            
+                                            {% for image in product.product_images.all %}
+                                                {% if image.pimage_type == 'icon' %}
+                                                    {% if image.pimage_priority == 1 %}
+                                                    <li role="presentation">
+                                                        <a class="active" href="#tab{{image.pimage_priority}}" role="tab" data-bs-toggle="tab" data-bs-target="#tab{{image.pimage_priority}}" aria-selected="true">
+                                                            <img class="img-fluid" src="{{image.p_image.url}}" alt="" width="50">
+                                                        </a>
+                                                    </li>
+                                                    {% else %}
+                                                    <li role="presentation">
+                                                        <a href="#tab{{image.pimage_priority}}" role="tab" data-bs-toggle="tab" data-bs-target="#tab{{image.pimage_priority}}"><img class="img-fluid" src="{{image.p_image.url}}" alt="" width="50"></a>
+                                                    </li>
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endfor %}
+                                            
+                                            
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tab panes -->
+                            
+                            
+                        </div>
+                        <!--Tab slider End-->
+                        <div class="col-xl-6 col-lg-6 col-xxl-6 col-12">
+                            <div class="product-detail-content">
+                                <!--Product details-->
+                                <div class="new-arrival-content pr">
+                                    <h4>{{product.name}}</h4>
+                                    <div class="comment-review star-rating">
+                                        <ul>
+                                            <li><i class="fa fa-star {% if avg_rating >= 1 %}rating_active{% endif %}"></i></li>
+                                            <li><i class="fa fa-star {% if avg_rating >= 2 %}rating_active{% endif %}"></i></li>
+                                            <li><i class="fa fa-star {% if avg_rating >= 3 %}rating_active{% endif %}"></i></li>
+                                            <li><i class="fa fa-star {% if avg_rating >= 4 %}rating_active{% endif %}"></i></li>
+                                            <li><i class="fa fa-star {% if avg_rating >= 5 %}rating_active{% endif %}"></i></li>
+
+                                        </ul>
+                                        <span class="review-text">({{reviews.count}} reviews) </span>
+                                    <div class="d-table mb-2">
+                                        <p class="price float-start d-block">${{product.price}}</p>
+                                    </div>
+                                    <p>Availability: 
+                                        {% if product.quantity > 0 %}
+                                        <span class="item"> In stock <i class="fa fa-shopping-basket"></i></span>
+                                        {% else %}
+                                        <span class="item"> out stock</span>
+                                        {% endif %}
+
+                                    </p>
+                                    <p>Brand: <span class="item">{{product.brand.name}}</span></p>
+                                    
+                                    <div class="d-flex gap-2">
+                                        {% for size in product.product_sizes.all %}
+                                        <button type="button" class="btn border border-dark product_size" product-size="{{size.p_size.size_name}}">
+                                            {{size.p_size.size_name}}
+                                        </button>
+                                        {% endfor %}
+                                    </div>
+                                    
+                                    <div class="d-flex align-items-end flex-wrap mt-4 justify-content-center">
+                                        <!--Quantity start-->
+                                        <div class="col-4 px-0  mb-2 me-3">
+                                            <input type="number" id="quantity" class="form-control input-btn input-number py-0" value="1">
+                                        </div>
+                                        <!--Quanatity End-->
+                                        <div class="shopping-cart  mb-2 me-3">
+                                            <button class="btn btn-primary" style="padding: 9px;" id="add_to_card" type="submit"><i class="fa fa-shopping-basket me-2"></i>Add
+                                                to cart</button>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5 m-0 p-0">
+        <div class="col-lg-9 col-12">
+            
+            <div class="button-groups">
+                <a href="#description">Descriptions</a>
+                <a href="#question">Questions</a>
+                <a href="#review">Review</a>
+            </div>
+            
+            <div class="description" id="description">
+                <div class="card">
+                    <div class="card-body">
+                        <div>
+                            <h2>Descriptions</h2>
+                        </div>
+                        <div class="full-description">
+                            <h2 style="font-size: 20px;font-weight: 700;">{{product.name}}</h2>
+                            <p style="text-align: justify;">{{product.discreption}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="question" id="question">
+                <div class="card">
+                    <div class="card-body">
+                        <div>
+                            <h2>Questions & Answer ({{questions.count}})</h2>
+                        </div>
+                        <div class="full-description">
+                            {% for question in questions %}
+                                <div class="d-flex align-items-center oy-2" style="column-gap:10px;border-bottom: 1px solid gainsboro;">
+                                    <div>Q: </div>
+                                    <div>
+                                        <div>{{question.question}}</div>
+                                        <div>by <span style="color:#a97414">{{question.user.username}}</span></div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="question-add py-4">
+                            <h2 style="font-size: 20px;font-weight: 700;">Your Question</h2>
+                            <div class="question-form">
+                                <div class="mb-3">
+                                    <textarea class="form-control" placeholder="Question" id="question_text" style="height: 150px;"></textarea>
+                                </div>
+                                {% if user.is_authenticated %}
+                                <button class="btn btn-success btn-block" id="send_question">QUESTION</button>
+                                {% else %}
+                                <a href="#" class="btn btn-success btn-block">QUESTION</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="review" id="review">
+                <div class="card">
+                    <div class="card-body p-3">
+                        <div class="review-header d-flex">
+                            <div class="review-header-left">
+                                <h2>Reviews ({{reviews.count}})</h2>
+                                <p>Get specific details about this product from customers who own it.</p>
+                                <div class="average-rating">
+                                    <div class="rating-icon">
+                                        <i class="fas fa-star {% if avg_rating >= 1 %}rating_active{% endif %}"></i>
+                                        <i class="fas fa-star {% if avg_rating >= 2 %}rating_active{% endif %}"></i>
+                                        <i class="fas fa-star {% if avg_rating >= 3 %}rating_active{% endif %}"></i>
+                                        <i class="fas fa-star {% if avg_rating >= 4 %}rating_active{% endif %}"></i>
+                                        <i class="fas fa-star {% if avg_rating >= 5 %}rating_active{% endif %}"></i>
+                                    </div>
+                                    <div class="rating-value">{{avg_rating}} out of 5</div>
+                                </div>
+                            </div>
+                            <div class="review-header-right">
+                                {% if user.is_authenticated %}
+                                <button class="btn btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#reviewModal">Write a Review</button>
+                                {% else %}
+                                <a class="btn btn-outline-primary" href="#" >Write a Review</a>
+                                {% endif %}
+                                
+                            </div>
+                
+
+                        </div>
+                        <div class="all-review">
+                            {% for review in reviews %}
+                                <div class="review-card">
+                                    <div class="rating-icon">
+                                        <i class="fas fa-star {% if review.review_number >= 1 %}rating_active{% endif %}"></i>
+                                        <i class="fas fa-star {% if review.review_number >= 2 %}rating_active{% endif %}"></i>
+                                        <i class="fas fa-star {% if review.review_number >= 3 %}rating_active{% endif %}"></i>
+                                        <i class="fas fa-star {% if review.review_number >= 4 %}rating_active{% endif %}"></i>
+                                        <i class="fas fa-star {% if review.review_number >= 5 %}rating_active{% endif %}"></i>
+                                    </div>
+                                    <p class="mb-1">{{review.review_text}}</p>
+                                    <p class="m-0">By <span style="color: #d58b05;">{{review.user.username}}</span> on {{review.created_at|date:"d M Y"}}</p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-12">
+            <div>
+                <div class="card">
+                    <div class="card-body">
+                        <h2>Related Produdcts</h2>
+                    </div>
+                </div>
+            </div>
+            
+
+        </div>
+    </div>
+    <!-- review -->
+    <div class="modal fade" id="reviewModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Review</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    </button>
+                </div>
+                <div class="modal-body">
+                        <div class="mb-3">
+                            <div class="rating-widget mb-4 text-center">
+                                <!-- Rating Stars Box -->
+                                <div class="rating-stars">
+                                    <ul id="stars" class="d-flex justify-content-center">
+                                        <li class="star" title="Poor" data-value="1">
+                                            <i class="fa fa-star fa-fw"></i>
+                                        </li>
+                                        <li class="star" title="Fair" data-value="2">
+                                            <i class="fa fa-star fa-fw"></i>
+                                        </li>
+                                        <li class="star" title="Good" data-value="3">
+                                            <i class="fa fa-star fa-fw"></i>
+                                        </li>
+                                        <li class="star" title="Excellent" data-value="4">
+                                            <i class="fa fa-star fa-fw"></i>
+                                        </li>
+                                        <li class="star" title="WOW!!!" data-value="5">
+                                            <i class="fa fa-star fa-fw"></i>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <textarea class="form-control" placeholder="Comment" id="review_text" rows="5"></textarea>
+                        </div>
+                        <button class="btn btn-success btn-block" id="send_review">REVIEW</button>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock customerbody %}
+{% block customerScript %}
+<script>
+    var select_product_size ='';
+    var productSize = document.querySelectorAll('.product_size');
+    productSize.forEach((size)=>{
+        size.addEventListener("click",()=>{
+            select_product_size = size.getAttribute("product-size")
+        })
+    })
+    
+    $("#add_to_card").on('click',()=>{
+        if(select_product_size != ''){
+            var product_id = "{{product.p_id}}";
+            var product_quantity =  $("#quantity").val()
+            
+            $.ajax({
+                type:"POST",
+                url:"{% url 'customer:product_add_to_cart' %}",
+                data:{
+                    product_id:product_id,
+                    select_product_size:select_product_size,
+                    product_quantity:product_quantity,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success:(res)=>{
+                    if(res['status'] == 'success'){
+                        var total_product = res['total_product'];
+                        $("#laptop_script_alert").empty();
+                        $(".mobile_navbag_products").text(total_product.toString());
+                        $("#laptop_bagtotal_product").text(total_product.toString());
+                        var message_text = res['message_text'];
+							var message_status = res['message_status'];
+							var alert_message_component = `<div class="alert alert-`+message_status+` alert-dismissible fade show custom_alert" role="alert">
+								`+message_text+`.
+								<button type="button" class="btn-close custom_alert_button" data-bs-dismiss="alert" aria-label="Close"></button>
+							</div>`;
+							$("#laptop_script_alert").append(
+								alert_message_component
+							);
+                    }
+                }
+            })
+        }else{
+            alert("Please Select product size");
+        }
+    });
+    
+</script>
+{% endblock customerScript %}
+

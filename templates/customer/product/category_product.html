@@ -1,0 +1,42 @@
+{% extends 'user/layouts/index.html' %}
+{% block title %}Home{% endblock title %}
+{% block userbody %}
+<div class="row page-titles">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active"><a href="javascript:void(0)">Home</a></li>
+        <li class="breadcrumb-item"><a href="javascript:void(0)">{{product.name}}</a></li>
+    </ol>
+</div>
+
+<div class="section-product">
+
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2 class="hp-sc-header-text">
+                <span>Product Collections</span>
+            </h2>
+        </div>
+        <div class="hp-sc-header-line">
+
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            {% for product in products %}
+                {% include 'user/product/product-card.html' %}
+            {% endfor %}
+            {% for product in products %}
+                {% include 'user/product/product-card.html' %}
+            {% endfor %}
+            {% for product in products %}
+                {% include 'user/product/product-card.html' %}
+            {% endfor %}
+            {% for product in products %}
+                {% include 'user/product/product-card.html' %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+{% endblock userbody %}

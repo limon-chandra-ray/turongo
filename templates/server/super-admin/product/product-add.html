@@ -1,0 +1,102 @@
+{% extends "server/base/main.html" %}
+{% block superMain %}
+<div class="flex flex-col items-center justify-center">
+    <div>Product Add</div>
+    <div class="w-1/2">
+        <form action="{% url "server_app:product_save" %}"  method="POST" enctype="multipart/form-data" >
+            {% csrf_token %}
+            <div class="mt-4">
+                <label class="form-control w-full">
+                    <div class="label">
+                    <span class="label-text">Product Name</span>
+                    </div>
+                    <input type="text" name="product_name" placeholder="product name" class="input input-bordered w-full" required/>
+                </label>
+            </div>
+            <div class="mt-4 flex gap-x-4 w-full">
+                <div class="w-full">
+                    <label class="form-control w-full">
+                        <div class="label">
+                        <span class="label-text">Regular Price</span>
+                        </div>
+                        <input type="number" name="regular_price" placeholder="regular price" class="input input-bordered w-full" required />
+                    </label>
+                </div>
+                <div class="w-full">
+                    <label class="form-control w-full">
+                        <div class="label">
+                        <span class="label-text">Offer Price</span>
+                        </div>
+                        <input type="number" name="offer_price" placeholder="offer price" class="input input-bordered w-full" />
+                    </label>
+                </div>
+            </div>
+            <div class="mt-4 flex gap-x-4">
+                <div class="w-full">
+                    <div class="label">
+                        <span class="label-text">Product Category</span>
+                    </div>
+                    <select class="select select-bordered w-full" name="product_category">
+                        <option disabled selected>select Category</option>
+                        {% for category in categorys %}
+                            <option value="{{category.id}}">{{category.category_name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="w-full">
+                    <div class="label">
+                        <span class="label-text">Product Brand</span>
+                    </div>
+                    <select class="select select-bordered w-full" name="product_brand">
+                        <option disabled selected>select Brand</option>
+                        {% for brand in brands%}
+                            <option value="{{brand.id}}">{{brand.brand_name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="mt-4">
+                <div class="label">
+                    <span class="label-text">Product Size</span>
+                </div>
+                <div class="grid grid-cols-8">
+                    {% for size in sizes %}
+                        <div class="form-control">
+                            <label class="cursor-pointer label justify-start gap-x-2">
+                                <input type="checkbox" name="product_size" value="{{size.id}}" class="checkbox border-gray-400 checked:border-indigo-800 [--chkbg:theme(colors.green.600)] [--chkfg:white]" />
+                                <span class="label-text">{{size.size_name}}</span>
+                            </label>
+                        </div>
+                    {% endfor %}
+                    
+                </div>
+            </div>
+            <div class="mt-4">
+                <label class="form-control w-full">
+                    <div class="label">
+                    <span class="label-text">Product Images</span>
+                    </div>
+                    <input type="file" name="product_image" class="file-input file-input-bordered w-full" multiple/>
+                </label>
+            </div>
+            <div class="mt-4">
+                <div class="label">
+                    <span class="label-text">Product Description</span>
+                </div>
+                <div class="">
+                    <textarea id="product_description" name="product_description" class="form-control w-full" rows="10"></textarea>
+                </div>
+            </div>
+            <div class="mt-4 w-full flex justify-center">
+                <input type="submit" class="px-3 py-2 bg-green-700 hover:bg-green-800 text-white font-[700] rounded-md" value="Add Product">
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock superMain %}
+{% block superScript %}
+<script>
+    ckeditorFunction("product_description");
+</script>
+{% endblock superScript %}

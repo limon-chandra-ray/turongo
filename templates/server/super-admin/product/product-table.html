@@ -1,0 +1,42 @@
+<div class="overflow-x-auto">
+    <table class="table table-fixed table-xs table-pin-rows table-pin-cols">
+        <thead>
+            <tr>
+                <td>Image</td> 
+                <td>Name</td> 
+                <td>Price</td> 
+                <td>Offer</td> 
+                <td>Offer Price</td> 
+                <td>Quantity</td>
+                <td>Actions</td>
+            </tr>
+        </thead> 
+        <tbody>
+            {% for p in products %}
+                <tr>
+                    <td>
+                        <div class="w-[3rem]">
+                            <img class="w-full" src="{{p.product_images.first.p_image.url}}" alt="">
+                        </div>
+                    </td> 
+                    <td>{{p.p_name}}</td>
+                    <td>{{p.p_price}}</td> 
+                    <td>{{p.p_offer}}%</td> 
+                    <td>{{p.p_offer_price}}</td> 
+                    <td>{{p.total_product}}</td> 
+                    <td>
+                        <div class="dropdown dropdown-left">
+                            <div tabindex="0" role="button" class="btn m-1"><i class="fa-solid fa-chart-simple"></i></div>
+                            <ul tabindex="0" class="dropdown-content z-[1] menu p-1 shadow rounded w-20">
+                                <li><a href="#" class="flex justify-center text-cyan-600"><i class="fa-solid fa-image"></i></a></li>
+                                <li><a href="#" class="flex justify-center text-blue-600"><i class="fa-solid fa-bars"></i></a></li>
+                                <li><a href="{% url 'server_app:delete_product' p.p_id %}" class="flex justify-center text-red-600"><i class="fa-regular fa-trash-can"></i></a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody> 
+        
+    </table>
+</div>

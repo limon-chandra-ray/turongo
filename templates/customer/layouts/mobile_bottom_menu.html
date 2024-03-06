@@ -1,0 +1,31 @@
+{% url "customer:customer_home_view" as home%}
+{% url "customer:customer_profile_view" as profile%}
+<div class="contianer bottom-bar d-lg-none">
+    <a href="{{home}}" class="{% if request.path == home %}navbar_active{% endif %}">
+        <div class="d-flex flex-column align-items-center">
+            <i class="fa-solid fa-house"></i>
+            <small>Home</small>
+        </div>
+    </a>
+    <a href="#">
+        <div class="d-flex flex-column align-items-center">
+            <i class="fa-brands fa-product-hunt"></i>
+            <small>Products</small>
+        </div>
+    </a>
+
+
+    <a 
+        {% if user.is_authenticated %}
+            href="{{profile}}" 
+            class="{% if request.path == profile %}navbar_active{% endif %}"
+        {% else %}
+            href="{% url "customer:login_view" %}"
+        {% endif %}
+    >
+        <div class="d-flex flex-column align-items-center">
+            <i class="fa-regular fa-user"></i>
+            <small>Account</small>
+        </div>
+    </a>
+</div>

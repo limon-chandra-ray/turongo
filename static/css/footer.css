@@ -1,0 +1,59 @@
+.header-color{
+    background: var(--main-color) !important;
+    color: white !important;
+}
+.header-color a{
+    color: white;
+}
+.header-color a:hover{
+    color: white;
+}
+.nav_item:hover{
+    background: #404040;
+}
+.footer{
+    color:white !important;
+    background-color: var(--main-color) !important;
+}
+.footer .copyright{
+    color: white !important;
+}
+.footer .copyright p{
+    color: white !important;
+}
+
+.footer-social-icon{
+    display: flex;
+    column-gap: 10px;
+}
+.footer-icon{
+    background: #bbb3b3;
+    padding: 3px 8px;
+    font-size: 22px;
+    font-weight: 700;
+    border-radius: 50%;
+    color: var(--icon-color);
+}
+.footer-icon:hover{
+    background: var(--icon-color);
+    color: white;
+}
+.contact-gap{
+    column-gap: 10px;
+    display: flex;
+    align-items: center;
+}
+.contact-section{
+    color: white;
+    font-size: 20px;
+    font-weight: 800;
+}
+.footer-link{
+    color: white;
+    text-decoration: none;
+    padding: 5px;
+}
+.footer-link:hover{
+    color: white;
+    text-decoration: underline var(--hover-color);
+}

@@ -1,0 +1,57 @@
+{% extends 'customer/profile/profile-main.html' %}
+{% load attributes %}
+{% block profileBread %}
+<li class="breadcrumb-item active">
+    <a href="{% url 'customer:profile_customer_info_view' %}">Edit my information</a>
+</li>
+{% endblock profileBread %}
+{% block customerProfile %}
+
+<div class="row justify-content-start py-5 mt-3">
+    <div class="col-lg-6 col-12">
+        <h2>My Account Information</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-lg-6 col-12">
+                    <div class="mb-3">
+                        <label class="mb-1"><strong>First Name</strong></label>
+                        <input type="text" class="form-control" name='first_name' placeholder="first name" {% if user.first_name %}value="{{user.first_name}}"{% endif %} required>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-12">
+                    <div class="mb-3">
+                        <label class="mb-1"><strong>Last Name</strong></label>
+                        <input type="text" class="form-control" name='last_name' placeholder="last name" {% if user.last_name %}value="{{user.last_name}}"{% endif %} required>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-12">
+                    <div class="mb-3">
+                        <label class="mb-1"><strong>User Name</strong></label>
+                        <input type="text" class="form-control" name='user_name' placeholder="user name" {% if user.user_name %}value="{{user.user_name}}"{% endif %} required>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-12">
+                    <div class="mb-3">
+                        <label class="mb-1"><strong>Email address</strong></label>
+                        <input type="text" class="form-control" name='email' placeholder="email address" {% if user.email %}value="{{user.email}}"{% endif %} required>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-12">
+                    <div class="mb-3">
+                        <label class="mb-1"><strong>Phone number</strong></label>
+                        <input type="text" class="form-control" name='phone_number' placeholder="phone number" {% if user.phone_number %}value="{{user.phone_number}}"{% endif %} required>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-12 d-flex justify-content-center">
+                    <button type="submit" class="btn btn-success w-50">Update</button>
+                </div>
+                
+            </div>
+        </form>
+    </div>
+</div>
+    
+
+        
+{% endblock customerProfile %}

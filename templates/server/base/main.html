@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% include "server/base/head.html" %}
+        {% include "server/base/css.html" %}
+        <title>{% block superTitle %}{% endblock superTitle %}|Turongo</title>
+    </head>
+    <body>
+        {% include "server/base/header.html" %}
+        <main class="flex">
+          {% include "server/base/sidebar.html" %}
+          <div class="h-screen overflow-y-auto pt-16 w-full pl-5">
+            {% block superMain %}
+        
+            {% endblock superMain %}
+          </div>
+        </main>
+        
+        {% include "server/base/footer.html" %}
+        {% include "server/base/script.html" %}
+        {% include "server/base/ckeditor-script.html" %}
+        {% block superScript %}{% endblock superScript %}
+    </body>
+</html>

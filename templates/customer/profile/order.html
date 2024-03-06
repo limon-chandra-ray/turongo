@@ -1,0 +1,113 @@
+{% extends 'customer/profile/profile-main.html' %}
+{% comment %} {% block profileBread %}
+<li class="breadcrumb-item active">
+    <a href="{% url 'account:user_order_list' %}">My orders</a>
+</li>
+{% endblock profileBread %} {% endcomment %}
+{% block customerProfile %}
+<style>
+    .product_details{
+        padding-left: 20px;
+    }
+    .product_details .product_title{
+        max-width: 85%;
+        font-weight: 700;
+    }
+    .product_details .product_info {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        line-break: 3;
+        text-align: justify;
+        -webkit-line-clamp: 5;
+        -webkit-box-orient: vertical;
+        display: -webkit-box;
+        line-height: 26px;
+    }
+    .order_product{
+        border-top: 1px solid;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+    }
+    .order_status{
+        display: flex;
+        flex-direction: column;
+        row-gap: 7px;
+        align-items: center;
+    }
+</style>
+<div class="container p-0 mt-lg-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7 col-12 d-flex flex-column p-0 order_cards" style="row-gap:15px">
+            {% for order in order_list %}
+                <div class="order_card py-2 px-2 border border-1 border-dark rounded-2">
+                    <div class="d-flex justify-content-between align-items-center px-1 py-2">
+                        <div class="order_info d-flex align-items-center" style="column-gap: 30px;">
+                            <div class="order_number">
+                                <strong>Order number</strong>
+                                <p class="m-0">{{order.order_number}}</p>
+                            </div>
+                            <div class="date_place">
+                                <strong>Date place</strong>
+                                <p class="m-0">{{order.created_at|date:"d/M/Y"}}</p>
+                            </div>
+                            <div class="total_amount">
+                                <strong>Total amount</strong>
+                                <p class="m-0">{{order.total_amount}}</p>
+                            </div>
+                        </div>
+                        <div class="order_status">
+                            <strong>Order status</strong>
+                            <span
+                                style='color:green'
+                            
+                            >{{order.order_status}}</span>
+                            
+                        </div>
+                        {% comment %} <div class="order_action">
+                            <a href="#" class="btn btn-outline-primary">order view</a>
+                        </div> {% endcomment %}
+                    </div>
+                    <div class="order_products">
+                        {% for item in order.bag.bag_items.all %}
+                            <div class="order_product py-2">
+                                <div class="d-flex flex-grow-1">
+                                    <div class="product_image">
+                                        <img 
+                                            {% for image in item.product.product_images.all %}
+                                                {% if image.pimage_type == 'icon' and image.pimage_priority == 1 %}
+                                                src="{{image.p_image.url}}"
+                                                {% endif %}
+                                            {% endfor %}
+                                        
+                                        style="width:55px" alt="">
+                                    </div>
+                                    <div class="product_details flex-grow-1">
+                                        <div class="product_title">{{item.product.p_name}}</div>
+                                        <div class="product_price d-flex gap-3">
+                                            <div>Size : {{item.product_size}}</div>
+                                            <div>
+                                                <i class="fa-solid fa-bangladeshi-taka-sign"></i> 
+                                                {{item.order_price}} X <span>{{item.quantity}}</span>
+                                                <span>= {{item.sub_total}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="order_product_bottom">
+                                    <div class="product_view d-flex justify-content-end">
+                                        <a href="{% url "customer:product_details_view" item.product.p_id %}" class="btn btn-outline-success">view product</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+            
+        </div>
+    </div>
+    
+</div>   
+        
+{% endblock customerProfile %}

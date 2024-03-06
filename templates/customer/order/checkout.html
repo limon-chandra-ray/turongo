@@ -1,0 +1,239 @@
+{% extends 'customer/layouts/index.html' %}
+{% load static %}
+{% block customerbody %}
+
+<div class="row page-titles">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active"><a href="javascript:void(0)">Shop</a></li>
+        <li class="breadcrumb-item"><a href="javascript:void(0)">Checkout</a></li>
+    </ol>
+</div>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-body">
+                <form action="{% url 'customer:place_order_confirm' %}" method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-lg-6 order-2 mb-4">
+                            <div class="d-flex flex-column flex-md-row justify-content-between shipping_payment">
+                                <div class="border rounded w-100 px-4 py-2">
+                                    <div>Shipping Method</div>
+                                    <div class="d-flex flex-column my-2" style="row-gap: 10px;">
+                                        <div class="border rounded px-4 py-2 ">
+                                            <div class="form-check">
+                                                <input class="form-check-input shipping_method" type="radio" value="60" data-method="Inside Dhaka" name="shipping_method" id="inside_dhaka" >
+                                                <label class="form-check-label d-flex justify-content-between" for="inside_dhaka">
+                                                  <div>Inside Dhaka</div>
+                                                  <div>Tk. 60</div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="border rounded px-4 py-2">
+                                            <div class="form-check">
+                                                <input class="form-check-input shipping_method" data-method="Outside Dhaka" value="130" type="radio" name="shipping_method" id="outside_dhaka" >
+                                                <label class="form-check-label d-flex justify-content-between" for="outside_dhaka">
+                                                  <div>Outside Dhaka</div>
+                                                  <div>Tk. 130</div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="border rounded w-100  px-4 py-2">
+                                    <div>Payment Method</div>
+                                    <div class="d-flex flex-column justify-content-center h-100">
+                                        <div class="border rounded px-4 py-2">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="payment_method" value="Cash On Payment" id="cashonpayment" checked>
+                                                <label class="form-check-label" for="cashonpayment">
+                                                  Cash On Payment
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="text-muted">Your cart</span>
+                                    <span class="badge badge-primary badge-pill">{{cart.bag_total_items}}</span>
+                                </h4>
+                                <ul class="list-group mb-3">
+                                    {% for item in cart.bag_items.all %}
+                                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                        <div>
+                                            <img 
+                                            {% for image in item.product.product_images.all %}
+                                                {% if image.pimage_type == 'icon' and image.pimage_priority == 1 %}
+                                                    src="{{image.p_image.url}}" 
+                                                {% endif %}
+                                            {% endfor %} 
+                                            style="width:65px" alt="">
+                                        </div>
+                                        <div>
+                                            <h6 class="my-0">{{item.product.p_name}} size :-{{item.product_size}}</h6>
+                                            <small class="text-muted">{{item.quantity}} X {{item.product.p_offer_price}}</small>
+                                        </div>
+                                        
+                                        <span class="text-muted">{{item.sub_total}}</span>
+                                    </li>
+                                    {% endfor %}
+                                    
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <span>Subtotal (Tk)</span>
+                                        <strong>{{cart.bag_total_amount}}</strong>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <span>Shipping (Tk)</span>
+                                        <strong id="shipping_cost">0</strong>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <span>Total (Tk)</span>
+                                        <strong id="total_cost">{{cart.bag_total_amount}}</strong>
+                                    </li>
+    
+                                </ul>
+                                <hr class="mb-4">
+                                <button class="btn btn-primary btn-lg btn-block" type="submit">
+                                    Place Order
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 order-1">
+                            <h4 class="mb-3">Billing address</h4>
+                            <div class="needs-validation" novalidate="">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="firstName" class="form-label">First Name</label>
+                                        <input type="text" class="form-control" id="firstName" name="first_name"
+                                        {% if user.first_name %}value="{{user.first_name}}" {% else %} placeholder="first name"{% endif %} required>
+                                        
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="lastName" class="form-label">Last name</label>
+                                        <input type="text" class="form-control" id="lastName" name="last_name"
+                                        {% if user.first_name %} value="{{user.last_name}}" {% else %} placeholder="last name" {% endif %} required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Phone number</label>
+                                    <input type="text" class="form-control" id="phone" name='phone_number' minlength="11" maxlength="11" {% if user.phone_number %} value="{{user.phone_number}}" {% else %}  placeholder="017xxxxxxxx" {% endif %} required> 
+                                    
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email <span class="text-muted">*</span></label>
+                                    <input type="email" class="form-control" id="email" name="email" value="{{user.email}}" placeholder="you@example.com">
+                                    
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="address" class="form-label">Address</label>
+                                    <input type="text" class="form-control" name="address" id="address" {% if user.customerprofile.address %}value="{{user.customerprofile.address}}" {% else %}  placeholder="address"{% endif %} required>
+                                    
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Division</label>
+                                        <select class="form-select p-3" id="division" name="division">
+                                            <option>Select Division</option>
+                                            {% for division in divisions %}
+                                                {% if division == user.customerprofile.division %}
+                                                    <option value="{{division.id}}" selected>{{division.division_name}}</option>
+                                                {% else %}
+                                                    <option value="{{division.id}}">{{division.division_name}}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">District</label>
+                                        <select class="form-select p-3" id="district" name="district">
+                                            <option >Select District</option>
+                                            <option value="{{user.customerprofile.district.id}}" selected >{{user.customerprofile.district.district_name}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">thana/upazila</label>
+                                        <select class="form-select p-3" id="upazila" name="upazila">
+                                            <option >Select thana/upazila</option>
+                                            <option value="{{user.customerprofile.upazila.id}}" selected>{{user.customerprofile.upazila.upazila_name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock customerbody %}
+{% block customerScript %}
+<script>
+     const all_shipping_method = document.querySelectorAll('.shipping_method');
+     var shipping_charge = '';
+     var shipping_method = '';
+     all_shipping_method.forEach((shipping)=>{
+        shipping.addEventListener("click",()=>{
+            shipping_charge = parseInt(shipping.value);
+            shipping_method = shipping.getAttribute('data-method');
+            $("#shipping_cost").text(shipping_charge);
+            var sub_total = parseInt("{{cart.bag_total_amount}}")
+            $("#total_cost").text(sub_total+shipping_charge)
+        });
+     });
+    $("#division").on("change",()=>{
+        var select_division = $("#division").val()
+        $.ajax({
+            type:"POST",
+            url:"{% url 'customer:district_get' %}",
+            data:{
+                division:select_division,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success:(res)=>{
+                if(res['status'] == 'success'){
+                    var district_list = res['districts'];
+                    $("#district").empty();
+                    var select_district_name = '';
+                    select_district_name = '<option >Select District</option>';
+                    $("#district").append(select_district_name);
+                    district_list.forEach((dist)=>{
+                        select_district_name = '<option value="'+dist['id']+'">'+dist['district_name']+'</option>';
+                        $("#district").append(select_district_name);
+                    })
+                }
+            }
+        })
+    })
+    $("#district").on("change",()=>{
+        var select_district = $("#district").val()
+        $.ajax({
+            type:"POST",
+            url:"{% url 'customer:upazila_get' %}",
+            data:{
+                district:select_district,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success:(res)=>{
+                if(res['status'] == 'success'){
+                    var upazila_list = res['upazilas'];
+                    $("#upazila").empty();
+                    var select_upazila_name = '';
+                    select_upazila_name = '<option >Select Upazila</option>';
+                    $("#upazila").append(select_upazila_name);
+                    upazila_list.forEach((dist)=>{
+                        select_upazila_name = '<option value="'+dist['id']+'">'+dist['upazila_name']+'</option>';
+                        $("#upazila").append(select_upazila_name);
+                    })
+                }
+            }
+        })
+    })
+</script>
+{% endblock customerScript %}

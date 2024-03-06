@@ -1,0 +1,27 @@
+{% load static %}
+<div class="section-category">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2 class="hp-sc-header-text">
+                <span>Top Categories</span>
+            </h2>
+            <a href="#">See all Categories</a>
+        </div>
+        <div class="hp-sc-header-line">
+
+        </div>
+    </div>
+    <div class="container">
+        <div class="hp-sc-categories">
+            {% for category in categories %}
+                <div class="hp-sc-category">
+                    <a href="#" class="hp-sc-category-logo">
+                        <img src="{{category.image.url}}"  alt="">
+                    </a>
+                    <a href="#" class="hp-sc-category-title">{{category.name}}</a>
+                </div>
+            {% endfor %}
+           
+        </div>
+    </div>
+</div>

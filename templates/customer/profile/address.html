@@ -1,0 +1,107 @@
+{% extends 'customer/profile/profile-main.html' %}
+{% block profileBread %}
+<li class="breadcrumb-item active">
+    <a href="#">User Address</a>
+</li>
+{% endblock profileBread %}
+{% block customerProfile %}
+<div class="row justify-content-start py-5 mt-3">
+    <div class="col-lg-6 col-12">
+        <h2>My Address</h2>
+        <form action="{% url 'customer:profile_address_update' %}" method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-lg-12 col-12">
+                    <div class="mb-3">
+                        <label class="mb-1"><strong>Address</strong></label>
+                        <input type="text" class="form-control" name='address' {% if user.customerprofile.address %}value="{{user.customerprofile.address}}" {% else %}  placeholder="address"{% endif %}>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-12">
+                    <label class="form-label">Division</label>
+                    <select class="form-select p-3" id="division" name="division">
+                        <option>Select Division</option>
+                        {% for division in divisions %}
+                            {% if division == user.customerprofile.division %}
+                                <option value="{{division.id}}" selected>{{division.division_name}}</option>
+                            {% else %}
+                                <option value="{{division.id}}">{{division.division_name}}</option>
+                            {% endif %}
+                            
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-lg-12 col-12">
+                    <label class="form-label">District</label>
+                    <select class="form-select p-3" id="district" name="district">
+                        <option value="{{user.customerprofile.district.id}}" selected>{{user.customerprofile.district.district_name}}</option>
+                    </select>
+                </div>
+                <div class="col-lg-12 col-12">
+                    <label class="form-label">thana/upazila</label>
+                    <select class="form-select p-3" id="upazila" name="upazila">
+                        <option >Select thana/upazila</option>
+                        <option value="{{user.customerprofile.upazila.id}}" selected>{{user.customerprofile.upazila.upazila_name}}</option>
+                    </select>
+                </div>
+                <div class="col-lg-12 col-12 mt-3 justify-content-center d-flex">
+                    <button type="submit" class="btn btn-success w-50">Update</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>       
+        
+{% endblock customerProfile %}
+{% block customerScript %}
+<script>
+    $("#division").on("change",()=>{
+        var select_division = $("#division").val()
+        $.ajax({
+            type:"POST",
+            url:"{% url 'customer:district_get' %}",
+            data:{
+                division:select_division,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success:(res)=>{
+                if(res['status'] == 'success'){
+                    var district_list = res['districts'];
+                    $("#district").empty();
+                    var select_district_name = '';
+                    select_district_name = '<option >Select District</option>';
+                    $("#district").append(select_district_name);
+                    district_list.forEach((dist)=>{
+                        select_district_name = '<option value="'+dist['id']+'">'+dist['district_name']+'</option>';
+                        $("#district").append(select_district_name);
+                    })
+                }
+            }
+        })
+    })
+    $("#district").on("change",()=>{
+        var select_district = $("#district").val()
+        $.ajax({
+            type:"POST",
+            url:"{% url 'customer:upazila_get' %}",
+            data:{
+                district:select_district,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success:(res)=>{
+                if(res['status'] == 'success'){
+                    var upazila_list = res['upazilas'];
+                    $("#upazila").empty();
+                    var select_upazila_name = '';
+                    select_upazila_name = '<option >Select Upazila</option>';
+                    $("#upazila").append(select_upazila_name);
+                    upazila_list.forEach((dist)=>{
+                        select_upazila_name = '<option value="'+dist['id']+'">'+dist['upazila_name']+'</option>';
+                        $("#upazila").append(select_upazila_name);
+                    })
+                }
+            }
+        })
+    })
+</script>
+{% endblock customerScript %}

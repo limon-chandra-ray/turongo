@@ -1,0 +1,55 @@
+{% load static %}
+<div class="footer p-0">
+    <div class="container">
+        <div class="row pt-4">
+            <div class="col-lg-3 col-md-12 d-flex flex-column justify-content-center align-items-center py-sm-5" style="row-gap: 18px;">
+                <div>
+                    <a href="#"><img src="{% static 'images/logo.png' %}" style="width:200px" alt=""></a>
+                </div>
+                <div class="footer-social-icon">
+                    <a href="#" class="footer-icon"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="footer-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="footer-icon"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="footer-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="footer-icon"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+
+            </div>
+            <div class="col-lg-3 col-6 d-flex flex-column justify-content-center align-items-center pt-2">
+                <ul>
+                    <li><a href="#" class="footer-link">About us</a></li>
+                    <li><a href="#" class="footer-link">Branches & Pickup Points </a></li>
+                    <li><a href="#" class="footer-link">Warranty</a></li>
+                    <li><a href="#" class="footer-link">EMI</a></li>
+                    <li><a href="#" class="footer-link">Cokkie Policy</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-3 col-6 d-flex flex-column justify-content-center align-items-center pt-2">
+                <ul>
+                    <li><a href="#" class="footer-link">Home Delivery</a></li>
+                    <li><a href="#" class="footer-link">Order Procedure</a></li>
+                    <li><a href="#" class="footer-link">Return & Refund Policy</a></li>
+                    <li><a href="#" class="footer-link">Payment Method</a></li>
+                    <li><a href="#" class="footer-link">Terms & Conditions</a></li>
+                    <li><a href="#" class="footer-link">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-3 col-12 d-sm-flex flex-sm-column justify-sm-content-center align-items-center">
+                <div>
+                    <h2 class="contact-section">Contact Us</h2>
+                    <p class="my-2 text-sm-center text-lg-start">Head office</p>
+                    <p class="my-2 text-sm-center text-lg-start">Gadget Computer Limited </p>
+                    <p class="my-2 text-sm-center text-lg-start">Kobita Monjil,3rd Floor,231/3 Nobinbag,Gopalganj - 8100</p>
+                    <p class="my-2 text-sm-center text-lg-start justify-sm-content-center"><i class="fas fa-envelope"></i><span class="mx-2">info@gadget.com</span></p>
+                    <p class="my-2 text-sm-center text-lg-start justify-sm-content-center"><i class="fa-solid fa-phone"></i><span  class="mx-2">+8801797856496</span>,<span>+8801797856497</span></p>
+                    <p class="my-2 text-sm-center text-lg-start justify-sm-content-center"><i class="fab fa-whatsapp"></i><span class="mx-2">+8801754297147(Message Only)</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="copyright">
+        <p>Copyright © Designed &amp; Developed by <a href="{% url "customer:customer_home_view" %}">turongo.com</a>
+            <span id="footer_present_year"></span>
+        </p>
+    </div>
+</div>

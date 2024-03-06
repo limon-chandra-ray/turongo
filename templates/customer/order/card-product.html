@@ -1,0 +1,159 @@
+{% extends 'customer/layouts/index.html' %}
+{% block customerbody %}
+<style>
+    .quantity{
+        display: flex;
+        flex-direction: column;
+    }
+    .quantity button{
+        background: no-repeat;
+    }
+</style>
+<div class="row page-titles">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active"><a href="javascript:void(0)">Shop</a></li>
+        <li class="breadcrumb-item"><a href="javascript:void(0)">Order Items</a></li>
+    </ol>
+</div>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <table class="table table-responsive-md">
+                        <thead>
+                            <tr>
+                                <th><strong>IMAGE</strong></th>
+                                <th><strong>PRODUCT</strong></th>
+                                <th><strong>PRICE</strong></th>
+                                <th class="text-center"><strong>QUANTITY</strong></th>
+                                <th><strong>TOTAL PRICE</strong></th>
+                                <th><strong>ACTION</strong></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in cart.bag_items.all %}
+                            <tr id="itemobject{{item.id}}">
+                                <td>
+                                    <img 
+                                    {% for image in item.product.product_images.all %}
+                                        {% if image.pimage_type == 'phone' and image.pimage_priority == 1 %}
+                                            src="{{image.p_image.url}}" 
+                                        {% endif %}
+                                    {% endfor %}
+                                   
+                                    
+                                    style="width:100px;height:50px"/></td>
+                                <td>{{item.product.p_name}}</td>
+                                <td>
+                                    <div class="d-flex flex-row align-items-center gap-2">
+                                        <div>{{item.product.p_offer_price}}</div>
+                                        <div class="d-flex flex-column">
+                                            <div>{{item.product.p_price}}</div>
+                                            <div>{{item.product.p_offer}}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex justify-content-center align-items-center gap-3">
+                                        <button class="border-0 bag-item-update" style="background:transparent" product-price="{{item.product.p_offer_price}}" bag-item="{{item.id}}" data-action="remove">
+                                            <i class="fa-solid fa-minus"></i>
+                                        </button>
+                                        <p class="m-0" id="itemquantity{{item.id}}">{{item.quantity}}</p>
+                                        <button class="border-0 bag-item-update" style="background:transparent" product-price="{{item.product.p_offer_price}}" bag-item="{{item.id}}" data-action="add">
+                                            <i class="fa-solid fa-plus"></i>
+                                        </button>
+                                    </div>
+                                   
+                                </td>
+                                <td id="itemsubtotal{{item.id}}">{{item.sub_total}}</td>
+                                <td>
+                                    <a class="dropdown-item" href="#">Delete</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between ">
+                    <div>Items : <b id="total_items">{{cart.bag_total_items}}</b> </div>
+                    <div>Totals : <b id="total_amount">{{cart.bag_total_amount}}</b> (taka)</div>
+                    <div>
+                        <a href="{% url 'customer:checkout_view' %}" class="btn btn-primary">Checkout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock customerbody %}
+{% block customerScript %}
+<script>
+    var upate_item = document.querySelectorAll('.bag-item-update');
+    upate_item.forEach((item)=>{
+        item.addEventListener("click",()=>{
+            var item_id = item.getAttribute('bag-item');
+            var action_type = item.getAttribute('data-action');
+            var product_price = parseInt(item.getAttribute('product-price'));
+            var total_items = parseInt($("#total_items").text())
+            var total_amount = parseInt($("#total_amount").text())
+            var sub_total_id = "#itemsubtotal"+item_id;
+            var item_quantity = "#itemquantity"+item_id;
+            var sub_total_amount = parseInt($(sub_total_id).text())
+            var sub_item_quantity = parseInt($(item_quantity).text())
+            $.ajax({
+                type:'POST',
+                url:"{% url 'customer:bag_item_quantity_change' %}",
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                data:{
+                    item:item_id,
+                    action:action_type
+                },
+                success:(res)=>{
+                    if(res['status'] == 'success'){
+                        if(sub_item_quantity >= 1){
+                            if(action_type == 'remove'){
+                                sub_total_amount = sub_total_amount - product_price;
+                                total_items -= 1;
+                                total_amount -= product_price;
+                                sub_item_quantity -= 1
+                                $(item_quantity).text(sub_item_quantity.toString());
+                                $(sub_total_id).text(sub_total_amount.toString());
+                                $("#total_items").text(total_items.toString());
+                                $("#total_amount").text(total_amount.toString());
+                            }else{
+                                sub_total_amount = sub_total_amount + product_price;
+                                total_items += 1;
+                                total_amount += product_price;
+                                sub_item_quantity += 1
+                                $(item_quantity).text(sub_item_quantity.toString());
+                                $(sub_total_id).text(sub_total_amount.toString());
+                                $("#total_items").text(total_items.toString());
+                                $("#total_amount").text(total_amount.toString());
+                            }
+                        }
+                        if(sub_item_quantity == 0){
+                            var itemobject = "#itemobject"+item_id;
+                            $(itemobject).remove()
+                        }
+                    }      
+                    
+                }
+            })
+        })
+    })
+
+</script>
+
+{% endblock customerScript %}
+

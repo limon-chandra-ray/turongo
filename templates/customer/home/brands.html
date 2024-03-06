@@ -1,0 +1,27 @@
+{% load static %}
+<div class="section-brand">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2 class="hp-sb-header-text">
+                <span>Our Brands</span>
+            </h2>
+            <a href="#">See all brand</a>
+        </div>
+        <div class="hp-sb-header-line">
+
+        </div>
+    </div>
+    <div class="container">
+        <div class="hp-sb-brands">
+            {% for brand in brands %}
+                <div class="hp-sb-brand">
+                    <a href="#" class="hp-sb-brand-logo">
+                        <img src="{{brand.image.url}}"  alt="">
+                    </a>
+                </div>
+            {% endfor %}
+          
+
+        </div>
+    </div>
+</div>

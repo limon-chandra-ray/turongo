@@ -1,0 +1,165 @@
+{% load static %}
+
+<script src="{% static 'eadmin/vendor/chart.js/Chart.bundle.min.js'%}"></script>
+<script src="{% static 'eadmin/vendor/jquery-nice-select/js/jquery.nice-select.min.js'%}"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="{% static 'eadmin/js/custom.min.js'%}"></script>
+<script src="{% static 'eadmin/js/dlabnav-init.js'%}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" 
+	integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="{% static 'js/owl.carousel.js'%}"></script>
+<script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>
+
+<script src="{% static 'eadmin/js/demo.js'%}"></script>
+<script src="{% static 'js/core.js'%}"></script>
+<script>
+	$(document).ready(function() {
+		$("#homeslider").owlCarousel({
+			loop:true,
+			autoplay:true,
+			responsive:{
+				0:{
+					items:1
+				}
+			}
+		});
+
+	});
+</script>
+<script>
+	$("#mobile_nav_bag_products").on('click',()=>{
+		$.ajax({
+			type:"get",
+			url:"{% url 'customer:card_product_view2' %}",
+			dataType:"json",
+			
+			success:(res)=>{
+				$("#mobile_nav_product_carts").empty()
+
+				res['bag_items'].forEach(element => {
+					var cart_item = `<div class="mobile_nav_product_cart mobile_nav_product_cart`+element['item']+`">
+										<div class="mnpc_img"><img src="`+element['image']+`"></div>
+										<div class="mnpc_product_detail">
+											<div>`+element['title']+`</div>
+											<div class="mnpc_pd_middle">
+												<div class="mnpc_pd_middle_size">Size : <span>`+element['size']+`</span></div>
+												<div>`+element['offer_price']+`</div>
+												<div class="mnpc_product_offer">
+													<span class="regular_price">`+element['price']+`</span>
+													<span class="offer_percentage">`+element['offer']+`%</span>
+												</div>
+											</div>
+											<div class="mnpc_pd_bottom">
+												<button type="button" class="mnpc_quantity_button" 
+													product-price="`+element['offer_price']+`" 
+													bag-item="`+element['item']+`" data-action="remove">
+													<i class="fa-solid fa-minus"></i></button>
+												<div class="mnpc_pdb_price_quantity">
+													<span>`+element['offer_price']+`</span>
+													<span>X</span>
+													<span id="mnpc_productquantity`+element['item']+`">`+element['quantity']+`</span>
+												</div>
+												<button type="button" class="mnpc_quantity_button" 
+													product-price="`+element['offer_price']+`" 
+													bag-item="`+element['item']+`" data-action="add">
+													<i class="fa-solid fa-plus"></i>
+												</button>
+											</div>
+										</div>
+									</div>`;
+					$("#mobile_nav_product_carts").append(cart_item)
+				});
+				$("#total_amount").text(res['total_amount']);
+				$("#mobile_nav_total_product").text(res['total_items']);
+				var upate_item = document.querySelectorAll('.mnpc_quantity_button');
+				productBagItemUpdate(upate_item);
+			}
+		})
+		
+	});
+	
+
+	function productBagItemUpdate(upate_item) {
+		upate_item.forEach((item)=>{
+			item.addEventListener("click",()=>{
+				var item_id = item.getAttribute('bag-item');
+				var action_type = item.getAttribute('data-action');
+				var product_price = parseInt(item.getAttribute('product-price'));
+				var total_items = parseInt($("#mobile_nav_total_product").text())
+				var total_amount = parseInt($("#total_amount").text())
+				var sub_total_id = "#itemsubtotal"+item_id;
+				var item_quantity = "#mnpc_productquantity"+item_id;
+				var sub_total_amount = parseInt($(sub_total_id).text())
+				var sub_item_quantity = parseInt($(item_quantity).text())
+				$.ajax({
+					type:'POST',
+					url:"{% url 'customer:bag_item_quantity_change' %}",
+					headers: {'X-CSRFToken': '{{ csrf_token }}'},
+					data:{
+						item:item_id,
+						action:action_type
+					},
+					success:(res)=>{
+						if(res['status'] == 'success'){
+							$("#mobile_cart_nav_message").empty()
+							if(action_type == 'remove'){
+								total_items -= 1;
+								total_amount -= product_price;
+								sub_item_quantity -= 1
+								$(item_quantity).text(sub_item_quantity.toString());
+								$(sub_total_id).text(sub_total_amount.toString());
+								$("#mobile_nav_total_product").text(total_items.toString());
+								$("#total_amount").text(total_amount.toString());
+							}
+							else{
+
+								total_items += 1;
+								total_amount += product_price;
+								sub_item_quantity += 1
+								$(item_quantity).text(sub_item_quantity.toString());
+								$("#mobile_nav_total_product").text(total_items.toString());
+								$("#total_amount").text(total_amount.toString());
+							}
+							if(sub_item_quantity == 0){
+								var itemobject = ".mobile_nav_product_cart"+item_id;
+								$(itemobject).remove()
+							}
+							$(".mobile_navbag_products").text(total_items.toString())
+							var message_text = res['message_text'];
+							var message_status = res['message_status'];
+							var alert_message_component = `<div class="alert alert-`+message_status+` alert-dismissible fade show custom_alert" role="alert">
+								`+message_text+`.
+								<button type="button" class="btn-close custom_alert_button" data-bs-dismiss="alert" aria-label="Close"></button>
+							</div>`;
+							$("#mobile_cart_nav_message").append(
+								alert_message_component
+							);
+						
+							
+						}      
+
+					}
+				})
+			});
+		});;
+	}
+	
+
+</script>
+
+<script>
+	var authenticate_user = "{{request.user.id}}";
+	var guest_user_key = "{{request.session.guest}}";
+	console.log(guest_user_key)
+	if ((authenticate_user != '') && (guest_user_key != '')){
+		$.ajax({
+			type:"GET",
+			url:"{% url 'customer:guest_user_update_product_bag' %}",
+			success:(res)=>{
+				console.log(res)
+			}
+		})
+	}
+</script>

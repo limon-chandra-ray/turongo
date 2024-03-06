@@ -1,0 +1,34 @@
+<div class="h-dvh pt-16 bg-base-200">
+    <ul class="menu bg-base-200 w-60">
+        <li>
+            <a href="#">Dashboard</a>
+        </li>
+        <li>
+            <details>
+              <summary>All Order</summary>
+              <ul>
+                <li><a href="#">Request Order</a></li>
+                <li><a href="#">Processing Order</a></li>
+                <li><a href="#">Shipping Order</a></li>
+                <li><a href="#">Completed Order</a></li>
+              </ul>
+            </details>
+          </li>
+        <li>
+          <details>
+            <summary>All Product</summary>
+            <ul>
+              <li><a href="{% url "super_app:product_add_view" %}">Add Product</a></li>
+              <li><a href="{% url "super_app:active_product_view" %}">Active Product</a></li>
+              <li><a href="#">In-Active Product</a></li>
+              <li><a href="#">Out Of Stock Product</a></li>
+              
+            </ul>
+          </details>
+        </li>
+        <li>
+            <a href="{% url 'super_app:slider_list_view' %}">All Slider</a>
+        </li>
+        
+    </ul>
+</div>

@@ -1,0 +1,95 @@
+{% extends 'customer/layouts/index.html' %}
+{% load static %}
+{% block customerbody %}
+<div class="container pb-5">
+    <div class="row m-0 page-titles">
+        <ol class="breadcrumb">
+           <li class="breadcrumb-item active"><a href="{% url 'customer:customer_profile_view' %}">Account</a></li>
+        </ol>
+    </div> 
+    <div class="account-header">
+        <div class="ac-header-left">
+            <div><img src="{% static 'images/user.png' %}" alt=""></div>
+            <div>
+                <p>Hello , </p>
+                <h2>{{user.user_name}}</h2>
+            </div>
+        </div>
+        <div class="ac-header-right">
+            <div class="star-points">
+                <p>Star points</p>
+                <p>0</p>
+            </div>
+            <div class="store-credit">
+                <p>Store credit</p>
+                <p>0</p>
+            </div>
+        </div>
+    </div>
+    <div class="profile-menu">
+        <div class="profile-menu-item">
+            <a href="{% url 'customer:profile_order_list_view' %}">
+                <div class="w-100 account-card">
+                    <i class="fa-regular fa-rectangle-list"></i>
+                    <span>Orders</span>
+                </div>
+                
+            </a>
+        </div>
+        <div class="profile-menu-item">
+            <a href="{% url 'customer:profile_customer_info_view' %}">
+                <div class="w-100 account-card">
+                    <i class="fa-solid fa-user"></i>
+                    <span>Edit Account</span>
+                </div>
+            </a>
+        </div>
+        <div class="profile-menu-item">
+            <a href="{% url 'customer:profile_password_change_view' %}">
+                <div class="w-100 account-card">
+                    <i class="fa-solid fa-user-lock"></i>
+                    <span>Change Password</span>
+                </div>
+            </a>
+        </div>
+        <div class="profile-menu-item">
+            <a href="{% url 'customer:profile_address_view' %}">
+                <div class="w-100 account-card">
+                    <i class="fa-solid fa-address-book"></i>
+                    <span>Address</span>
+                </div>
+            </a>
+        </div>
+        <div class="profile-menu-item">
+            <a href="#">
+                <div class="w-100 account-card">
+                    <i class="fa-solid fa-wallet"></i>
+                    <span>Your Transactions</span>
+                </div>
+            </a>
+        </div>
+        <div class="profile-menu-item">
+            <a href="#">
+                <div class="w-100 account-card">
+                    <i class="fa-regular fa-star"></i>
+                    <span>Star Points</span>
+                </div>
+            </a>
+        </div>
+        {% if user.is_authenticated %}
+            <div class="profile-menu-item">
+                <a href="{% url 'customer:user_logout' %}">
+                    <div class="w-100 account-card">
+                        <i class="fa-solid fa-lock"></i>
+                        <span>Log out</span>
+                    </div>
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+
+
+
+{% endblock customerbody %}

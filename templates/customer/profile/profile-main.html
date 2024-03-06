@@ -1,0 +1,129 @@
+{% extends 'customer/layouts/index.html' %}
+{% load static %}
+{% block customerbody %}
+<style>
+    .account-card{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px;
+        border: 1px solid;
+        border-radius: 7px;
+        font-size: 18px;
+        row-gap: 8px;
+        box-shadow: 0px 5px 9px 0px #a99a9a;
+    }
+    .account-header{
+        display: flex;
+        justify-content: space-between;
+        display: flex;
+        justify-content: space-between;
+        padding: 30px 5px;
+
+    }
+    .ac-header-left{
+        flex: 1 1 auto;
+        display: flex;
+        align-items: center;
+        column-gap: 12px;
+    }
+    .ac-header-left img{
+        width: 75px;
+    }
+    .ac-header-left p{
+        margin: 0;
+    }
+    .ac-header-left h2{
+        margin: 0px;
+        font-size: 20px;
+        font-weight: 700;
+    }
+    .ac-header-right{
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+    }
+    .ac-header-right .star-points,.ac-header-right .store-credit{
+        width: 150px;
+        border-left: 1px solid;
+    }
+    .star-points p,.store-credit p{
+        margin: 0;
+        text-align: center;
+    }
+    .account_link:hover{
+        color:#f06d0e;
+        border-bottom-color:#f06d0e !important
+    }
+</style>
+<div class="container pb-5">
+    <div class="row page-titles">
+        <ol class="breadcrumb">
+           <li class="breadcrumb-item"><a href="{% url 'customer:customer_profile_view' %}">Account</a></li>
+            
+            {% block profileBread %}{% endblock profileBread %}
+            
+        </ol>
+    </div> 
+    <div class="account-header">
+        <div class="ac-header-left">
+            <div><img src="{% static 'images/user.png' %}" alt=""></div>
+            <div>
+                <p>Hello , </p>
+                <h4>{{user.user_name}}</h4>
+            </div>
+        </div>
+        <div class="ac-header-right">
+            <div class="star-points">
+                <p>Star points</p>
+                <p>0</p>
+            </div>
+            <div class="store-credit">
+                <p>Store credit</p>
+                <p>0</p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 d-none d-lg-block ">
+            <a href="{% url 'customer:profile_order_list_view' %}" class="px-3 pb-4 border-bottom border-3 account_link">
+                    <i class="fa-regular fa-rectangle-list"></i>
+                    <span>Orders</span>
+            </a>
+            <a href="{% url 'customer:profile_customer_info_view' %}" class="px-3 pb-4 border-bottom border-3 account_link">
+                    <i class="fa-solid fa-user"></i>
+                    <span>Edit Account</span>
+            </a>
+        
+            <a href="{% url 'customer:profile_password_change_view' %}" class="px-3 pb-4 border-bottom border-3 account_link">
+                    <i class="fa-solid fa-user-lock"></i>
+                    <span>Change Password</span>
+            </a>
+        
+            <a href="{% url 'customer:profile_address_view' %}" class="px-3 pb-4 border-bottom border-3 account_link">
+                    <i class="fa-solid fa-address-book"></i>
+                    <span>Address</span>
+            </a>
+        
+            <a href="#" class="px-3 pb-4 border-bottom border-3 account_link">
+                    <i class="fa-solid fa-wallet"></i>
+                    <span>Your Transactions</span>
+            </a>
+            <a href="#" class="px-3 pb-4 border-bottom border-3 account_link">
+                <i class="fa-regular fa-star"></i>
+                <span>Star Points</span>
+            </a>
+        </div>
+    </div>
+    <div class="container">
+        {% block customerProfile %}
+        
+        
+        {% endblock customerProfile %}
+    </div>
+</div>
+
+
+
+
+{% endblock customerbody %}
