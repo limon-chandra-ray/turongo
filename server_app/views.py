@@ -1,4 +1,6 @@
 from django.shortcuts import render,redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate,login,logout,hashers
 from django.db.models import Prefetch
 from django.contrib import messages
 from PIL import Image
@@ -9,11 +11,14 @@ from product_server_app.models import Product,ProductImage,Category,ProductSize
 from product_server_app.utils import date_to_str
 from server_object_app.models import Slider
 # Create your views here.
+
+@login_required(login_url='/super-server/login')
 def dashboard(request):
     return render(request,'server/super-admin/dashboard/main.html')
 
 
 # Product Section
+@login_required(login_url='super-server/login')
 def product_add_view(request):
     category = Category.objects.all()
     brands = PBrand.objects.all()
@@ -129,15 +134,17 @@ def active_product_view(request):
     return render(request,'server/super-admin/product/active-product.html',context)
 
 # slider section
+@login_required(redirect_field_name='super_admin_login_view')
 def slider_list_view(request):
     slides = Slider.objects.all().order_by('-id')
     context = {
         'slides':slides
     }
     return render(request,'server/super-admin/slider-image/slide-image-list.html',context)
+@login_required(redirect_field_name='super_admin_login_view')
 def slider_add_view(request):
     return render(request,'server/super-admin/slider-image/slide-image-add.html')
-
+@login_required(redirect_field_name='super_admin_login_view')
 def slider_add(request):
     if request.method == 'POST':
         priority = request.POST['slide_priority']
@@ -160,5 +167,74 @@ def slider_add(request):
         #End product phone image created section
         messages.add_message(request,messages.SUCCESS,'New slide add successfully')
         return redirect('server_app:slider_list_view')
+@login_required(redirect_field_name='super_admin_login_view')
+def slider_delete(request,slide_id):
+    slide = Slider.objects.get(id = int(slide_id))
+    if slide:
+        slide.delete()
+        messages.add_message(request,messages.SUCCESS,'delete successfully')
+    else:
+        messages.add_message(request,messages.WARNING,'In-valid request')
+    return redirect('server_app:slider_list_view')
 
+@login_required(redirect_field_name='super_admin_login_view')
+def slider_edit(request,slide_id):
+    slide = Slider.objects.get(id = int(slide_id))
+    if request.method == 'POST':
+        try:
+            slide_image = request.FILES['slide_image']
+        except:
+            slide_image = None
+        slide_link = request.POST['slide_link']
+        slide_priority = request.POST['slide_priority']
+        if slide_image is not None:
+            slide.slide_image = slide_image
+        slide.slide_link = slide_link
+        slide.slide_priority = int(slide_priority)
+        slide.save()
+        messages.add_message(request,messages.SUCCESS,'update slide successfully')
+        return redirect('server_app:slider_list_view')
+    else:
+        context = {
+            'slide':slide
+        }
+        return render(request,'server/super-admin/slider-image/slide-image-edit.html',context)
+@login_required(redirect_field_name='super_admin_login_view')
+def slide_status_change(request,slide_id):
+    slide = Slider.objects.get(id = int(slide_id))
+    if slide.slide_status is True:
+        slide.slide_status = False
+    else:
+        slide.slide_status = True
+    slide.save()
+    messages.add_message(request,messages.SUCCESS,'slide status updated')
+    return redirect('server_app:slider_list_view')
         
+
+# super-server authentication
+def super_admin_login_view(request):
+    return render(request,'server/auth/login.html')
+
+def super_admin_check(request):
+    url_link = request.GET.get('next')
+    if request.method == 'POST':
+        phone_number = request.POST['phone_number'] 
+        password = request.POST['password'] 
+        
+        print(url_link)
+        user = authenticate(request,username = phone_number,password=password)
+        if user:
+            login(request,user)
+            if request.user.role == 'ADMIN':
+                messages.add_message(request,messages.SUCCESS,'your acctount active successfully')
+                
+            else:
+                logout(request)
+                messages.add_message(request,messages.WARNING,'Please add valid information')
+        
+        return redirect('super_app:dashboard')
+    
+def super_admin_logout(request):
+    logout(request)
+    return redirect("super_app:dashboard")
+

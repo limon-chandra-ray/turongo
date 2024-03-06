@@ -1,7 +1,7 @@
 {% load static %}
 <div class="navbar bg-neutral-300 fixed z-50 top-0 left-0 right-0">
     <div class="flex-1">
-      <a class="btn btn-ghost text-xl">Turongo</a>
+      <a href="{% url 'server_app:dashboard' %}" class="btn btn-ghost text-xl">Turongo</a>
     </div>
     <div class="flex-none">
       <div class="dropdown dropdown-end">
@@ -18,7 +18,7 @@
             </a>
           </li>
           <li><a>Settings</a></li>
-          <li><a>Logout</a></li>
+          <li><a href="{% url 'server_app:super_admin_logout' %}">Logout</a></li>
         </ul>
       </div>
     </div>

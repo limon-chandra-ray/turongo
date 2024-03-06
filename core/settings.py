@@ -14,7 +14,10 @@ SECRET_KEY = 'django-insecure-4&4ka9ajy-6*@90(+c^7wj=9^=3n3*s#kra%%(0cqrnlr2d4+#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["turong.com","www.turongo.com"]
+if DEBUG:
+    ALLOWED_HOSTS = []
+else:
+    ALLOWED_HOSTS = ["turong.com","www.turongo.com"]
 
 
 # Application definition
@@ -84,6 +87,12 @@ DATABASES = {
     }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'dbmb/db.sqlite3',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -232,3 +241,11 @@ CKEDITOR_5_CONFIGS = {
         }
     }
 }
+
+MULTIPLE_LOGIN_URLS = {
+    'default': '/login/',  # Default login URL
+    'custom1': '/super-server/login/',  # Custom login URL 1
+    'custom2': '/login3/',  # Custom login URL 2
+}
+
+LOGIN_URL = MULTIPLE_LOGIN_URLS['default'] 

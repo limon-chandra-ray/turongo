@@ -24,4 +24,15 @@ urlpatterns +=[
     path('all-slides',views.slider_list_view,name='slider_list_view'),
     path('new-slide-save',views.slider_add,name='slider_add'),
     path('slide-add',views.slider_add_view,name='slider_add_view'),
+    path('slide-<int:slide_id>-delete',views.slider_delete,name='slider_delete'),
+    path('slide-<int:slide_id>-edit',views.slider_edit,name='slider_edit'),
+    path('slide-<int:slide_id>-status-change',views.slide_status_change,name='slide_status_change'),
+    
+]
+
+#super-admin auth
+urlpatterns += [
+    path('login',views.super_admin_login_view,name='super_admin_login_view'),
+    path('super-admin-authentication-check',views.super_admin_check,name='super_admin_check'),
+    path('log-out',views.super_admin_logout,name='super_admin_logout')
 ]

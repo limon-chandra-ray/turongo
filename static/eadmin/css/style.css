@@ -26392,7 +26392,7 @@ table.dataTable.row-border tbody th, table.dataTable.row-border tbody td, table.
 .new-arrival-content .price {
   font-weight: 600;
   color: var(--primary);
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   margin-bottom: 0;
   float: right; }
   @media only screen and (max-width: 35.9375rem) {

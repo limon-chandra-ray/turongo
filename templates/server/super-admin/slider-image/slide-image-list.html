@@ -32,9 +32,9 @@
                                 <div class="dropdown dropdown-left">
                                     <div tabindex="0" role="button" class="btn m-1"><i class="fa-solid fa-chart-simple"></i></div>
                                     <ul tabindex="0" class="dropdown-content z-[1] menu p-1 shadow rounded w-20">
-                                        <li><a href="#" class="flex justify-center text-cyan-600"><i class="fa-solid fa-image"></i></a></li>
-                                        <li><a href="#" class="flex justify-center text-blue-600"><i class="fa-solid fa-bars"></i></a></li>
-                                        <li><a href="#" class="flex justify-center text-red-600"><i class="fa-regular fa-trash-can"></i></a></li>
+                                        <li><a href="{% url 'server_app:slide_status_change' slide.id %}" class="flex justify-center text-cyan-600"><i class="fa-solid fa-circle-stop"></i></a></li>
+                                        <li><a href="{% url 'server_app:slider_edit' slide.id %}" class="flex justify-center text-blue-600"><i class="fa-solid fa-bars"></i></a></li>
+                                        <li><a href="{% url 'server_app:slider_delete' slide.id %}" class="flex justify-center text-red-600"><i class="fa-regular fa-trash-can"></i></a></li>
                                     </ul>
                                 </div>
                             </td>

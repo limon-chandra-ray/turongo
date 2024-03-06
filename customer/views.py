@@ -30,8 +30,8 @@ def customer_home_view(request):
             queryset=ProductImage.objects.filter(pimage_type="phone") 
         )
     products = Product.objects.prefetch_related(product_image).all()
-    slide_image = Slider.objects.filter(slide_priority = 1).order_by('-id')[:3]
-    slide_image2 = Slider.objects.filter(slide_priority = 2).last()
+    slide_image = Slider.objects.filter(slide_priority = 1,slide_status = True).order_by('-id')[:3]
+    slide_image2 = Slider.objects.filter(slide_priority = 2,slide_status = True).last()
     context = {
         'slide_images':slide_image,
         'products':products,

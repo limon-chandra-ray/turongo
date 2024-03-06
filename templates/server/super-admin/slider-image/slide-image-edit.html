@@ -1,0 +1,51 @@
+{% extends "server/base/main.html" %}
+{% block superMain %}
+<div class="flex flex-col items-center justify-center">
+    <div>Home Slider Add</div>
+    <div class="w-1/2">
+        <form method="POST" enctype="multipart/form-data" >
+            {% csrf_token %}
+            <div class="mt-4">
+                <label class="form-control w-full">
+                    <div class="label">
+                    <span class="label-text">Slide Url Link</span>
+                    </div>
+                    <input type="text"  name="slide_link" value="{{slide.slide_link}}" class="input input-bordered w-full" required/>
+                </label>
+            </div>
+            <div class="mt-4">
+                <label class="form-control w-full">
+                    <div class="label">
+                    <span class="label-text">Slider Priority</span>
+                    </div>
+                    <input type="number" min='1' max='5' value="{{slide.slide_priority}}" name="slide_priority" class="input input-bordered w-full" required/>
+                </label>
+            </div>
+            <div class="mt-4">
+                <label class="form-control w-full">
+                    <div class="label">
+                        <span class="label-text">Slide Image</span>
+                    </div>
+                    <label for="slide_new_image" class="flex justify-center" >
+                        <img src="{{slide.slide_image.url}}" class="w-[250px] h-[250px]" id="new_slide_image_show" alt="">
+                    </label>
+                    <input type="file" id="slide_new_image" name="slide_image" class="file-input file-input-bordered w-full hidden" />
+                </label>
+            </div>
+            
+            <div class="mt-4 w-full flex justify-center">
+                <input type="submit" class="px-3 py-2 bg-green-700 hover:bg-green-800 text-white font-[700] rounded-md" value="Add Product">
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock superMain %}
+{% block superScript %}
+<script>
+    $("#slide_new_image").on("change",()=>{
+        var upload_image = document.getElementById('slide_new_image');
+        $("#new_slide_image_show").attr('src',URL.createObjectURL(upload_image.files[0]))
+    })
+</script>
+{% endblock superScript %}
