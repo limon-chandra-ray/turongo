@@ -125,7 +125,7 @@
                             <div class="product-detail-content">
                                 <!--Product details-->
                                 <div class="new-arrival-content pr">
-                                    <h4>{{product.name}}</h4>
+                                    <h4>{{product.p_name}}</h4>
                                     <div class="comment-review star-rating">
                                         <ul>
                                             <li><i class="fa fa-star {% if avg_rating >= 1 %}rating_active{% endif %}"></i></li>
@@ -137,7 +137,7 @@
                                         </ul>
                                         <span class="review-text">({{reviews.count}} reviews) </span>
                                     <div class="d-table mb-2">
-                                        <p class="price float-start d-block">${{product.price}}</p>
+                                        <p class="price float-start d-block">${{product.p_offer_price}}</p>
                                     </div>
                                     <p>Availability: 
                                         {% if product.quantity > 0 %}
@@ -147,7 +147,7 @@
                                         {% endif %}
 
                                     </p>
-                                    <p>Brand: <span class="item">{{product.brand.name}}</span></p>
+                                    <p>Brand: <span class="item">{{product.p_brand.brand_name}}</span></p>
                                     
                                     <div class="d-flex gap-2">
                                         {% for size in product.product_sizes.all %}
