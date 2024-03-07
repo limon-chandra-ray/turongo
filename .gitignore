@@ -57,6 +57,8 @@ cover/
 
 #media file
 media/
+#media file
+dbmb/
 
 # Django stuff:
 *.log

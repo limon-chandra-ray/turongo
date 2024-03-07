@@ -43,8 +43,10 @@ def product_details_view(request,product_id):
     product_iamge_prefetch = Prefetch('product_images')
     product_size_prefetch = Prefetch('product_sizes')
     product = Product.objects.prefetch_related(product_iamge_prefetch,product_size_prefetch).get(p_id= product_id)
+    related_product = Product.objects.prefetch_related(product_iamge_prefetch).filter(p_category = product.p_category).order_by('-p_id')[:6]
     context = {
-        'product':product
+        'product':product,
+        'related_product':related_product
     }
     return render(request,'customer/product/product-details.html',context)
 
@@ -84,10 +86,22 @@ def product_add_to_cart(request):
                 total_cart_product = cart.bag_total_items
         message_status = "success"
         message_text = f'this product {select_product_size} size {product_quantity} quantity add'	
+        
+        product_detail = dict()
+        product_detail['title'] = product.p_name
+        product_image = ProductImage.objects.filter(product=product,
+                                                    pimage_type = 'icon',
+                                                    pimage_priority=1,
+                                                    image_status = True).first()
+        product_detail['image'] = product_image.p_image.url
+        product_detail['price'] = product.p_price
+        product_detail['offer_price'] = product.p_offer_price
+        product_detail['offer'] = product.p_offer
         return JsonResponse({"total_product":total_cart_product,
                              'status':'success',
                              'message_status':message_status,
-                             'message_text':message_text
+                             'message_text':message_text,
+                             'product':product_detail
                              })
     
 def guest_user_update_product_bag(request):

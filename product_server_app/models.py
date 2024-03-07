@@ -47,7 +47,8 @@ class Product(models.Model):
     p_offer_price = models.BigIntegerField(null=True,blank=True)
     p_offer = models.DecimalField(max_digits=5,decimal_places=2,null=True,blank=True)
     p_status = models.BooleanField(default=False)
-    p_category = models.ForeignKey(Category,on_delete = models.CASCADE)
+    p_third_category = models.ForeignKey(RootCategoryThree,on_delete=models.SET_NULL,null=True,blank=True)
+    p_category = models.ForeignKey(Category,on_delete = models.SET_NULL,null=True,blank=True)
     p_brand = models.ForeignKey(PBrand,on_delete=models.SET_NULL,null=True,blank=True)
     p_description = CKEditor5Field()
     created_at = models.DateTimeField(auto_now=True)
@@ -73,8 +74,16 @@ class ProductSize(models.Model):
     product = models.ForeignKey(Product,on_delete = models.CASCADE,related_name="product_sizes")
     p_size = models.ForeignKey(PSize,on_delete = models.CASCADE)
     quantity = models.BigIntegerField(default=0,null=True,blank=True)
+    psize_status = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
+
+    def save(self,*args, **kwargs):
+        if self.quantity == 0:
+            self.psize_status = False
+        else:
+             self.psize_status = True
+        return super(ProductSize,self).save(*args, **kwargs)
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product,on_delete = models.CASCADE,related_name="product_images")

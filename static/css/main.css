@@ -263,6 +263,26 @@
     row-gap: 10px;
 }
 /*End checkout section */
+
+/*Start Product details page*/
+.new-arrivals-img-contnent .product_offer{
+    position: absolute;
+    right: 4%;
+    background: #0b641e;
+    color: white;
+    padding: 2px 9px;
+    border-radius: 0px 0.5rem 0px 0px;
+}
+.new-arrival-content .regular_price{
+    font-size: 11px;
+    text-decoration: line-through;
+    color: #d55353;
+}
+.shopping-cart button{
+    font-size: 20px;
+    padding: 9px;
+}
+/*End Product details page*/
 @media only screen and (max-width: 650px) {
     .button-groups{
         padding:5px;
@@ -303,6 +323,9 @@
     .order_cards .order_status{
         padding: 0px 6px;
     }
+    .shopping-cart button{
+        font-size: 16px;
+    }
 }
 @media only screen and (max-width: 768px) {
     .mobile_nav_show{
@@ -334,5 +357,8 @@
     }
     .order_cards .order_status{
         padding: 0px 6px;
+    }
+    .shopping-cart button{
+        font-size: 16px;
     }
 }

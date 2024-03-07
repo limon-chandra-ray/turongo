@@ -10,8 +10,17 @@ urlpatterns = [
 urlpatterns += [
     path('product-add',views.product_add_view,name='product_add_view'),
     path('product-save',views.product_save,name='product_save'),
+    path('product-<uuid:product_id>-edit',views.product_edit_view,name='product_edit_view'),
+    path('product-<uuid:product_id>-save-edit',views.product_edit_save,name='product_edit_save'),
     path('product-<uuid:product__uuid>-delete',views.delete_product,name='delete_product'),
-    path('active-products',views.active_product_view,name='active_product_view')
+    path('active-products',views.active_product_view,name='active_product_view'),
+    path('category-get',views.category_get,name='category_get')
+]
+#product detials urls
+urlpatterns +=[
+    path('product-<uuid:product_id>-size-details',views.product_size_details,name='product_size_details'),
+    path('product-size-details',views.product_size_detail_get,name='product_size_detail_get'),
+    path('product-size-update',views.product_size_update,name='product_size_update')
 ]
 
 #order section

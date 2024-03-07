@@ -73,7 +73,7 @@
                 <h4>{{user.user_name}}</h4>
             </div>
         </div>
-        <div class="ac-header-right">
+        {% comment %} <div class="ac-header-right">
             <div class="star-points">
                 <p>Star points</p>
                 <p>0</p>
@@ -82,7 +82,7 @@
                 <p>Store credit</p>
                 <p>0</p>
             </div>
-        </div>
+        </div> {% endcomment %}
     </div>
     <div class="row">
         <div class="col-lg-12 d-none d-lg-block ">
@@ -103,15 +103,6 @@
             <a href="{% url 'customer:profile_address_view' %}" class="px-3 pb-4 border-bottom border-3 account_link">
                     <i class="fa-solid fa-address-book"></i>
                     <span>Address</span>
-            </a>
-        
-            <a href="#" class="px-3 pb-4 border-bottom border-3 account_link">
-                    <i class="fa-solid fa-wallet"></i>
-                    <span>Your Transactions</span>
-            </a>
-            <a href="#" class="px-3 pb-4 border-bottom border-3 account_link">
-                <i class="fa-regular fa-star"></i>
-                <span>Star Points</span>
             </a>
         </div>
     </div>

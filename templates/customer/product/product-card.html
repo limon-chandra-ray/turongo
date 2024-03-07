@@ -1,20 +1,24 @@
-<div class="col-lg-2 col-md-3 col-sm-4 col-6">
+<div class="col-md-12 col-6 p-1">
     <div class="card">
-        <div class="card-body">
+        <div class="card-body" style="padding:0.5rem">
             <div class="new-arrival-product">
                 <div class="new-arrivals-img-contnent">
-                    <img class="img-fluid" src="{{product.product_images.first.p_image.url}}" alt="">
+                    <span class="product_offer">{{product.p_offer}}% off</span>
+                    <img class="img-fluid" style="border-radius:0.5rem 0.5rem 0rem 0rem" 
+                    {% for image in product.product_images.all %}
+                        {% if image.pimage_priority == 1 and image.pimage_type == 'phone' %}
+                            src="{{image.p_image.url}}"
+                        {% endif %}
+                    {% endfor %}
+                    alt="">
                 </div>
                 <div class="new-arrival-content text-center mt-3">
-                    <h4><a href="#">{{product.p_name}}</a></h4>
-                    <ul class="star-rating">
-                        <li><i class="fa fa-star"></i></li>
-                        <li><i class="fa fa-star"></i></li>
-                        <li><i class="fa fa-star"></i></li>
-                        <li><i class="fa fa-star-half-empty"></i></li>
-                        <li><i class="fa fa-star-half-empty"></i></li>
-                    </ul>
-                    <span class="price">{{product.p_price}}</span>
+                    <h4 class="m-0"><a href="{% url "customer:product_details_view" product.p_id %}">{{product.p_name}}</a></h4>
+                    <div class="">
+                        <span class="price regular_price">TK.{{product.p_price}}</span>
+                        <span class="price offer_price">TK.{{product.p_offer_price}}</span>
+                        
+                    </div>
                 </div>
             </div>
         </div>

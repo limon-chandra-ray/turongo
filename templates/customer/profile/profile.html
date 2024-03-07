@@ -15,7 +15,7 @@
                 <h2>{{user.user_name}}</h2>
             </div>
         </div>
-        <div class="ac-header-right">
+        {% comment %} <div class="ac-header-right">
             <div class="star-points">
                 <p>Star points</p>
                 <p>0</p>
@@ -24,7 +24,7 @@
                 <p>Store credit</p>
                 <p>0</p>
             </div>
-        </div>
+        </div> {% endcomment %}
     </div>
     <div class="profile-menu">
         <div class="profile-menu-item">
@@ -60,22 +60,7 @@
                 </div>
             </a>
         </div>
-        <div class="profile-menu-item">
-            <a href="#">
-                <div class="w-100 account-card">
-                    <i class="fa-solid fa-wallet"></i>
-                    <span>Your Transactions</span>
-                </div>
-            </a>
-        </div>
-        <div class="profile-menu-item">
-            <a href="#">
-                <div class="w-100 account-card">
-                    <i class="fa-regular fa-star"></i>
-                    <span>Star Points</span>
-                </div>
-            </a>
-        </div>
+        
         {% if user.is_authenticated %}
             <div class="profile-menu-item">
                 <a href="{% url 'customer:user_logout' %}">

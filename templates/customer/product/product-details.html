@@ -55,10 +55,30 @@
     width: 10px; /* vertical scroll bar width */
     height: 10px; /* horizontal scroll bar height */
     }
+    .product_size:focus{
+        box-shadow:none
+    }
+    .regular_price{
+        font-size: 16px;
+        opacity: 0.8;
+        text-decoration: line-through;
+        color: #d11717;
+    }
+    .offer_price{
+        font-size: 1.6rem !important;
+    }
+    .offer_percentage{
+        padding: 2px 8px;
+        background: green;
+        color: white !important;
+        border-radius: 7px;
+        margin: 0  !important;
+        font-size: 0.79rem !important;
+    }
 </style>
     <div class="row page-titles">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item active"><a href="javascript:void(0)">Home</a></li>
+            <li class="breadcrumb-item active"><a href="{% url 'customer:customer_home_view' %}">Home</a></li>
             <li class="breadcrumb-item"><a href="javascript:void(0)">{{product.p_name}}</a></li>
         </ol>
     </div>
@@ -76,11 +96,11 @@
                                             {% if image.pimage_type == 'phone' %}
                                                 {% if image.pimage_priority == 1 %}
                                                     <div role="tabpanel" class="tab-pane fade show active" id="tab{{image.pimage_priority}}">
-                                                        <img class="img-fluid" src="{{image.p_image.url}}" alt="">
+                                                        <img class="img-fluid w-100" src="{{image.p_image.url}}" alt="">
                                                     </div>
                                                     {% else %}
                                                     <div role="tabpanel" class="tab-pane fade float-end"  id="tab{{image.pimage_priority}}">
-                                                        <img class="img-fluid" src="{{image.p_image.url}}" alt="">
+                                                        <img class="img-fluid w-100" src="{{image.p_image.url}}" alt="">
                                                     </div>
                                                 {% endif %}
                                             {% endif %}
@@ -124,18 +144,20 @@
                         <div class="col-xl-6 col-lg-6 col-xxl-6 col-12">
                             <div class="product-detail-content">
                                 <!--Product details-->
-                                <div class="new-arrival-content pr">
-                                    <h4>{{product.p_name}}</h4>
+                                <div class="new-arrival-content">
+                                    <h4 style="font-size:1.3rem !important">{{product.p_name}}</h4>
                                     
                                         
                                     <div class="d-table mb-2">
-                                        <p class="price float-start d-block">TK.{{product.p_offer_price}}</p>
+                                        <p class="price float-start d-block regular_price">TK.{{product.p_price}}</p>
+                                        <p class="price float-start d-block offer_price">TK.{{product.p_offer_price}}</p>
+                                        <p class="price float-start d-block offer_percentage">{{product.p_offer}}% off</p>
                                     </div>
                                     <p>Availability: 
-                                        {% if product.quantity > 0 %}
-                                        <span class="item"> In stock <i class="fa fa-shopping-basket"></i></span>
+                                        {% if product.total_product > 0 %}
+                                            <span class="item"> In stock <i class="fa fa-shopping-basket"></i></span>
                                         {% else %}
-                                        <span class="item"> out stock</span>
+                                            <span class="item"> out stock</span>
                                         {% endif %}
 
                                     </p>
@@ -143,7 +165,7 @@
                                     
                                     <div class="d-flex gap-2">
                                         {% for size in product.product_sizes.all %}
-                                        <button type="button" class="btn border border-dark product_size" product-size="{{size.p_size.size_name}}">
+                                        <button type="button" class="btn border-2 border-dark product_size" product-size="{{size.p_size.size_name}}">
                                             {{size.p_size.size_name}}
                                         </button>
                                         {% endfor %}
@@ -151,11 +173,11 @@
                                     
                                     <div class="d-flex align-items-end flex-wrap mt-4 justify-content-center">
                                         <!--Quantity start-->
-                                        <div class="col-4 px-0  mb-2 me-3">
+                                        <div class="col-6 px-0">
                                             <input type="number" id="quantity" class="form-control input-btn input-number py-0" value="1">
                                         </div>
                                         <!--Quanatity End-->
-                                        <div class="shopping-cart  mb-2 me-3">
+                                        <div class="shopping-cart">
                                             <button class="btn btn-primary" style="padding: 9px;" id="add_to_card" type="submit"><i class="fa fa-shopping-basket me-2"></i>Add
                                                 to cart</button>
                                         </div>
@@ -173,9 +195,9 @@
         <div class="col-lg-9 col-12">
             
             <div class="button-groups">
-                <a href="#description">Descriptions</a>
-                <a href="#question">Questions</a>
-                <a href="#review">Review</a>
+                {% comment %} <a href="#description">Descriptions</a> {% endcomment %}
+                {% comment %} <a href="#question">Questions</a>
+                <a href="#review">Review</a> {% endcomment %}
             </div>
             
             <div class="description" id="description">
@@ -186,12 +208,12 @@
                         </div>
                         <div class="full-description">
                             <h2 style="font-size: 20px;font-weight: 700;">{{product.name}}</h2>
-                            <p style="text-align: justify;">{{product.discreption}}</p>
+                            <p style="text-align: justify;">{{product.p_description|safe}}</p>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="question" id="question">
+            {% comment %} <div class="question" id="question">
                 <div class="card">
                     <div class="card-body">
                         <div>
@@ -271,13 +293,16 @@
                         
                     </div>
                 </div>
-            </div>
+            </div> {% endcomment %}
         </div>
         <div class="col-lg-3 col-12">
             <div>
                 <div class="card">
                     <div class="card-body">
                         <h2>Related Produdcts</h2>
+                        {% for product in related_product %}
+                            {% include "customer/product/product-card.html" %}
+                        {% endfor %}
                     </div>
                 </div>
             </div>
@@ -336,10 +361,16 @@
     var productSize = document.querySelectorAll('.product_size');
     productSize.forEach((size)=>{
         size.addEventListener("click",()=>{
-            select_product_size = size.getAttribute("product-size")
+            productSize.forEach((color)=>{
+                color.classList.remove('border-success');
+                color.classList.add('border-dark');
+                
+            });
+            select_product_size = size.getAttribute("product-size");
+            size.classList.remove('border-dark');
+            size.classList.add('border-success');
         })
     })
-    
     $("#add_to_card").on('click',()=>{
         if(select_product_size != ''){
             var product_id = "{{product.p_id}}";
@@ -360,7 +391,8 @@
                         $("#laptop_script_alert").empty();
                         $(".mobile_navbag_products").text(total_product.toString());
                         $("#laptop_bagtotal_product").text(total_product.toString());
-                        var message_text = res['message_text'];
+
+                        /*var message_text = res['message_text'];
 							var message_status = res['message_status'];
 							var alert_message_component = `<div class="alert alert-`+message_status+` alert-dismissible fade show custom_alert" role="alert">
 								`+message_text+`.
@@ -368,7 +400,37 @@
 							</div>`;
 							$("#laptop_script_alert").append(
 								alert_message_component
-							);
+							);*/
+                        var product = res['product'];
+                        var total_price = parseInt(product['price']) * parseInt(product_quantity);
+                        $("#modal_product_item").empty();
+                            var cart_item = `<div class="mobile_nav_product_cart">
+                                <div class="mnpc_img"><img src="`+product['image']+`"></div>
+                                <div class="mnpc_product_detail">
+                                    <div>`+product['title']+`</div>
+                                    <div class="mnpc_pd_middle">
+                                        <div class="mnpc_pd_middle_size">Size : <span>`+select_product_size+`</span></div>
+                                        <div>`+product['offer_price']+`</div>
+                                        <div class="mnpc_product_offer">
+                                            <span class="regular_price">`+product['price']+`</span>
+                                            <span class="offer_percentage">`+product['offer']+`%</span>
+                                        </div>
+                                    </div>
+                                    <div class="mnpc_pd_bottom">
+                                        
+                                        <div class="mnpc_pdb_price_quantity">
+                                            <span>`+product['offer_price']+`</span>
+                                            <span>X</span>
+                                            <span>`+product_quantity+`</span>
+                                            <span> = </span>
+                                            <span>`+total_price+`</span>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>`;
+                        $("#modal_product_item").append(cart_item);
+                        $("#productcartModal").modal("show")
                     }
                 }
             })
@@ -379,4 +441,23 @@
     
 </script>
 {% endblock customerScript %}
+{% block customermodal %}
+<div class="modal fade" id="productcartModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="productcartModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="productcartModalLabel">Your product</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="modal_product_item">
+        
+        </div>
+        <div class="modal-footer justify-content-between">
+          <a href="{% url 'customer:card_product_view' %}" class="btn btn-secondary" style="width: 45%;">View Cart</a>
+          <a href="{% url 'customer:checkout_view' %}" class="btn btn-primary" style="width: 45%;">Checkout</a>
+        </div>
+      </div>
+    </div>
+</div>
+{% endblock customermodal %}
 

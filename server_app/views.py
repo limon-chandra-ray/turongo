@@ -1,4 +1,6 @@
 from django.shortcuts import render,redirect
+from django.urls import reverse
+from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate,login,logout,hashers
 from django.db.models import Prefetch
@@ -7,7 +9,7 @@ from PIL import Image
 from io import BytesIO
 from django.core.files.storage import FileSystemStorage
 from product_accessorie_app.models import PBrand,PSize
-from product_server_app.models import Product,ProductImage,Category,ProductSize
+from product_server_app.models import Product,ProductImage,Category,ProductSize,RootCategoryThree
 from product_server_app.utils import date_to_str
 from server_object_app.models import Slider
 # Create your views here.
@@ -20,7 +22,7 @@ def dashboard(request):
 # Product Section
 @login_required(login_url='super-server/login')
 def product_add_view(request):
-    category = Category.objects.all()
+    category = RootCategoryThree.objects.all()
     brands = PBrand.objects.all()
     sizes = PSize.objects.all()
     context = {
@@ -29,25 +31,47 @@ def product_add_view(request):
         'sizes':sizes
     }
     return render(request,'server/super-admin/product/product-add.html',context)
-
+def category_get(request):
+    if request.method == 'POST':
+        third_category_id = request.POST['category_id']
+        third_category = RootCategoryThree.objects.get(id = int(third_category_id))
+        categorys = Category.objects.values('id','category_name').filter(root_category_three = third_category).order_by('id')
+        return JsonResponse({"status":"success","sub_categorys":list(categorys)});
+    else:
+        return JsonResponse({"status":"error"})
 def product_save(request):
     if request.method == 'POST':
         product_name = request.POST['product_name']
         regular_price = request.POST['regular_price']
         offer_price = request.POST['offer_price']
-        product_category = request.POST['product_category']
-        product_brand = request.POST['product_brand']
         product_description = request.POST['product_description']
-        category = Category.objects.get(id = int(product_category))
-        brand = PBrand.objects.get(id = int(product_brand))
         product = Product.objects.create(
             p_name = product_name,
             p_price = int(regular_price),
             p_offer_price = int(offer_price),
-            p_category = category,
-            p_brand = brand,
             p_description = product_description
         )
+        try:
+            product_brand = request.POST['product_brand']
+            brand = PBrand.objects.get(id = int(product_brand))
+            product.p_brand = brand
+        except:
+            pass
+
+        try:
+            product_category = request.POST['product_category']
+            third_category = RootCategoryThree.objects.get(id = int(product_category))
+            product.p_third_category = third_category
+        except:
+            pass
+
+        try:
+            product_subcategory = request.POST['product_subcategory']
+            category = Category.objects.get(id = int(product_subcategory))
+            product.p_category = category
+        except:
+            pass
+
         product.save()
         product_size = request.POST.getlist('product_size')
         if product_size:
@@ -113,8 +137,53 @@ def product_save(request):
         
         messages.add_message(request,messages.SUCCESS,'New product add successfully')
         return redirect("server_app:active_product_view")
-    
 
+def product_edit_view(request,product_id):
+    product =Product.objects.get(p_id = int(product_id))
+    product_brand = PBrand.objects.filter(status = True).order_by('brand_name')
+    category = RootCategoryThree.objects.filter(status = True).order_by('rc_three_name')
+    sub_category = Category.objects.filter(root_category_three = product.p_third_category,status=True).order_by('category_name')
+    context = {
+        'product':product,
+        'product_brands':product_brand,
+        'categorys':category,
+        'sub_category':sub_category
+    } 
+    return render(request,'server/super-admin/product/product-edit.html',context)   
+def product_edit_save(request,product_id):
+    if request.method == 'POST':
+        product_name = request.POST['product_name']
+        regular_price = request.POST['regular_price']
+        offer_price = request.POST['offer_price']
+        product_description = request.POST['product_description']
+        product = Product.objects.get(p_id = product_id)
+        product.p_name = product_name
+        product.p_price = int(regular_price)
+        product.p_offer_price = int(offer_price)
+        product.p_description = product_description
+        try:
+            product_brand = request.POST['product_brand']
+            brand = PBrand.objects.get(id = int(product_brand))
+            product.p_brand = brand
+        except:
+            pass
+
+        try:
+            product_category = request.POST['product_category']
+            third_category = RootCategoryThree.objects.get(id = int(product_category))
+            product.p_third_category = third_category
+        except:
+            pass
+
+        try:
+            product_subcategory = request.POST['product_subcategory']
+            category = Category.objects.get(id = int(product_subcategory))
+            product.p_category = category
+        except:
+            pass
+        product.save()
+        messages.add_message(request,messages.SUCCESS,'Product info updated')
+        return redirect('server_app:active_product_view')
 def delete_product(request,product__uuid):
     product = Product.objects.get(
         p_id = product__uuid
@@ -133,6 +202,33 @@ def active_product_view(request):
     }
     return render(request,'server/super-admin/product/active-product.html',context)
 
+#product quantity size by
+@login_required(redirect_field_name='super_admin_login_view')
+def product_size_details(request,product_id):
+    product = Product.objects.get(p_id = product_id)
+    product_sizes = ProductSize.objects.filter(product = product)
+    context = {
+        'product_sizes':product_sizes,
+        'product':product
+    }
+    return render(request,'server/super-admin/product/product-details/product-size-details.html',context)
+
+@login_required(redirect_field_name='super_admin_login_view')
+def product_size_detail_get(request):
+    if request.method == 'POST':
+        size = int(request.POST['size'])
+        size_detail = ProductSize.objects.values('id','quantity','psize_status','p_size__size_name').get(id = size)
+        return JsonResponse({"status":"success",'size':size_detail})
+@login_required(redirect_field_name='super_admin_login_view')
+def product_size_update(request):
+    if request.method == 'POST':
+        size_id = request.POST['size_id']
+        size_quantity = request.POST['size_quantity']
+        size = ProductSize.objects.get(id = int(size_id))
+        size.quantity = int(size_quantity)
+        size.save()
+        messages.add_message(request,messages.SUCCESS,f'{size.product.p_name}- {size.p_size.size_name} = {size_quantity} updated')
+        return redirect(reverse('server_app:product_size_details',kwargs={'product_id':size.product.p_id}))
 # slider section
 @login_required(redirect_field_name='super_admin_login_view')
 def slider_list_view(request):
