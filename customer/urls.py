@@ -16,6 +16,7 @@ urlpatterns +=[
     path('cart-product-items',views.card_product_view,name='card_product_view'),
     path('cart-product-items2',views.card_product_view2,name='card_product_view2'),
     path('cart-item-quantity-change',views.bag_item_quantity_change,name='bag_item_quantity_change'),
+    path('cart-<int:item_id>-item-delete',views.customer_cart_item_delete,name='customer_cart_item_delete')
 ]
 
 #checkout and order confirm
@@ -51,4 +52,9 @@ urlpatterns +=[
     path('account/edit-address',views.profile_address_view,name='profile_address_view'),
     path('account/address-update',views.profile_address_update,name='profile_address_update'),
     path('account/change-password',views.profile_password_change_view,name='profile_password_change_view')
+]
+
+#category product list
+urlpatterns +=[
+    path('<str:category>-<int:category_id>-all-product-list',views.category_product_list,name='category_product_list')
 ]

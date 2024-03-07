@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.http import JsonResponse
-from product_server_app.models import Product,ProductImage
+from product_server_app.models import Product,ProductImage,RootCategoryThree,Category
 from order_server_app.models import ProductBag,BagItem,Order
 from server_object_app.models import Slider,Division,District,Upazila
 from customer_user_app.models import CustomerProfile
@@ -38,6 +38,15 @@ def customer_home_view(request):
         'slide_image2':slide_image2
     }
     return render(request,'customer/home.html',context)
+
+def category_product_list(request,category,category_id):
+    category = RootCategoryThree.objects.get(id = int(category_id))
+    products = Product.objects.filter(p_third_category = category).order_by('-p_id')
+    context={
+        'products': products
+    }
+    return render(request,'customer/product/products.html',context)
+
 
 def product_details_view(request,product_id):
     product_iamge_prefetch = Prefetch('product_images')
@@ -187,7 +196,6 @@ def card_product_view2(request):
         item_dict['offer'] = item.product.p_offer
         item_dict['item'] = item.id
         bag.append(item_dict)
- 
     return JsonResponse({"status":'success',
                          "bag_items":bag,
                          'total_amount':cart.bag_total_amount,
@@ -241,9 +249,16 @@ def checkout_view(request):
         'divisions':divisions
     }
     return render(request,'customer/order/checkout.html',context)
+def customer_cart_item_delete(request,item_id):
+    item = BagItem.objects.get(id = int(item_id))
+    if item:
+        item.delete()
+        messages.add_message(request,messages.SUCCESS,'your cart to item delete successfully')
+    else:
+        messages.add_message(request,messages.WARNING,'Invalid cart item request')
+    return redirect('customer:card_product_view')
+    
 
-
-        
 
 #customer profile section
 def customer_profile_view(request):

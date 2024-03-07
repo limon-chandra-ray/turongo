@@ -8,6 +8,13 @@
     .quantity button{
         background: no-repeat;
     }
+    .cart_item_delete{
+        color:red
+    }
+    .cart_item_delete:hover{
+        background:#b53030;
+        color:white
+    }
 </style>
 <div class="row page-titles">
     <ol class="breadcrumb">
@@ -26,6 +33,7 @@
                             <tr>
                                 <th><strong>IMAGE</strong></th>
                                 <th><strong>PRODUCT</strong></th>
+                                <th><strong>Size</strong></th>
                                 <th><strong>PRICE</strong></th>
                                 <th class="text-center"><strong>QUANTITY</strong></th>
                                 <th><strong>TOTAL PRICE</strong></th>
@@ -44,8 +52,9 @@
                                     {% endfor %}
                                    
                                     
-                                    style="width:100px;height:50px"/></td>
+                                    style="width:100px;height:90px"/></td>
                                 <td>{{item.product.p_name}}</td>
+                                <td>{{item.product_size}}</td>
                                 <td>
                                     <div class="d-flex flex-row align-items-center gap-2">
                                         <div>{{item.product.p_offer_price}}</div>
@@ -69,7 +78,9 @@
                                 </td>
                                 <td id="itemsubtotal{{item.id}}">{{item.sub_total}}</td>
                                 <td>
-                                    <a class="dropdown-item" href="#">Delete</a>
+                                    <a class="dropdown-item text-center cart_item_delete" href="{% url 'customer:customer_cart_item_delete' item.id %}">
+                                        <i class="fa-regular fa-trash-can"></i>
+                                    </a>
                                 </td>
                             </tr>
                             {% endfor %}

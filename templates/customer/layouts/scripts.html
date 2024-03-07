@@ -30,6 +30,9 @@
 </script>
 <script>
 	$("#mobile_nav_bag_products").on('click',()=>{
+		mobile_screen_cart_product_show();
+	});
+	function mobile_screen_cart_product_show(){
 		$.ajax({
 			type:"get",
 			url:"{% url 'customer:card_product_view2' %}",
@@ -70,6 +73,7 @@
 										</div>
 									</div>`;
 					$("#mobile_nav_product_carts").append(cart_item)
+					console.log(cart_item)
 				});
 				$("#total_amount").text(res['total_amount']);
 				$("#mobile_nav_total_product").text(res['total_items']);
@@ -77,10 +81,7 @@
 				productBagItemUpdate(upate_item);
 			}
 		})
-		
-	});
-	
-
+	}
 	function productBagItemUpdate(upate_item) {
 		upate_item.forEach((item)=>{
 			item.addEventListener("click",()=>{

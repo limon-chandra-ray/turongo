@@ -1,0 +1,16 @@
+{% extends 'customer/layouts/index.html' %}
+{% block customertitle %}{% endblock customertitle %}
+
+{% block customerbody %}
+<div class="container">
+    <div class="row gx-5">
+        {% for product in products %}
+            {% include 'customer/product/home-product-card.html' %}
+        {% endfor %}
+        
+    </div>
+</div>
+{% endblock customerbody %}
+
+
+

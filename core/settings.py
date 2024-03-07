@@ -17,7 +17,7 @@ DEBUG = False
 if DEBUG:
     ALLOWED_HOSTS = []
 else:
-    ALLOWED_HOSTS = ["turong.com","www.turongo.com"]
+    ALLOWED_HOSTS = ['*',"turong.com","www.turongo.com"]
 
 
 # Application definition

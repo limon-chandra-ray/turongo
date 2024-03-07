@@ -430,6 +430,7 @@
                                 </div>
                             </div>`;
                         $("#modal_product_item").append(cart_item);
+                        screen_checker();
                         $("#productcartModal").modal("show")
                     }
                 }
@@ -439,6 +440,19 @@
         }
     });
     
+    function screen_checker(){
+        if(screen.width > 768){
+            $(".button_view_cart").css('display','none');
+            $(".link_view_cart").css('display','block');
+        }else{
+            $(".link_view_cart").css('display','none');
+            $(".button_view_cart").css('display','block');
+            $("#mobile_nav_bag_product_show_all").click(function(){
+                mobile_screen_cart_product_show();
+                $("#productcartModal").removeClass('show')
+            });
+        }
+    }
 </script>
 {% endblock customerScript %}
 {% block customermodal %}
@@ -452,9 +466,15 @@
         <div class="modal-body" id="modal_product_item">
         
         </div>
-        <div class="modal-footer justify-content-between">
-          <a href="{% url 'customer:card_product_view' %}" class="btn btn-secondary" style="width: 45%;">View Cart</a>
-          <a href="{% url 'customer:checkout_view' %}" class="btn btn-primary" style="width: 45%;">Checkout</a>
+        <div class="modal-footer justify-content-center">
+          <a href="{% url 'customer:card_product_view' %}" class="btn btn_info link_view_cart" style="width: 45%;">View Cart</a>
+          <button class="btn btn_info button_view_cart" style="width: 45%;" 
+          id="mobile_nav_bag_product_show_all" 
+          type="button"
+          data-bs-toggle="offcanvas" 
+          data-bs-target="#offcanvasScrolling" 
+          aria-controls="offcanvasScrolling"
+          >View Cart</button>
         </div>
       </div>
     </div>
