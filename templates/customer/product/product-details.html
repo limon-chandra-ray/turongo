@@ -517,14 +517,14 @@
                     {
                         item_id: "{{product.p_id}}",
                         item_name: "{{product.p_name}}",
-                        discount: parseInt("{{product.p_offer}}"),
-                        regular_price: parseInt("{{product.p_price}}"),
+                        discount: parseInt(Number("{{product.p_offer}}")),
+                        regular_price: parseInt(Number("{{product.p_price}}")),
                         discount_price: parseInt("{{product.p_offer_price}}"),
                         item_brand: "{{product.p_brand.brand_name}}",
                         item_category: "{{product.p_third_category.rc_three_name}}",
                         item_category2: "{{product.p_category.category_name}}",
                         quantity: parseInt(item_quantity),
-                        size: item_size
+                        size: "{{item_size}}"
                     }
                 ]
             }
