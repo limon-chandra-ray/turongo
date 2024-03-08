@@ -484,49 +484,59 @@
 {% endblock customermodal %}
 {% block customerDataLayer %}
 <script>
-    dataLayer.push({ ecommerce: null });  // Clear the previous ecommerce object.
+    dataLayer.push({ ecommerce: null }); 
+    // Clear the previous ecommerce object.
+    var items= [];
+    var item ={
+                item_id: "{{product.p_id}}",
+                item_name: "{{product.p_name}}",
+                discount: parseInt("{{product.p_offer}}"),
+                regular_price: parseInt("{{product.p_price}}"),
+                discount_price: parseInt("{{product.p_offer_price}}"),
+                item_brand: "{{product.p_brand.brand_name}}",
+                item_category: "{{product.p_third_category.rc_three_name}}",
+                item_category2: "{{product.p_category.category_name}}",
+            };
+
+    items.push(item);
+    var value_price = parseInt("{{product.p_offer_price}}");
     dataLayer.push({
-    event: "view_item",
-    ecommerce: {
-            currency: "BDT",
-            value: parseInt("{{product.p_offer_price}}"),
-            items: [
-                {
-                    item_id: "{{product.p_id}}",
-                    item_name: "{{product.p_name}}",
-                    discount: parseInt("{{product.p_offer}}"),
-                    regular_price: parseInt("{{product.p_price}}"),
-                    discount_price: parseInt("{{product.p_offer_price}}"),
-                    item_brand: "{{product.p_brand.brand_name}}",
-                    item_category: "{{product.p_third_category.rc_three_name}}",
-                    item_category2: "{{product.p_category.category_name}}",
-                }
-            ]
-        }
+        event: "view_item",
+        ecommerce: {
+                currency: "BDT",
+                value: value_price,
+                items: items
+            }
     });
 
     function add_to_cart(item_quantity,item_size){
         console.log(item_quantity,item_size)
-        dataLayer.push({ ecommerce: null });  // Clear the previous ecommerce object.
+        dataLayer.push({ ecommerce: null });
+        // Clear the previous ecommerce object.
+        var total_amount = parseInt("{{product.p_offer_price}}") * parseInt(item_quantity);
+
+        var items= [];
+        var item ={
+                item_id: "{{product.p_id}}",
+                item_name: "{{product.p_name}}",
+                discount: parseInt("{{product.p_offer}}"),
+                regular_price: parseInt("{{product.p_price}}"),
+                discount_price: parseInt("{{product.p_offer_price}}"),
+                item_brand: "{{product.p_brand.brand_name}}",
+                item_category: "{{product.p_third_category.rc_three_name}}",
+                item_category2: "{{product.p_category.category_name}}",
+                quantity: parseInt(item_quantity),
+                size: item_size
+            };
+        items.push(item);
+                
+
         dataLayer.push({
-        event: "add_to_cart",
-        ecommerce: {
+            event: "add_to_cart",
+            ecommerce: {
                 currency: "BDT",
-                value: parseInt("{{product.p_offer_price}}") * parseInt(item_quantity),
-                items: [
-                    {
-                        item_id: "{{product.p_id}}",
-                        item_name: "{{product.p_name}}",
-                        discount: parseInt(Number("{{product.p_offer}}")),
-                        regular_price: parseInt(Number("{{product.p_price}}")),
-                        discount_price: parseInt("{{product.p_offer_price}}"),
-                        item_brand: "{{product.p_brand.brand_name}}",
-                        item_category: "{{product.p_third_category.rc_three_name}}",
-                        item_category2: "{{product.p_category.category_name}}",
-                        quantity: parseInt(item_quantity),
-                        size: "{{item_size}}"
-                    }
-                ]
+                value:total_amount ,
+                items: items
             }
         });
     }
