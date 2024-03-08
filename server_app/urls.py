@@ -45,3 +45,16 @@ urlpatterns += [
     path('super-admin-authentication-check',views.super_admin_check,name='super_admin_check'),
     path('log-out',views.super_admin_logout,name='super_admin_logout')
 ]
+
+#order urls
+urlpatterns +=[
+    path('all-order-list',views.all_order_list,name='all_order_list'),
+    path('request-order-list',views.request_order_list,name='request_order_list'),
+    path('processing-order-list',views.processing_order_list,name='processing_order_list'),
+    path('shipping-order-list',views.shipping_order_list,name='shipping_order_list'),
+    path('completed-order-list',views.completed_order_list,name='completed_order_list'),
+    path('return-order-list',views.return_order_list,name='return_order_list'),
+    path('cancel-order-list',views.cancel_order_list,name='cancel_order_list'),
+    path('order-<uuid:order_id>-details',views.order_detail_view,name='order_detail_view'),
+    path('order-<uuid:order_id>-details-status-update',views.order_status_update,name='order_status_update')
+]

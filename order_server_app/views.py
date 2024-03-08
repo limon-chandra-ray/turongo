@@ -6,6 +6,7 @@ from .models import ProductBag, BagItem, Order
 from server_object_app.models import Division,District,Upazila
 from customer_user_app.models import Customer
 from user_app.models import CustomUser
+from customer_user_app.models import CustomerProfile
 from customer.views import guest_user_update_product_bag
 import random
 # Create your views here.
@@ -104,11 +105,16 @@ def place_order_confirm(request):
                     new_customer = Customer.objects.create_customer(
                         phone_number = phone_number,
                         user_name = first_name,
-                        password = phone_number
+                        password = phone_number,
                         )
                     new_customer.save()
                     user = authenticate(request,username = phone_number,password=phone_number)
                     if user:
+                        CustomUser.objects.filter(phone_number = phone_number).update(
+                            email =email,
+                            first_name = first_name,
+                            last_name = last_name
+                        )
                         login(request,user)
                     guest_user_update_product_bag(request)
                     product_bag = ProductBag.objects.filter(user = request.user,bag_status=False).first()
@@ -127,6 +133,12 @@ def place_order_confirm(request):
                         district = District.objects.get(id = int(district)),
                         upazila = Upazila.objects.get(id= int(upazila))
                     )
+                    profile = CustomerProfile.objects.get(user = request.user)
+                    profile.address = address
+                    profile.division = Division.objects.get(id = int(division))
+                    profile.district = District.objects.get(id = int(district))
+                    profile.upazila = Upazila.objects.get(id= int(upazila))
+                    profile.save()
                     if order_save:
                         order_save.save()
                         product_bag.bag_status = True

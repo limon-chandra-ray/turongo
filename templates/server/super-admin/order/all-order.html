@@ -1,0 +1,10 @@
+{% extends "server/base/main.html" %}
+{% block superMain %}
+<div >
+    <div>All Orders</div>
+    <div>
+        {% include "server/super-admin/order/order-table.html" %}
+    </div>
+</div>
+
+{% endblock superMain %}

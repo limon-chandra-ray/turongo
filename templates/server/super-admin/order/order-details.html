@@ -1,0 +1,139 @@
+{% extends "server/base/main.html" %}
+{% block superMain %}
+<div class="mr-5">
+    <div class="py-4">Order Details</div>
+    <div class="bg-base-200 p-4 drop-shadow-md rounded-lg flex justify-between">
+        <div>
+            <div>Order ID: #{{order.order_number}}</div>
+            <p>Order Created: {{order.created_at|date:"M d,Y h:m a"}}</p>
+        </div>
+        <div class="flex justify-center items-center">
+            <div class="pr-[5px]">Change Order Status:</div>
+            <form action="{% url 'server_app:order_status_update' order.order_id %}" method="post">
+                {% csrf_token %}
+                <select class="select select-bordered w-[220px]" name="order_status_update">
+                    <option disabled selected>select status</option>
+                    {% for status in order_status %}
+                        {% if order.order_status ==  status %}
+                            <option value="{{status}}" selected>{{status|lower|capfirst}}</option>
+                        {% else %}
+                            <option value="{{status}}">{{status|lower|capfirst}}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <input type="submit" class="px-3 py-2 bg-green-700 hover:bg-green-800 text-white font-[700] rounded-md" value="Change">
+            </form>
+        </div>
+    </div>
+    <div class="grid grid-cols-3 gap-4 my-5">
+        <div class="bg-base-200 p-4 drop-shadow-md rounded-lg">
+            <div class="text-[1.2rem] font-[600] py-4">Customer Details</div>
+            <div class="divide-y-[2px] divide-state-500">
+                <div class="flex justify-between py-2 b">
+                    <h4>Name</h4>
+                    <p>{{order.first_name}} {{order.last_name}}</p>
+                </div>
+                <div class="flex justify-between py-2 b">
+                    <h4>phone</h4>
+                    <p>{{order.phone_number}}</p>
+                </div>
+                <div class="flex justify-between py-2 b">
+                    <h4>Email</h4>
+                    <p>{{order.email}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="bg-base-200 p-4 drop-shadow-md rounded-lg">
+            <div class="text-[1.2rem] font-[600] py-4">Order Summary</div>
+            <div class="divide-y-[2px] divide-state-500">
+                <div class="flex justify-between py-2 b">
+                    <h4>Order Date</h4>
+                    <p>{{order.created_at|date:"d/m/Y"}}</p>
+                </div>
+                <div class="flex justify-between py-2 b">
+                    <h4>Order Side</h4>
+                    <p>{% if order.delivery_charge == 60 %}
+                        IN-Side Dhaka
+                        {% else %}
+                        Out-Side Dhaka
+                        {% endif %}</p>
+                </div>
+                <div class="flex justify-between py-2 b">
+                    <h4>Order Status</h4>
+                    <p>{{order.order_status}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="bg-base-200 p-4 drop-shadow-md rounded-lg">
+            <div class="text-[1.2rem] font-[600] py-4">Deliver To</div>
+            <div class="divide-y-[2px] divide-state-500">
+                <div class="flex justify-between py-2 b">
+                    <h4>Address</h4>
+                    <p>{{order.address}}</p>
+                </div>
+                <div class="flex justify-between py-2 b">
+                    <h4>District</h4>
+                    <p>{{order.district.district_name}}</p>
+                </div>
+                <div class="flex justify-between py-2 b">
+                    <h4>Upazila/Thana</h4>
+                    <p>{{order.upazila.upazila_name}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="grid grid-cols-3 gap-4 my-4">
+        <div class="col-span-2 bg-base-200 p-4 drop-shadow-md rounded-lg">
+            <table class="table table-fixed table-xs table-pin-rows table-pin-cols">
+                <thead>
+                    <tr>
+                        <td class="bg-base-200">Product</td> 
+                        <td class="text-center w-[100px] bg-base-200">Unit price</td> 
+                        <td class="text-center w-[100px] bg-base-200">Quantity</td>
+                        <td class="text-center w-[100px] bg-base-200">Total</td> 
+                    </tr>
+                </thead> 
+                <tbody>
+                    {% for item in bag_items %}
+                        <tr>
+                            <td>
+                                <div class="flex items-center text-[14px]">
+                                    {% for image in item.product.product_images.all %}
+                                        {% if image.pimage_type == 'icon' and image.pimage_priority == 1 %}
+                                            <img src="{{image.p_image.url}}" class="w-[50px] h-[50px]" alt="">
+                                        {% endif %}
+                                    {% endfor %}
+                                    <p class="mx-[3px]">{{item.product.p_name}} ,</p>
+                                    <p>Size: {{item.product_size}}</p>
+                                </div>
+                            </td> 
+                            <td class="text-center">TK.{{item.order_price}}</td>
+                            <td class="text-center">{{item.quantity}}</td> 
+                            <td class="text-center">
+                                TK.{{item.sub_total}}
+                            </td> 
+                        </tr>
+                    {% endfor %}
+                </tbody> 
+            </table>
+        </div>
+        <div class="bg-base-200 p-4 drop-shadow-md rounded-lg">
+            <div class="text-[1.2rem] font-[600] py-4">Order Price</div>
+            <div class="divide-y-[2px] divide-state-500">
+                <div class="flex justify-between py-2 b">
+                    <h4>Subtotal: </h4>
+                    <p>TK.{{order.bag.bag_total_amount}}</p>
+                </div>
+                <div class="flex justify-between py-2 b">
+                    <h4>Shipping Cost: </h4>
+                    <p>TK.{{order.delivery_charge}}</p>
+                </div>
+                <div class="flex justify-between py-2 b">
+                    <h4>Grand Total: </h4>
+                    <p>TK.{{order.total_amount}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock superMain %}

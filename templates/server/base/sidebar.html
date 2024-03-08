@@ -7,10 +7,11 @@
             <details>
               <summary>All Order</summary>
               <ul>
-                <li><a href="#">Request Order</a></li>
-                <li><a href="#">Processing Order</a></li>
-                <li><a href="#">Shipping Order</a></li>
-                <li><a href="#">Completed Order</a></li>
+                <li><a href="{% url 'server_app:all_order_list' %}">All Orders</a></li>
+                <li><a href="{% url 'server_app:request_order_list' %}">Request Order</a></li>
+                <li><a href="{% url 'server_app:processing_order_list' %}">Processing Order</a></li>
+                <li><a href="{% url 'server_app:shipping_order_list' %}">Shipping Order</a></li>
+                <li><a href="{% url 'server_app:completed_order_list' %}">Completed Order</a></li>
               </ul>
             </details>
           </li>

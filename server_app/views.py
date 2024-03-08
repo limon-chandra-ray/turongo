@@ -12,6 +12,7 @@ from product_accessorie_app.models import PBrand,PSize
 from product_server_app.models import Product,ProductImage,Category,ProductSize,RootCategoryThree
 from product_server_app.utils import date_to_str
 from server_object_app.models import Slider
+from order_server_app.models import Order,BagItem
 # Create your views here.
 
 @login_required(login_url='/super-server/login')
@@ -334,3 +335,44 @@ def super_admin_logout(request):
     logout(request)
     return redirect("super_app:dashboard")
 
+#Order section
+def all_order_list(request):
+    orders = Order.objects.all().order_by("-created_at")
+    context = {
+        'orders':orders
+    }
+    return render(request,'server/super-admin/order/all-order.html',context)
+
+def request_order_list(request):
+    return render(request,'server/super-admin/order/request-order.html')
+
+def processing_order_list(request):
+    return render(request,'server/super-admin/order/processing-order.html')
+
+def shipping_order_list(request):
+    return render(request,'server/super-admin/order/shipping-order.html')
+def completed_order_list(request):
+    return render(request,'server/super-admin/order/completed-order.html')
+def cancel_order_list(request):
+    return render(request,'server/super-admin/order/cancel-order.html')
+def return_order_list(request):
+    return render(request,'server/super-admin/order/return-order.html')
+
+def order_detail_view(request,order_id):
+    order = Order.objects.get(order_id = order_id)
+    bag_items = BagItem.objects.filter(bag = order.bag)
+    order_status = ['INCOMPLETED','COMPLETED','CANCEL','SHIPPING','PENDING','HOLD','PROCESSING']
+    context = {
+        'order':order,
+        'bag_items':bag_items,
+        'order_status':order_status
+    }
+    return render(request,'server/super-admin/order/order-details.html',context)
+def order_status_update(request,order_id):
+    if request.method == 'POST':
+        order = Order.objects.get(order_id = order_id)
+        order_status = request.POST['order_status_update']
+        order.order_status = order_status
+        order.save()
+        messages.add_message(request,messages.SUCCESS,f'{order.order_number} order status {order.order_status} to {order_status}')
+        return redirect(reverse("server_app:order_detail_view",kwargs={'order_id':order_id}))
