@@ -388,6 +388,7 @@
                 success:(res)=>{
                     if(res['status'] == 'success'){
                         var total_product = res['total_product'];
+                        add_to_cart(product_quantity,select_product_size)
                         $("#laptop_script_alert").empty();
                         $(".mobile_navbag_products").text(total_product.toString());
                         $("#laptop_bagtotal_product").text(total_product.toString());
@@ -481,4 +482,52 @@
     </div>
 </div>
 {% endblock customermodal %}
+{% block customerDataLayer %}
+<script>
+    dataLayer.push({ ecommerce: null });  // Clear the previous ecommerce object.
+    dataLayer.push({
+    event: "view_item",
+    ecommerce: {
+            currency: "BDT",
+            value: parseInt("{{product.p_offer_price}}"),
+            items: [
+                {
+                    item_id: "{{product.p_id}}",
+                    item_name: "{{product.p_name}}",
+                    discount: parseInt("{{product.p_offer}}"),
+                    regular_price: parseInt("{{product.p_price}}"),
+                    discount_price: parseInt("{{product.p_offer_price}}"),
+                    item_brand: "{{product.p_brand.brand_name}}",
+                    item_category: "{{product.p_third_category.rc_three_name}}",
+                    item_category2: "{{product.p_category.category_name}}",
+                }
+            ]
+        }
+    });
 
+    function add_to_cart(item_quantity,item_size){
+        dataLayer.push({ ecommerce: null });  // Clear the previous ecommerce object.
+        dataLayer.push({
+        event: "add_to_cart",
+        ecommerce: {
+                currency: "BDT",
+                value: parseInt("{{product.p_offer_price}}") * parseInt(item_quantity),
+                items: [
+                    {
+                        item_id: "{{product.p_id}}",
+                        item_name: "{{product.p_name}}",
+                        discount: parseInt("{{product.p_offer}}"),
+                        regular_price: parseInt("{{product.p_price}}"),
+                        discount_price: parseInt("{{product.p_offer_price}}"),
+                        item_brand: "{{product.p_brand.brand_name}}",
+                        item_category: "{{product.p_third_category.rc_three_name}}",
+                        item_category2: "{{product.p_category.category_name}}",
+                        quantity: parseInt(item_quantity),
+                        size: item_size
+                    }
+                ]
+            }
+        });
+    }
+</script>
+{% endblock customerDataLayer %}
