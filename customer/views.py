@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.http import JsonResponse
 from product_server_app.models import Product,ProductImage,RootCategoryThree,Category
-from order_server_app.models import ProductBag,BagItem,Order
+from order_server_app.models import ProductBag,BagItem,Order,ProductBag
 from server_object_app.models import Slider,Division,District,Upazila
 from customer_user_app.models import CustomerProfile
 from product_accessorie_app.models import PSize
@@ -167,6 +167,7 @@ def card_product_view(request):
         'cart':cart
     }
     return render(request,'customer/order/card-product.html',context)
+
 def card_product_view2(request):
     if request.user.is_authenticated:
         
@@ -202,6 +203,42 @@ def card_product_view2(request):
                          'total_items':cart.bag_total_items,
                          'bag_status':cart.bag_status
                          },safe=False)
+
+
+def view_cart_datalayer_item(request):
+    bagitem_prefetch = Prefetch('bag_items')
+    if request.user.is_authenticated:
+        cart_items = ProductBag.objects.prefetch_related(bagitem_prefetch).filter(user = request.user,bag_status = False).last()
+    
+    else:
+        try:
+            session_guest = request.session['guest']
+            cart_items = ProductBag.objects.prefetch_related(bagitem_prefetch).filter(session_key = session_guest,bag_status = False).last()
+        except:
+            pass
+    items = []
+    cart_total_quantity = 0
+    cart_total_price = 0
+    if cart_items:
+        for bitem in cart_items.bag_items.all():
+            item = dict()
+            item['item_id'] = bitem.product.p_id
+            item['item_name'] = bitem.product.p_name
+            item['discount'] = float(bitem.product.p_offer)
+            item['regular_price'] = float(bitem.product.p_price)
+            item['discount_price'] = float(bitem.product.p_offer_price)
+            item['item_brand'] = bitem.product.p_brand.brand_name
+            item['item_category'] = bitem.product.p_third_category.rc_three_name
+            item['item_category2'] = bitem.product.p_category.category_name
+            item['quantity'] = bitem.quantity
+            item['size'] = bitem.product_size
+            item['sub_total'] = float(bitem.sub_total)
+            items.append(item)
+        cart_total_quantity = cart_items.bag_total_items
+        cart_total_price = cart_items.bag_total_amount
+
+
+    return JsonResponse({'status':"success",'ctq':cart_total_quantity,'ctp':cart_total_price,'items':items})
 
 def bag_item_quantity_change(request):
     if request.method == 'POST':

@@ -1,4 +1,5 @@
 from django.shortcuts import render,redirect
+from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.auth import authenticate,login
 from product_accessorie_app import validetors
@@ -149,6 +150,7 @@ def place_order_confirm(request):
                             item.order_price = item.product.p_offer_price
                             item.save()
                         messages.add_message(request,messages.SUCCESS,'Congratulations,Your order create successfully')
+                        request.session['checkout_gtag_url'] = 1
                         return redirect('customer:profile_order_list_view')
                 else:
                     messages.add_message(request,messages.WARNING,'Please add valid phone number. Number already add')
@@ -156,3 +158,31 @@ def place_order_confirm(request):
         return redirect('customer:checkout_view')
 
 
+def checkout_gtag(request):
+    order = Order.objects.filter(bag__user = request.user,order_status = "PENDING").latest('order_id')
+    bag_items = BagItem.objects.filter(bag = order.bag).order_by('id')
+    items =[]
+    for bitem in bag_items:
+        item = dict()
+        item['item_id'] = bitem.product.p_id
+        item['item_name'] = bitem.product.p_name
+        item['discount'] = float(bitem.product.p_offer)
+        item['regular_price'] = float(bitem.product.p_price)
+        item['discount_price'] = float(bitem.product.p_offer_price)
+        item['item_brand'] = bitem.product.p_brand.brand_name
+        item['item_category'] = bitem.product.p_third_category.rc_three_name
+        item['item_category2'] = bitem.product.p_category.category_name
+        item['quantity'] = bitem.quantity
+        item['size'] = bitem.product_size
+        item['sub_total'] = float(bitem.sub_total)
+        items.append(item)
+    order_layer = dict()
+    order_layer['order_id'] = order.order_number
+    order_layer['total_amount'] = order.total_amount
+    order_layer['shipping_cost'] = order.delivery_charge
+    order_layer['quantity'] = order.bag.bag_total_items
+    order_layer['division'] = order.division.division_name
+    order_layer['district'] = order.district.district_name
+    order_layer['upazila'] = order.upazila.upazila_name
+    del request.session['checkout_gtag_url']
+    return JsonResponse({"status":"success",'order':order_layer,'items':items})

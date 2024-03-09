@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from customer_user_app.views import (customer_login,customer_add,login_view,register_view,user_logout,customer_change_password)
-from order_server_app.views import place_order_confirm
+from order_server_app.views import place_order_confirm,checkout_gtag
 app_name = 'customer'
 urlpatterns = [
     path('',views.customer_home_view,name='customer_home_view'),
@@ -16,14 +16,15 @@ urlpatterns +=[
     path('cart-product-items',views.card_product_view,name='card_product_view'),
     path('cart-product-items2',views.card_product_view2,name='card_product_view2'),
     path('cart-item-quantity-change',views.bag_item_quantity_change,name='bag_item_quantity_change'),
-    path('cart-<int:item_id>-item-delete',views.customer_cart_item_delete,name='customer_cart_item_delete')
+    path('cart-<int:item_id>-item-delete',views.customer_cart_item_delete,name='customer_cart_item_delete'),
+    path('cart-igtam-get',views.view_cart_datalayer_item,name='view_cart_datalayer_item')
 ]
 
 #checkout and order confirm
 urlpatterns += [
     path('cart-product-checkout',views.checkout_view,name="checkout_view"),
-    path('place-order-save',place_order_confirm,name='place_order_confirm')
-
+    path('place-order-save',place_order_confirm,name='place_order_confirm'),
+    path('checkout-gtag-data',checkout_gtag,name='checkout_gtag')
 ]
 
 #division,district,upazila

@@ -111,3 +111,31 @@
 </div>   
         
 {% endblock customerProfile %}
+{% block customerProfileDatalayer %}
+<script>
+    var cgtag = "{{request.session.checkout_gtag_url}}";
+    if(cgtag == '1'){
+        $.ajax({
+            type:"GET",
+            url:"{% url 'customer:checkout_gtag' %}",
+            success:(res)=>{
+                if(res['status'] == 'success'){
+                    dataLayer.push({ ecommerce: null }); 
+                    dataLayer.push({
+                        event: "purchase",
+                        ecommerce: {
+                                currency: "BDT",
+                                orderId:res['order']['order_id'],
+                                value: res['order']['total_amount'],
+                                quantity: res['order']['quantity'],
+                                order: res['order'],
+                                items: res['items']
+                            }
+                    });
+                }
+            }
+        });
+    }
+
+</script>
+{% endblock customerProfileDatalayer %}

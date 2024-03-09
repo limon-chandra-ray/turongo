@@ -155,8 +155,9 @@
                         }
                         if(sub_item_quantity == 0){
                             var itemobject = "#itemobject"+item_id;
-                            $(itemobject).remove()
+                            $(itemobject).remove();
                         }
+                        view_cart_gtag();
                     }      
                     
                 }
@@ -168,3 +169,34 @@
 
 {% endblock customerScript %}
 
+{% block customerDataLayer %}
+<script>
+    view_cart_gtag()
+
+    {% comment %} dataLayer.push({ ecommerce: null }); 
+    // Clear the previous ecommerce object.
+    var view_items= [];
+    var view_item ={
+                item_id: "{{product.p_id}}",
+                item_name: "{{product.p_name}}",
+                discount: parseInt("{{product.p_offer}}"),
+                regular_price: parseInt("{{product.p_price}}"),
+                discount_price: parseInt("{{product.p_offer_price}}"),
+                item_brand: "{{product.p_brand.brand_name}}",
+                item_category: "{{product.p_third_category.rc_three_name}}",
+                item_category2: "{{product.p_category.category_name}}",
+            };
+
+    view_items.push(view_item);
+    var value_price = parseInt("{{product.p_offer_price}}");
+    dataLayer.push({
+        event: "view_cart",
+        ecommerce: {
+                currency: "BDT",
+                value: value_price,
+                items: view_items
+            }
+    }); {% endcomment %}
+
+</script>
+{% endblock customerDataLayer %}
