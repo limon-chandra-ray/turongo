@@ -1,7 +1,12 @@
 ﻿<!DOCTYPE html>
 {% load static %}
+{% load gtm_tags %}
+{% gtm_head "GTM-K3LWDWKD" %}
+{% gtm_body "GTM-K3LWDWKD" %}
+
 <html lang="en">
 <head>
+	{% gtm_head %}
 	<!-- Google Tag Manager -->
 	<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 		new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -14,6 +19,8 @@
 	<title>{% block customertitle %}{% endblock customertitle %}|Turongo LifeStyle</title>
 </head>
 <body id="body">
+	{% gtm_body %}
+
 	<!-- Google Tag Manager (noscript) -->
 	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K3LWDWKD"
 	height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
