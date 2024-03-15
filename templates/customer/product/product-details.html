@@ -43,7 +43,9 @@
     .slide-item-list li a:active{
         border: 1px solid #302c2c;
     }
-    
+    .full-description figure img{
+        width: 100%;
+    }
     /* WebKit-based browsers (Chrome, Safari) */
     ::-webkit-scrollbar {
     width: 10px; /* vertical scroll bar width */
@@ -208,7 +210,7 @@
                         </div>
                         <div class="full-description">
                             <h2 style="font-size: 20px;font-weight: 700;">{{product.name}}</h2>
-                            <p style="text-align: justify;">{{product.p_description|safe}}</p>
+                            <p style="text-align: justify;" class="description_image_size">{{product.p_description|safe}}</p>
                         </div>
                     </div>
                 </div>
