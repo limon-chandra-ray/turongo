@@ -197,7 +197,7 @@ def delete_product(request,product__uuid):
     return redirect("server_app:active_product_view")
 def active_product_view(request):
     product_image_prefetch = Prefetch('product_images',queryset=ProductImage.objects.filter(pimage_type="phone"))
-    products = Product.objects.prefetch_related(product_image_prefetch).all()
+    products = Product.objects.prefetch_related(product_image_prefetch).all().order_by('-p_id')
     context={
         'products':products
     }
