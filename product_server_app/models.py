@@ -62,7 +62,7 @@ class Product(models.Model):
               self.p_offer_price = self.p_price
         if self.p_price != self.p_offer_price:
             lose_price = self.p_price - self.p_offer_price
-            offer_percentage = (lose_price*100)//self.p_offer_price
+            offer_percentage = (lose_price*100)//self.p_price
             self.p_offer = offer_percentage
         return super(Product,self).save(*args, **kwargs)
     @property
