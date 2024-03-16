@@ -28,7 +28,7 @@
                         <div class="dropdown dropdown-left">
                             <div tabindex="0" role="button" class="btn m-1"><i class="fa-solid fa-chart-simple"></i></div>
                             <ul tabindex="0" class="dropdown-content z-[1] menu p-1 shadow rounded w-20">
-                                <li><a href="#" class="flex justify-center text-cyan-600"><i class="fa-solid fa-image"></i></a></li>
+                                <li><a href="{% url 'server_app:product_image_gallery' p.p_id %}" class="flex justify-center text-cyan-600"><i class="fa-solid fa-image"></i></a></li>
                                 <li><a href="{% url 'server_app:product_edit_view' p.p_id %}" class="flex justify-center text-blue-600"><i class="fa-solid fa-bars"></i></a></li>
                                 <li><a href="{% url "server_app:product_size_details" p.p_id %}" class="flex justify-center text-blue-600"><i class="fa-solid fa-ranking-star"></i></a></li>
                                 <li><a href="{% url 'server_app:delete_product' p.p_id %}" class="flex justify-center text-red-600"><i class="fa-regular fa-trash-can"></i></a></li>

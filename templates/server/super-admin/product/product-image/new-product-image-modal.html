@@ -1,0 +1,32 @@
+<dialog id="productImageUpload" class="modal">
+    <div class="modal-box">
+        <h5>Product New image Upload</h5>
+        <form method="dialog">
+          <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+        </form>
+        <form method="POST" action="{% url "server_app:product_new_image_add" product.p_id %}" enctype="multipart/form-data" >
+            {% csrf_token %}
+            <div class="mt-4">
+                <label class="form-control w-full">
+                    
+                    <div class="label">
+                        <span class="label-text">Product Image Priority</span>
+                    </div>
+                    <input type="number" min='1' name="image_priority" class="input input-bordered w-full" required/>
+                </label>
+            </div>
+            <div class="mt-4">
+                <label class="form-control w-full">
+                    <div class="label">
+                        <span class="label-text">Product Image</span>
+                    </div>
+                    
+                    <input type="file" name="product_image" class="file-input file-input-bordered w-full" />
+                </label>
+            </div>
+            <div class="mt-4 w-full flex justify-center">
+                <input type="submit" class="px-3 py-2 bg-green-700 hover:bg-green-800 text-white font-[700] rounded-md" value="Add Product Image">
+            </div>
+        </form>
+    </div>
+</dialog>

@@ -230,6 +230,147 @@ def product_size_update(request):
         size.save()
         messages.add_message(request,messages.SUCCESS,f'{size.product.p_name}- {size.p_size.size_name} = {size_quantity} updated')
         return redirect(reverse('server_app:product_size_details',kwargs={'product_id':size.product.p_id}))
+
+def product_image_gallery(request,product_id):
+    product = Product.objects.get(p_id = product_id)
+    images = ProductImage.objects.filter(product = product,pimage_type="phone").order_by('pimage_priority')
+    context={
+        'product':product,
+        'images':images
+    }
+    return render(request,'server/super-admin/product/product-image/product-image.html',context)
+
+def product_image_update(request,product_id,image_id):
+    if request.method == 'POST':
+        instance_image_priority = request.POST['instance_image_priority']
+        image_priority = request.POST['image_priority']
+        try:
+            product_image = request.FILES['product_image']
+        except:
+            product_image = None
+        product = Product.objects.get(p_id = product_id)
+        product_image_obj = ProductImage.objects.filter(product = product,pimage_priority = int(instance_image_priority))
+
+        if product_image is not None:
+            #Start Product icon image created section
+            icon_image_obj = ProductImage.objects.filter(product = product,
+                                                     pimage_priority = int(instance_image_priority),
+                                                     pimage_type = 'icon'
+                                                     ).first()
+            
+            main_image = Image.open(product_image)
+            main_image.thumbnail((100,100),Image.BICUBIC)
+            thumbnail_buffer = BytesIO()
+            main_image.save(thumbnail_buffer, format='WEBP')
+            icon_fs = FileSystemStorage()
+            icon_image = icon_fs.save(f'product/100X100/{date_to_str()}.webp',thumbnail_buffer)
+            icon_image_obj.p_image = icon_image
+            icon_image_obj.save()
+            #End Product icon image created section
+
+            #Start product phone image created section
+            phone_image_obj = ProductImage.objects.filter(product = product,
+                                                     pimage_priority = int(instance_image_priority),
+                                                     pimage_type = 'phone'
+                                                     ).first()
+            phone_image = Image.open(product_image)
+            phone_image.thumbnail((600,600),Image.BICUBIC)
+            phone_thumbnail_buffer = BytesIO()
+            phone_image.save(phone_thumbnail_buffer, format='WEBP')
+            phone_fss = FileSystemStorage()
+            phone_image = phone_fss.save(f'product/600X600/{date_to_str()}.webp',phone_thumbnail_buffer)
+            phone_image_obj.p_image = phone_image
+            phone_image_obj.save()
+            #End product phone image created section
+            #Start product large image created section
+            large_image_obj = ProductImage.objects.filter(product = product,
+                                                     pimage_priority = int(instance_image_priority),
+                                                     pimage_type = 'large'
+                                                     ).first()
+            large_image = Image.open(product_image)
+            large_image.thumbnail((1024,1024),Image.BICUBIC)
+            large_thumbnail_buffer = BytesIO()
+            large_image.save(large_thumbnail_buffer, format='WEBP')
+            large_fss = FileSystemStorage()
+            large_image = large_fss.save(f'product/1024X1024/{date_to_str()}.webp',large_thumbnail_buffer)
+            large_image_obj.p_image = large_image
+            large_image_obj.save()
+            #End product large image created section
+
+        if image_priority != instance_image_priority:
+            for image  in product_image_obj:
+                image.pimage_priority = int(image_priority)
+                image.save()
+
+    return redirect("server_app:product_image_gallery",product_id=product_id)
+
+def product_new_image_add(request,product_id):
+    if request.method == 'POST':
+        image = request.FILES['product_image']
+        try:
+            image = request.FILES['product_image']
+        except:
+            image = None
+        image_priority = request.POST['image_priority']
+        if image is not None and image_priority:
+            product = Product.objects.get(p_id = product_id)
+            main_image = Image.open(image)
+            main_image.thumbnail((100,100),Image.BICUBIC)
+            thumbnail_buffer = BytesIO()
+            main_image.save(thumbnail_buffer, format='WEBP')
+            icon_fs = FileSystemStorage()
+            icon_image = icon_fs.save(f'product/100X100/{date_to_str()}.webp',thumbnail_buffer)
+            image_save = ProductImage.objects.create(
+                product = product,
+                p_image = icon_image,
+                pimage_type = 'icon',
+                pimage_priority = int(image_priority)
+            )
+            image_save.save()
+            #End Product icon image created section
+
+            #Start product phone image created section
+            phone_image = Image.open(image)
+            phone_image.thumbnail((600,600),Image.BICUBIC)
+            phone_thumbnail_buffer = BytesIO()
+            phone_image.save(phone_thumbnail_buffer, format='WEBP')
+            phone_fss = FileSystemStorage()
+            phone_image = phone_fss.save(f'product/600X600/{date_to_str()}.webp',phone_thumbnail_buffer)
+            phone_image_save = ProductImage.objects.create(
+                product = product,
+                p_image = phone_image,
+                pimage_type = 'phone',
+                pimage_priority = int(image_priority)
+            )
+            phone_image_save.save()
+            #End product phone image created section
+
+            #Start product large image created section
+            large_image = Image.open(image)
+            large_image.thumbnail((1024,1024),Image.BICUBIC)
+            large_thumbnail_buffer = BytesIO()
+            large_image.save(large_thumbnail_buffer, format='WEBP')
+            large_fss = FileSystemStorage()
+            large_image = large_fss.save(f'product/1024X1024/{date_to_str()}.webp',large_thumbnail_buffer)
+            large_image_save = ProductImage.objects.create(
+                product = product,
+                p_image = large_image,
+                pimage_type = 'large',
+                pimage_priority = int(image_priority)
+            )
+            large_image_save.save()
+            #End product large image created section
+            messages.add_message(request,messages.SUCCESS,'Product new image upload successfully')
+    return redirect('server_app:product_image_gallery', product_id = product_id)
+
+def product_gallery_image_delete(request,product_id,product_priority):
+    product = Product.objects.get(p_id = product_id)
+    product_images = ProductImage.objects.filter(product =product,pimage_priority = int(product_priority))
+    for image in product_images:
+        image.delete()
+    messages.add_message(request,messages.SUCCESS,'Product image delete successfully')
+    return redirect("server_app:product_image_gallery",product_id)
+
 # slider section
 @login_required(redirect_field_name='super_admin_login_view')
 def slider_list_view(request):

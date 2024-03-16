@@ -20,7 +20,11 @@ urlpatterns += [
 urlpatterns +=[
     path('product-<uuid:product_id>-size-details',views.product_size_details,name='product_size_details'),
     path('product-size-details',views.product_size_detail_get,name='product_size_detail_get'),
-    path('product-size-update',views.product_size_update,name='product_size_update')
+    path('product-size-update',views.product_size_update,name='product_size_update'),
+    path("product-<uuid:product_id>-image-gallery",views.product_image_gallery,name='product_image_gallery'),
+    path('product-image-<int:image_id>-<uuid:product_id>-gallery-update',views.product_image_update,name='product_image_update'),
+    path('product-new-image-upload-<uuid:product_id>',views.product_new_image_add,name='product_new_image_add'),
+    path("product-image-delete-<uuid:product_id>-<int:product_priority>",views.product_gallery_image_delete,name='product_gallery_image_delete')
 ]
 
 #order section
