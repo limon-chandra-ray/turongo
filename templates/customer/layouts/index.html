@@ -1,9 +1,6 @@
 ﻿<!DOCTYPE html>
 {% load static %}
-{% load gtm_tags %}
-{% gtm_head "GTM-K3LWDWKD" %}
-{% gtm_body "GTM-K3LWDWKD" %}
-{% debug %}
+
 <html lang="en">
 <head>
 	<script>
@@ -16,15 +13,20 @@
 			'analytics_storage':'denied'
 		});
 	</script>
-	{% gtm_head %}
-	
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=GTM-K3LWDWKD"></script>
+	<script>
+		//window.dataLayer = window.dataLayer || [];
+		//function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'GTM-K3LWDWKD');
+	</script>
     {% include 'customer/layouts/head.html' %}
 	<!-- PAGE TITLE HERE -->
 	<title>{% block customertitle %}{% endblock customertitle %}|Turongo LifeStyle</title>
 </head>
 <body id="body">
-	{% gtm_body %}
-	
 	
 	<div class="position-fixed top-0 end-0" id="laptop_script_alert" style="z-index:99;padding-top:1rem">
 		{% if messages %}
