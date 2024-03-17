@@ -113,7 +113,7 @@
 {% endblock customerProfile %}
 {% block customerProfileDatalayer %}
 <script>
-    var cgtag = "{{request.session.checkout_gtag_url}}";
+    {% comment %} var cgtag = "{{request.session.checkout_gtag_url}}";
     if(cgtag == '1'){
         $.ajax({
             type:"GET",
@@ -135,7 +135,7 @@
                 }
             }
         });
-    }
+    } {% endcomment %}
 
 </script>
 {% endblock customerProfileDatalayer %}
