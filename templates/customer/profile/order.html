@@ -113,14 +113,13 @@
 {% endblock customerProfile %}
 {% block customerProfileDatalayer %}
 <script>
-    {% comment %} var cgtag = "{{request.session.checkout_gtag_url}}";
+    var cgtag = "{{request.session.checkout_gtag_url}}";
     if(cgtag == '1'){
         $.ajax({
             type:"GET",
             url:"{% url 'customer:checkout_gtag' %}",
             success:(res)=>{
                 if(res['status'] == 'success'){
-                    dataLayer.push({ ecommerce: null }); 
                     dataLayer.push({
                         event: "purchase",
                         ecommerce: {
@@ -135,7 +134,7 @@
                 }
             }
         });
-    } {% endcomment %}
+    } 
 
 </script>
 {% endblock customerProfileDatalayer %}

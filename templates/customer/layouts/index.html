@@ -3,24 +3,12 @@
 
 <html lang="en">
 <head>
-	<script>
-		window.dataLayer = window.dataLayer || [];
-		function gtag(){dataLayer.push(arguments)};
-		gtag('consent','default',{
-			'ad_storage':"granted",
-			'ad_user_data':'granted',
-			'ad_personalization':'granted',
-			'analytics_storage':'denied'
-		});
-	</script>
-	<!-- Google tag (gtag.js) -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=GTM-K3LWDWKD"></script>
-	<script>
-		//window.dataLayer = window.dataLayer || [];
-		//function gtag(){dataLayer.push(arguments);}
-		gtag('js', new Date());
-
-		gtag('config', 'GTM-K3LWDWKD');
+	<!-- Google Tag Manager -->
+	<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+		new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+		j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+		'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer','GTM-K3LWDWKD');
 	</script>
     {% include 'customer/layouts/head.html' %}
 	<!-- PAGE TITLE HERE -->
@@ -47,7 +35,12 @@
 	</div>
 	<a href="https://www.messenger.com/t/104800115865740" class="contract-msg-link"><i class="fa-brands fa-facebook-messenger"></i></a>
 	{% include 'customer/layouts/footer.html' %}
-	
+	<!-- Google Tag Manager (noscript) -->
+	<noscript>
+			<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K3LWDWKD"
+		height="0" width="0" style="display:none;visibility:hidden"></iframe>
+	</noscript>
+	<!-- End Google Tag Manager (noscript) -->
 	{% include 'customer/layouts/scripts.html' %}
 	{% include 'customer/layouts/mobile_bottom_menu.html' %}
 	{% block customerScript %}{% endblock customerScript %}
