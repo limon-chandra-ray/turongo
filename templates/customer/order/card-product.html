@@ -170,10 +170,14 @@
 {% endblock customerScript %}
 
 {% block customerDataLayer %}
+<!-- Google Tag Manager (noscript) -->
+<noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K3LWDWKD"
+height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
+<!-- End Google Tag Manager (noscript) -->
 <script>
     view_cart_gtag()
-
-    {% comment %} dataLayer.push({ ecommerce: null }); 
     // Clear the previous ecommerce object.
     var view_items= [];
     var view_item ={
@@ -196,7 +200,7 @@
                 value: value_price,
                 items: view_items
             }
-    }); {% endcomment %}
+    });
 
 </script>
 {% endblock customerDataLayer %}
