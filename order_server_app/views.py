@@ -166,20 +166,20 @@ def checkout_gtag(request):
         item['regular_price'] = int(bitem.product.p_price)
         item['discount_price'] = int(bitem.product.p_offer_price)
         item['item_brand'] = bitem.product.p_brand.brand_name
-        # item['item_category'] = bitem.product.p_third_category.rc_three_name
-        # item['item_category2'] = bitem.product.p_category.category_name
+        item['item_category'] = bitem.product.p_third_category.root_category_three
+        item['item_category2'] = bitem.product.p_category.category_name
         item['quantity'] = bitem.quantity
         item['size'] = bitem.product_size
         item['sub_total'] = int(bitem.sub_total)
         items.append(item)
-    # order_layer = dict()
-    # order_layer['order_id'] = order.order_number
-    # order_layer['total_amount'] = order.total_amount
-    # order_layer['shipping_cost'] = order.delivery_charge
-    # order_layer['quantity'] = order.bag.bag_total_items
-    # order_layer['division'] = order.division.division_name
-    # order_layer['district'] = order.district.district_name
-    # order_layer['upazila'] = order.upazila.upazila_name
+    order_layer = dict()
+    order_layer['order_id'] = order.order_number
+    order_layer['total_amount'] = order.total_amount
+    order_layer['shipping_cost'] = order.delivery_charge
+    order_layer['quantity'] = order.bag.bag_total_items
+    order_layer['division'] = order.division.division_name
+    order_layer['district'] = order.district.district_name
+    order_layer['upazila'] = order.upazila.upazila_name
         
     # del request.session['checkout_gtag_url']
     # ,'order':order_layer,'items':items
