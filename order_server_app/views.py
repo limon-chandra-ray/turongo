@@ -161,11 +161,11 @@ def checkout_gtag(request):
     for bitem in bag_items:
         item = dict()
         item['item_id'] = bitem.product.p_id
-        # item['item_name'] = bitem.product.p_name
+        item['item_name'] = bitem.product.p_name
         # item['discount'] = float(bitem.product.p_offer)
         # item['regular_price'] = float(bitem.product.p_price)
         # item['discount_price'] = float(bitem.product.p_offer_price)
-        # item['item_brand'] = bitem.product.p_brand.brand_name
+        item['item_brand'] = bitem.product.p_brand.brand_name
         # item['item_category'] = bitem.product.p_third_category.rc_three_name
         # item['item_category2'] = bitem.product.p_category.category_name
         # item['quantity'] = bitem.quantity
