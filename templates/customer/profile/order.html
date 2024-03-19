@@ -121,7 +121,6 @@
             url:"{% url 'customer:checkout_gtag' %}",
             success:(res)=>{
                 if(res['status'] == 'success'){
-                    console.log(res['fbq_items'])
                     dataLayer.push({
                         event: "purchase",
                         ecommerce: {
@@ -133,6 +132,17 @@
                                 items: res['items']
                             }
                     });
+                    fbq(
+                        'track', 
+                        'Purchase', 
+                        {
+                            content_ids: res['product_ids'],
+                            currency: "BDT",
+                            contents: res['fbq_items'],
+                            value: res['order']['total_amount'],
+                            quantity: res['order']['quantity']
+                        }
+                    );
                 }
             }
         });

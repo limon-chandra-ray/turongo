@@ -157,6 +157,7 @@ def place_order_confirm(request):
 def checkout_gtag(request):
     order = Order.objects.filter(bag__user = request.user,order_status = "PENDING").order_by('-id').first()
     bag_items = BagItem.objects.filter(bag = order.bag).order_by('id')
+    product_ids  = []
     items = []
     fbq_items = []
     for bitem in bag_items:
@@ -188,8 +189,9 @@ def checkout_gtag(request):
             fbq_item['content_category'] = bitem.product.p_third_category.rc_three_name
         else:
             fbq_item['content_category'] = None
+        fbq_item['quantity'] = int(bitem.quantity)
         fbq_items.append(fbq_item)
-
+        product_ids.append(str(bitem.product.p_id))
         
     order_layer = dict()
     order_layer['order_id'] = order.order_number
@@ -198,10 +200,9 @@ def checkout_gtag(request):
     order_layer['quantity'] = order.bag.bag_total_items
     order_layer['division'] = order.division.division_name
     order_layer['district'] = order.district.district_name
-    order_layer['upazila'] = order.upazila.upazila_name
-        
+    order_layer['upazila'] = order.upazila.upazila_name 
     # del request.session['checkout_gtag_url']
     # ,'order':order_layer,'items':items
-    return JsonResponse({"status":"success",'order':order_layer,'items':items,'fbq_items':fbq_items},safe=False)
+    return JsonResponse({"status":"success",'order':order_layer,'items':items,'fbq_items':fbq_items,'product_ids':product_ids},safe=False)
     # return JsonResponse({"status":"success",})
 
