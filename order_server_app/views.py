@@ -187,7 +187,7 @@ def checkout_gtag(request):
     order_layer['district'] = order.district.district_name
     order_layer['upazila'] = order.upazila.upazila_name
         
-    # del request.session['checkout_gtag_url']
+    del request.session['checkout_gtag_url']
     # ,'order':order_layer,'items':items
     return JsonResponse({"status":"success",'order':order_layer,'items':items},safe=False)
     # return JsonResponse({"status":"success",})
