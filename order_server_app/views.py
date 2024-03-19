@@ -63,11 +63,6 @@ def place_order_confirm(request):
             check_value = 1
             messages.add_message(request,messages.WARNING,'Please add your Upazila')
         if check_value == 1:
-            # request.session['first_name'] = first_name
-            # request.session['last_name'] = last_name
-            # request.session['phone_number'] = phone_number
-            # request.session['email'] = email
-            # request.session['address'] = address
             return redirect('customer:checkout_view')
         else:
             order_number = "Turongo-"+str(random.randint(111111,999999))
@@ -99,6 +94,7 @@ def place_order_confirm(request):
                         item.order_price = item.product.p_offer_price
                         item.save()
                     messages.add_message(request,messages.SUCCESS,'Congratulations,Your order create successfully')
+                    request.session['checkout_gtag_url'] = 1
                     return redirect('customer:profile_order_list_view')
             else:
                 check_phone_number = CustomUser.objects.filter(phone_number = phone_number).first()

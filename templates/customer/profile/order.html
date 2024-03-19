@@ -115,6 +115,7 @@
 
 <script>
     var cgtag = "{{request.session.checkout_gtag_url}}";
+    console.log(cgtag)
     if(cgtag == '1'){
         $.ajax({
             type:"GET",
