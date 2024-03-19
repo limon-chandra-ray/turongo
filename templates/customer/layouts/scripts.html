@@ -153,13 +153,12 @@
 <script>
 	var authenticate_user = "{{request.user.id}}";
 	var guest_user_key = "{{request.session.guest}}";
-	console.log(guest_user_key)
 	if ((authenticate_user != '') && (guest_user_key != '')){
 		$.ajax({
 			type:"GET",
 			url:"{% url 'customer:guest_user_update_product_bag' %}",
 			success:(res)=>{
-				console.log(res)
+				//console.log(res)
 			}
 		})
 	}
@@ -171,7 +170,7 @@
             url:"{% url 'customer:view_cart_datalayer_item' %}",
             success:(res)=>{
                 if(res['status'] == 'success'){
-                    dataLayer.push({ ecommerce: null }); 
+					console.log("View cart data layer")
                     dataLayer.push({
                         event: "view_cart",
                         ecommerce: {
