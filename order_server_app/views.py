@@ -155,7 +155,7 @@ def place_order_confirm(request):
 
 
 def checkout_gtag(request):
-    order = Order.objects.filter(bag__user = request.user,order_status = "PENDING").last()
+    order = Order.objects.filter(bag__user = request.user,order_status = "PENDING").latest('order_id')
     bag_items = BagItem.objects.filter(bag = order.bag).order_by('id')
     items = []
     for bitem in bag_items:
