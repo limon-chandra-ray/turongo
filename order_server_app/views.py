@@ -155,7 +155,7 @@ def place_order_confirm(request):
 
 
 def checkout_gtag(request):
-    order = Order.objects.filter(bag__user = request.user,order_status = "PENDING").latest('order_id')
+    order = Order.objects.filter(bag__user = request.user,order_status = "PENDING").order_by('-id').first()
     bag_items = BagItem.objects.filter(bag = order.bag).order_by('id')
     items = []
     fbq_items = []
@@ -179,16 +179,16 @@ def checkout_gtag(request):
         item['size'] = bitem.product_size
         item['sub_total'] = int(bitem.sub_total)
         items.append(item)
-        # fbq_item = dict()
-        # fbq_item['content_id'] = bitem.product.p_id
-        # fbq_item['content_name'] = bitem.product.p_name
-        # fbq_item['value'] = int(bitem.product.p_offer_price)
-        # fbq_item['content_type'] = "product"
-        # if bitem.product.p_third_category:
-        #     fbq_item['content_category'] = bitem.product.p_third_category.rc_three_name
-        # else:
-        #     fbq_item['content_category'] = None
-        # fbq_items.append(fbq_item)
+        fbq_item = dict()
+        fbq_item['content_id'] = bitem.product.p_id
+        fbq_item['content_name'] = bitem.product.p_name
+        fbq_item['value'] = int(bitem.product.p_offer_price)
+        fbq_item['content_type'] = "product"
+        if bitem.product.p_third_category:
+            fbq_item['content_category'] = bitem.product.p_third_category.rc_three_name
+        else:
+            fbq_item['content_category'] = None
+        fbq_items.append(fbq_item)
 
         
     order_layer = dict()
