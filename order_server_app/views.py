@@ -166,8 +166,8 @@ def checkout_gtag(request):
         item['regular_price'] = int(bitem.product.p_price)
         item['discount_price'] = int(bitem.product.p_offer_price)
         item['item_brand'] = bitem.product.p_brand.brand_name
-        item['item_category'] = bitem.product.p_third_category.rc_three_name
-        item['item_category2'] = bitem.product.p_category.category_name
+        # item['item_category'] = bitem.product.p_third_category.rc_three_name
+        # item['item_category2'] = bitem.product.p_category.category_name
         item['quantity'] = bitem.quantity
         item['size'] = bitem.product_size
         item['sub_total'] = int(bitem.sub_total)
