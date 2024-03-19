@@ -155,7 +155,7 @@ def place_order_confirm(request):
 
 
 def checkout_gtag(request):
-    order = Order.objects.filter(bag__user = request.user,order_status = "PENDING").last('order_id')
+    order = Order.objects.filter(bag__user = request.user,order_status = "PENDING").order_by('-order_id').first()
     bag_items = BagItem.objects.filter(bag = order.bag).order_by('id')
     items =[]
     for bitem in bag_items:
@@ -181,6 +181,6 @@ def checkout_gtag(request):
     order_layer['district'] = order.district.district_name
     order_layer['upazila'] = order.upazila.upazila_name
     del request.session['checkout_gtag_url']
-    return JsonResponse({"status":"success",'order':order_layer,'items':items})
+    return JsonResponse({"status":"success",'order':order_layer,'items':items},safe=False)
     # return JsonResponse({"status":"success",})
 
