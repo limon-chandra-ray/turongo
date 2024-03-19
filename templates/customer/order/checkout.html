@@ -235,9 +235,31 @@
             }
         })
     });
-
-
-
-   
 </script>
 {% endblock customerScript %}
+{% block facebookScript %}
+<script>
+    $.ajax({
+        type:"GET",
+        url:"{% url 'customer:checkout_json_data' %}",
+        success:(res)=>{
+            if(res['status'] == 'success'){
+                console.log(res['product_ids']);
+                console.log(res['fbq_items'])
+                fbq(
+                    'track', 
+                    'InitiateCheckout', 
+                    {
+                        content_ids: res['product_ids'],
+                        currency: "BDT",
+                        contents: res['fbq_items'],
+                        value: parseInt(res['value']),
+                        quantity: parseInt(res['quantity'])
+                    }
+                );
+            }
+        }
+    });
+    
+</script>
+{% endblock facebookScript %}

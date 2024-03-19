@@ -285,12 +285,67 @@ def checkout_view(request):
                                     session_key = session_guest,
                                     bag_status=False
                                     ).first()
+    product_ids  = []
+    fbq_items = []
+    for bitem in cart.bag_items.all():
+        fbq_item = dict()
+        fbq_item['content_id'] = str(bitem.product.p_id)
+        fbq_item['content_name'] = bitem.product.p_name
+        fbq_item['value'] = int(bitem.product.p_offer_price)
+        fbq_item['content_type'] = "product"
+        if bitem.product.p_third_category:
+            fbq_item['content_category'] = bitem.product.p_third_category.rc_three_name
+        else:
+            fbq_item['content_category'] = None
+        fbq_item['quantity'] = int(bitem.quantity)
+        fbq_items.append(fbq_item)
+        product_ids.append(str(bitem.product.p_id))
+    print(fbq_items)
+    print(product_ids)
     divisions = Division.objects.all()
     context={
         'cart':cart,
-        'divisions':divisions
+        'divisions':divisions,
+        'fbq_items':fbq_items,
+        'product_ids':product_ids
     }
     return render(request,'customer/order/checkout.html',context)
+def checkout_json_data(request):
+    if request.user.is_authenticated:
+        
+        bagitem_prefetch = Prefetch('bag_items')
+        cart = ProductBag.objects.prefetch_related(bagitem_prefetch).filter(user = request.user,bag_status=False).first()
+    else:
+        try:
+            session_guest = request.session['guest']
+        except:
+            session_guest = "None"
+        bagitem_prefetch = Prefetch('bag_items')
+
+        cart = ProductBag.objects.prefetch_related(
+                                bagitem_prefetch
+                                ).filter(
+                                    session_key = session_guest,
+                                    bag_status=False
+                                    ).first()
+    product_ids  = []
+    fbq_items = []
+    for bitem in cart.bag_items.all():
+        fbq_item = dict()
+        fbq_item['content_id'] = str(bitem.product.p_id)
+        fbq_item['content_name'] = bitem.product.p_name
+        fbq_item['value'] = int(bitem.product.p_offer_price)
+        fbq_item['content_type'] = "product"
+        if bitem.product.p_third_category:
+            fbq_item['content_category'] = bitem.product.p_third_category.rc_three_name
+        else:
+            fbq_item['content_category'] = None
+        fbq_item['quantity'] = int(bitem.quantity)
+        fbq_items.append(fbq_item)
+        product_ids.append(str(bitem.product.p_id))
+    return JsonResponse({"status":'success','quantity':cart.bag_total_items,'value':cart.bag_total_amount,'fbq_items':fbq_items,'product_ids':product_ids},safe=False)
+
+
 def customer_cart_item_delete(request,item_id):
     item = BagItem.objects.get(id = int(item_id))
     if item:

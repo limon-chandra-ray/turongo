@@ -24,7 +24,8 @@ urlpatterns +=[
 urlpatterns += [
     path('cart-product-checkout',views.checkout_view,name="checkout_view"),
     path('place-order-save',place_order_confirm,name='place_order_confirm'),
-    path('checkout-gtag-data',checkout_gtag,name='checkout_gtag')
+    path('checkout-gtag-data',checkout_gtag,name='checkout_gtag'),
+    path('chckout-fbq-data',views.checkout_json_data,name='checkout_json_data')
 ]
 
 #division,district,upazila

@@ -162,7 +162,7 @@ def checkout_gtag(request):
     fbq_items = []
     for bitem in bag_items:
         item = dict()
-        item['item_id'] = bitem.product.p_id
+        item['item_id'] = str(bitem.product.p_id)
         item['item_name'] = bitem.product.p_name
         item['discount'] = int(bitem.product.p_offer)
         item['regular_price'] = int(bitem.product.p_price)
@@ -181,7 +181,7 @@ def checkout_gtag(request):
         item['sub_total'] = int(bitem.sub_total)
         items.append(item)
         fbq_item = dict()
-        fbq_item['content_id'] = bitem.product.p_id
+        fbq_item['content_id'] = str(bitem.product.p_id)
         fbq_item['content_name'] = bitem.product.p_name
         fbq_item['value'] = int(bitem.product.p_offer_price)
         fbq_item['content_type'] = "product"
