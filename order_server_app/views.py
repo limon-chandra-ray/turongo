@@ -183,6 +183,6 @@ def checkout_gtag(request):
         
     # del request.session['checkout_gtag_url']
     # ,'order':order_layer,'items':items
-    return JsonResponse({"status":"success",'items':items},safe=False)
+    return JsonResponse({"status":"success"},safe=False)
     # return JsonResponse({"status":"success",})
 
