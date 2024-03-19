@@ -121,8 +121,6 @@
             url:"{% url 'customer:checkout_gtag' %}",
             success:(res)=>{
                 if(res['status'] == 'success'){
-                    console.log('Work ing')
-                    console.log(res['items'])
                     dataLayer.push({
                         event: "purchase",
                         ecommerce: {
