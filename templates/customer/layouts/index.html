@@ -30,7 +30,6 @@
 		/>
 	</noscript>
 	<!-- End Meta Pixel Code -->
-	{% block customerDataLayer %}{% endblock customerDataLayer %}
     {% include 'customer/layouts/head.html' %}
 	<!-- PAGE TITLE HERE -->
 	<title>{% block customertitle %}{% endblock customertitle %}|Turongo LifeStyle</title>
@@ -65,6 +64,8 @@
 	{% include 'customer/layouts/scripts.html' %}
 	{% include 'customer/layouts/mobile_bottom_menu.html' %}
 	{% block customerScript %}{% endblock customerScript %}
+	{% block customerDataLayer %}{% endblock customerDataLayer %}
+	{% block facebookScript %}{% endblock facebookScript %}
 	{% block customermodal %}{% endblock customermodal %}
 	
 </body>
