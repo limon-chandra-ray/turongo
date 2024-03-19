@@ -112,7 +112,6 @@
         
 {% endblock customerProfile %}
 {% block customerProfileDatalayer %}
-
 <script>
     var cgtag = "{{request.session.checkout_gtag_url}}";
     console.log(cgtag)
@@ -122,18 +121,19 @@
             url:"{% url 'customer:checkout_gtag' %}",
             success:(res)=>{
                 if(res['status'] == 'success'){
-                    console.log(res['items'])
-                    dataLayer.push({
-                        event: "purchase",
-                        ecommerce: {
-                                currency: "BDT",
-                                orderId:res['order']['order_id'],
-                                value: res['order']['total_amount'],
-                                quantity: res['order']['quantity'],
-                                order: res['order'],
-                                items: res['items']
-                            }
-                    });
+                    console.log('Work ing')
+                    // console.log(res['items'])
+                    // dataLayer.push({
+                    //     event: "purchase",
+                    //     ecommerce: {
+                    //             currency: "BDT",
+                    //             orderId:res['order']['order_id'],
+                    //             value: res['order']['total_amount'],
+                    //             quantity: res['order']['quantity'],
+                    //             order: res['order'],
+                    //             items: res['items']
+                    //         }
+                    // });
                 }
             }
         });
