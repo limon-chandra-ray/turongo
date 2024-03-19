@@ -121,6 +121,7 @@
             url:"{% url 'customer:checkout_gtag' %}",
             success:(res)=>{
                 if(res['status'] == 'success'){
+                    console.log(res['fbq_items'])
                     dataLayer.push({
                         event: "purchase",
                         ecommerce: {
