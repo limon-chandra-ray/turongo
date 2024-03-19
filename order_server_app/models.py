@@ -73,7 +73,6 @@ class Order(models.Model):
         HOLD = 'HOLD','Hold'
         PROCESSING = 'PROCESSING', 'Processing'
     default_status = OrderStatus.PENDING
-    order_id = models.UUIDField(primary_key=True,default=uuid.uuid4,unique=True,editable=False,auto_created=True)
     bag = models.ForeignKey(ProductBag,on_delete=models.CASCADE)
     total_amount = models.DecimalField(max_digits=8,decimal_places = 2,null=True,blank=True)
     order_status = models.CharField(max_length=100,choices = OrderStatus.choices,default = default_status)

@@ -307,7 +307,7 @@ def customer_profile_view(request):
     return render(request,'customer/profile/profile.html')
 
 def profile_order_list_view(request):
-    order_list = Order.objects.filter(bag__user = request.user).order_by('order_id')
+    order_list = Order.objects.filter(bag__user = request.user).order_by('-id')
     context={
         'order_list':order_list
     }

@@ -59,6 +59,6 @@ urlpatterns +=[
     path('completed-order-list',views.completed_order_list,name='completed_order_list'),
     path('return-order-list',views.return_order_list,name='return_order_list'),
     path('cancel-order-list',views.cancel_order_list,name='cancel_order_list'),
-    path('order-<uuid:order_id>-details',views.order_detail_view,name='order_detail_view'),
-    path('order-<uuid:order_id>-details-status-update',views.order_status_update,name='order_status_update')
+    path('order-<int:order_id>-details',views.order_detail_view,name='order_detail_view'),
+    path('order-<int:order_id>-details-status-update',views.order_status_update,name='order_status_update')
 ]

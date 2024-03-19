@@ -9,7 +9,7 @@
         </div>
         <div class="flex justify-center items-center">
             <div class="pr-[5px]">Change Order Status:</div>
-            <form action="{% url 'server_app:order_status_update' order.order_id %}" method="post">
+            <form action="{% url 'server_app:order_status_update' order.id %}" method="post">
                 {% csrf_token %}
                 <select class="select select-bordered w-[220px]" name="order_status_update">
                     <option disabled selected>select status</option>

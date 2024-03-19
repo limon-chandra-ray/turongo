@@ -500,7 +500,7 @@ def return_order_list(request):
     return render(request,'server/super-admin/order/return-order.html')
 
 def order_detail_view(request,order_id):
-    order = Order.objects.get(order_id = order_id)
+    order = Order.objects.get(id = order_id)
     bag_items = BagItem.objects.filter(bag = order.bag)
     order_status = ['INCOMPLETED','COMPLETED','CANCEL','SHIPPING','PENDING','HOLD','PROCESSING']
     context = {
@@ -511,7 +511,7 @@ def order_detail_view(request,order_id):
     return render(request,'server/super-admin/order/order-details.html',context)
 def order_status_update(request,order_id):
     if request.method == 'POST':
-        order = Order.objects.get(order_id = order_id)
+        order = Order.objects.get(id = order_id)
         order_status = request.POST['order_status_update']
         order.order_status = order_status
         order.save()
