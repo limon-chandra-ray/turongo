@@ -172,16 +172,17 @@ def checkout_gtag(request):
         item['size'] = bitem.product_size
         item['sub_total'] = float(bitem.sub_total)
         items.append(item)
-    order_layer = dict()
-    order_layer['order_id'] = order.order_number
-    order_layer['total_amount'] = order.total_amount
-    order_layer['shipping_cost'] = order.delivery_charge
-    order_layer['quantity'] = order.bag.bag_total_items
-    order_layer['division'] = order.division.division_name
-    order_layer['district'] = order.district.district_name
-    order_layer['upazila'] = order.upazila.upazila_name
+    # order_layer = dict()
+    # order_layer['order_id'] = order.order_number
+    # order_layer['total_amount'] = order.total_amount
+    # order_layer['shipping_cost'] = order.delivery_charge
+    # order_layer['quantity'] = order.bag.bag_total_items
+    # order_layer['division'] = order.division.division_name
+    # order_layer['district'] = order.district.district_name
+    # order_layer['upazila'] = order.upazila.upazila_name
         
     # del request.session['checkout_gtag_url']
-    return JsonResponse({"status":"success",'order':order_layer,'items':items},safe=False)
+    # ,'order':order_layer,'items':items
+    return JsonResponse({"status":"success",'items':items},safe=False)
     # return JsonResponse({"status":"success",})
 
