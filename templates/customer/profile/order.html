@@ -111,13 +111,8 @@
 </div>   
         
 {% endblock customerProfile %}
-{% block customerProfileDatalayer %}
-<!-- Google Tag Manager (noscript) -->
-<noscript>
-    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K3LWDWKD"
-height="0" width="0" style="display:none;visibility:hidden"></iframe>
-</noscript>
-<!-- End Google Tag Manager (noscript) -->
+{% block customerScript %}
+
 <script>
     var cgtag = "{{request.session.checkout_gtag_url}}";
     if(cgtag == '1'){
@@ -126,6 +121,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
             url:"{% url 'customer:checkout_gtag' %}",
             success:(res)=>{
                 if(res['status'] == 'success'){
+                    console.log(res['items'])
                     dataLayer.push({
                         event: "purchase",
                         ecommerce: {
@@ -143,4 +139,4 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
     } 
 
 </script>
-{% endblock customerProfileDatalayer %}
+{% endblock customerScript %}

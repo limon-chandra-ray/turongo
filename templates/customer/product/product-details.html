@@ -391,6 +391,7 @@
                     if(res['status'] == 'success'){
                         var total_product = res['total_product'];
                         add_to_cart(product_quantity,select_product_size)
+                        fbq_add_to_cart();
                         $("#laptop_script_alert").empty();
                         $(".mobile_navbag_products").text(total_product.toString());
                         $("#laptop_bagtotal_product").text(total_product.toString());
@@ -541,3 +542,32 @@
     }
 </script>
 {% endblock customerDataLayer %}
+{% block facebookScript %}
+<script>
+    fbq(
+        'track', 
+        'ViewContent', 
+        {
+            content_ids:"{{product.p_id}}",
+            content_category:"{{product.p_third_category.rc_three_name}}",
+            content_type:"{{product.p_category.category_name}}",
+            content_name:"{{product.p_name}}",
+            currency: "BDT",
+            value: parseInt("{{product.p_offer_price}}")
+        }
+    );
+    function fbq_add_to_cart(){
+        fbq(
+            'track', 
+            'AddToCart', 
+            {
+                content_ids:"{{product.p_id}}",
+                content_type:"{{product.p_third_category.rc_three_name}}",
+                content_name:"{{product.p_name}}",
+                currency: "BDT",
+                value: parseInt("{{product.p_offer_price}}")
+            }
+        );
+    }
+</script>
+{% endblock facebookScript %}

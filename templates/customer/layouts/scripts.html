@@ -171,6 +171,7 @@
             success:(res)=>{
                 if(res['status'] == 'success'){
 					console.log("View cart data layer")
+					console.log(res['items'])
                     dataLayer.push({
                         event: "view_cart",
                         ecommerce: {

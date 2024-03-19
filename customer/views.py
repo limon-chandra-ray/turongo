@@ -121,6 +121,7 @@ def guest_user_update_product_bag(request):
             session_user = 'None'
         guest_product_bag = ProductBag.objects.filter(session_key = session_user,bag_status=False).first()
         auth_user_product_bag = ProductBag.objects.filter(user = request.user,bag_status=False).first()
+        success_status = ''
         if auth_user_product_bag and guest_product_bag:
             guest_bag_items = BagItem.objects.filter(bag = guest_product_bag)
             for item in guest_bag_items:
@@ -141,6 +142,10 @@ def guest_user_update_product_bag(request):
             guest_product_bag.save()
             del request.session['guest']
             success_status = "success when auth user product without select"
+        if success_status == '':
+            success_status = "error"
+    else:
+        success_status = "error"
     return JsonResponse({"status":success_status})
 
 
