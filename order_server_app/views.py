@@ -161,7 +161,6 @@ def checkout_gtag(request):
     fbq_items = []
     for bitem in bag_items:
         item = dict()
-        fbq_item = dict()
         item['item_id'] = bitem.product.p_id
         item['item_name'] = bitem.product.p_name
         item['discount'] = int(bitem.product.p_offer)
@@ -179,7 +178,8 @@ def checkout_gtag(request):
         item['quantity'] = bitem.quantity
         item['size'] = bitem.product_size
         item['sub_total'] = int(bitem.sub_total)
-
+        items.append(item)
+        fbq_item = dict()
         fbq_item['content_id'] = bitem.product.p_id
         fbq_item['content_name'] = bitem.product.p_name
         fbq_item['value'] = int(bitem.product.p_offer_price)
@@ -188,8 +188,9 @@ def checkout_gtag(request):
             fbq_item['content_category'] = bitem.product.p_third_category.rc_three_name
         else:
             fbq_item['content_category'] = None
-        items.append(item)
         fbq_items.append(fbq_item)
+
+        
     order_layer = dict()
     order_layer['order_id'] = order.order_number
     order_layer['total_amount'] = order.total_amount
@@ -199,7 +200,7 @@ def checkout_gtag(request):
     order_layer['district'] = order.district.district_name
     order_layer['upazila'] = order.upazila.upazila_name
         
-    del request.session['checkout_gtag_url']
+    # del request.session['checkout_gtag_url']
     # ,'order':order_layer,'items':items
     return JsonResponse({"status":"success",'order':order_layer,'items':items,'fbq_items':fbq_items},safe=False)
     # return JsonResponse({"status":"success",})
