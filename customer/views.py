@@ -50,7 +50,7 @@ def category_product_list(request,category):
             'product_images',
             queryset=ProductImage.objects.filter(pimage_type="phone",pimage_priority = 1) 
         )
-    category = RootCategoryThree.objects.filter(rc_three_name = category).first()
+    category = RootCategoryThree.objects.filter(rc_three_name__icontains = category).first()
     products = Product.objects.prefetch_related(product_image).filter(p_third_category = category).order_by('-p_id')
     context={
         'products': products
