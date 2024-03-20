@@ -32,10 +32,14 @@ def customer_home_view(request):
     products = Product.objects.prefetch_related(product_image).all().order_by('-p_id')
     slide_image = Slider.objects.filter(slide_priority = 1,slide_status = True).order_by('-id')[:3]
     slide_image2 = Slider.objects.filter(slide_priority = 2,slide_status = True).last()
+
+    formal_shirt = products.filter(p_category__id = 2)
+    polo_shirt = products.filter(p_third_category__id = 4)
     context = {
         'slide_images':slide_image,
-        'products':products,
-        'slide_image2':slide_image2
+        'polo_shirts':polo_shirt,
+        'slide_image2':slide_image2,
+        'formal_shirt':formal_shirt
     }
     return render(request,'customer/home.html',context)
 

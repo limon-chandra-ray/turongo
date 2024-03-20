@@ -2,7 +2,7 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-center">
             <h2 class="hp-sc-header-text">
-                <span>Product Collections</span>
+                <span>Formal Shirt Collections</span>
             </h2>
         </div>
         <div class="hp-sc-header-line">
@@ -11,7 +11,27 @@
     </div>
     <div class="container">
         <div class="row gx-5">
-            {% for product in products %}
+            {% for product in formal_shirt %}
+                {% include 'customer/product/home-product-card.html' %}
+            {% endfor %}
+            
+        </div>
+    </div>
+</div>
+<div class="section-product">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2 class="hp-sc-header-text">
+                <span>Polo Shirt Collections</span>
+            </h2>
+        </div>
+        <div class="hp-sc-header-line">
+
+        </div>
+    </div>
+    <div class="container">
+        <div class="row gx-5">
+            {% for product in polo_shirts %}
                 {% include 'customer/product/home-product-card.html' %}
             {% endfor %}
             
