@@ -569,7 +569,7 @@ def upazila_upload(request):
             data_set_io_String = io.StringIO(data_set)
 
             for upazila in csv.reader(data_set_io_String):
-                main_id = 195
+                main_id = 3
 
                 district_id = main_id + int(upazila[1])
                 print(district_id)
