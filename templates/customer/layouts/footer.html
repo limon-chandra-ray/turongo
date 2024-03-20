@@ -15,20 +15,20 @@
             </div>
             <div class="col-lg-3 col-6 d-flex flex-column justify-content-center align-items-center pt-2">
                 <ul>
-                    <li><a href="#" class="footer-link">About us</a></li>
-                    <li><a href="#" class="footer-link">Size Guide</a></li>
-                    <li><a href="#" class="footer-link">Privacy Policy</a></li>
-                    <li><a href="#" class="footer-link">Cokkie Policy</a></li>
-                    <li><a href="#" class="footer-link">Order Traking</a></li> 
+                    <li><a href="{% url 'customer:about_us_view' %}" class="footer-link">About us</a></li>
+                    <li><a href="{% url 'customer:size_guide_view' %}" class="footer-link">Size Guide</a></li>
+                    <li><a href="{% url 'customer:privacy_policy_view' %}" class="footer-link">Privacy Policy</a></li>
+                    <li><a href="{% url 'customer:cookie_policy_view' %}" class="footer-link">Cokkie Policy</a></li>
+                    <li><a href="{% url 'customer:order_traking_view' %}" class="footer-link">Order Traking</a></li> 
                 </ul>
             </div>
             <div class="col-lg-3 col-6 d-flex flex-column justify-content-center align-items-center pt-2">
                 <ul>
-                    <li><a href="#" class="footer-link">Payment & Shipping Policy</a></li>
-                    <li><a href="#" class="footer-link">Terms & Conditions</a></li>
-                    <li><a href="#" class="footer-link">Return & Refund Policy</a></li>
-                    <li><a href="#" class="footer-link">Payment Method</a></li>
-                    <li><a href="#" class="footer-link">Order Procedure</a></li>
+                    <li><a href="{% url 'customer:payment_shipping_policy_view' %}" class="footer-link">Payment & Shipping Policy</a></li>
+                    <li><a href="{% url 'customer:trems_conditions_view' %}" class="footer-link">Terms & Conditions</a></li>
+                    <li><a href="{% url 'customer:return_refund_policy_view' %}" class="footer-link">Return & Refund Policy</a></li>
+                    <li><a href="{% url 'customer:payment_method_view' %}" class="footer-link">Payment Method</a></li>
+                    <li><a href="{% url 'customer:order_procedure_view' %}" class="footer-link">Order Procedure</a></li>
                     
                     
                 </ul>

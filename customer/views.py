@@ -443,3 +443,28 @@ def profile_customer_info_view(request):
     return render(request,'customer/profile/edit-account.html')
 def profile_password_change_view(request):
     return render(request,'customer/profile/change-password.html')
+
+
+
+#footer page about policy
+def about_us_view(request):
+    return render(request,'customer/about/about-us.html')
+def cookie_policy_view(request):
+    return render(request,'customer/about/cookie-policy.html')
+def order_procedure_view(request):
+    return render(request,'customer/about/order-procedure.html')
+def order_traking_view(request):
+    return render(request,'customer/about/order-traking.html')
+def payment_method_view(request):
+    return render(request,'customer/about/payment-method.html')
+
+def payment_shipping_policy_view(request):
+    return render(request,'customer/about/payment-shipping-policy.html')
+def privacy_policy_view(request):
+    return render(request,'customer/about/privacy-policy.html')
+def return_refund_policy_view(request):
+    return render(request,'customer/about/return-refund-policy.html')
+def size_guide_view(request):
+    return render(request,'customer/about/size-guide.html')
+def trems_conditions_view(request):
+    return render(request,'customer/about/trems-conditions.html')

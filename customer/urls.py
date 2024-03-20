@@ -60,3 +60,16 @@ urlpatterns +=[
 urlpatterns +=[
     path('<str:category>-list',views.category_product_list,name='category_product_list')
 ]
+
+urlpatterns +=[
+    path("about-us",views.about_us_view,name='about_us_view'),
+    path("cookie-policy",views.cookie_policy_view,name='cookie_policy_view'),
+    path('order-procedure',views.order_procedure_view,name='order_procedure_view'),
+    path('order-traking',views.order_traking_view,name='order_traking_view'),
+    path("payment-method",views.payment_method_view,name='payment_method_view'),
+    path('payment-and-shipping-policy',views.payment_shipping_policy_view,name='payment_shipping_policy_view'),
+    path("privacy-policy",views.privacy_policy_view,name='privacy_policy_view'),
+    path("return-and-refund-policy",views.return_refund_policy_view,name='return_refund_policy_view'),
+    path('size-guide',views.size_guide_view,name='size_guide_view'),
+    path('trems-conditions',views.trems_conditions_view,name='trems_conditions_view')
+]

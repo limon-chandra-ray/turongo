@@ -1,0 +1,13 @@
+{% extends "customer/layouts/index.html" %}
+{% load static %}
+{% block customertitle %}Size Guide{% endblock customertitle %}
+{% block customerbody %}
+<div class="w-100">
+      <div class="w-100 d-flex justify-content-center">
+            <div class="py-2 py-md-3 px-4 px-md-5 bg-info text-light rounded" style="width: fit-content;">Size Guide</div>
+      </div>
+      <div>
+            <img src="{% static 'images/size_guide.jpeg' %}" class="w-100">
+      </div>
+</div>
+{% endblock customerbody %}
