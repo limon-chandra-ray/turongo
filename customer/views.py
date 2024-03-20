@@ -27,7 +27,7 @@ def customer_home_view(request):
             request.session['bag_total_items'] = 0
     product_image =Prefetch(
             'product_images',
-            queryset=ProductImage.objects.filter(pimage_type="phone") 
+            queryset=ProductImage.objects.filter(pimage_type="phone",pimage_priority = 1) 
         )
     products = Product.objects.prefetch_related(product_image).all().order_by('-p_id')
     slide_image = Slider.objects.filter(slide_priority = 1,slide_status = True).order_by('-id')[:3]
@@ -35,6 +35,7 @@ def customer_home_view(request):
 
     formal_shirt = products.filter(p_category__id = 2)
     polo_shirt = products.filter(p_third_category__id = 4)
+    combo_offer = products.filter(p_third_category__id = 5)
     context = {
         'slide_images':slide_image,
         'polo_shirts':polo_shirt,
@@ -46,7 +47,7 @@ def customer_home_view(request):
 def category_product_list(request,category,category_id):
     product_image =Prefetch(
             'product_images',
-            queryset=ProductImage.objects.filter(pimage_type="phone") 
+            queryset=ProductImage.objects.filter(pimage_type="phone",pimage_priority = 1) 
         )
     category = RootCategoryThree.objects.get(id = int(category_id))
     products = Product.objects.prefetch_related(product_image).filter(p_third_category = category).order_by('-p_id')
@@ -57,10 +58,14 @@ def category_product_list(request,category,category_id):
 
 
 def product_details_view(request,product_id):
-    product_iamge_prefetch = Prefetch('product_images')
+    product_iamge_prefetch = Prefetch('product_images',queryset=ProductImage.objects.all().order_by('pimage_priority'))
     product_size_prefetch = Prefetch('product_sizes')
+    product_image =Prefetch(
+            'product_images',
+            queryset=ProductImage.objects.filter(pimage_type="phone",pimage_priority = 1) 
+        )
     product = Product.objects.prefetch_related(product_iamge_prefetch,product_size_prefetch).get(p_id= product_id)
-    related_product = Product.objects.prefetch_related(product_iamge_prefetch).filter(p_category = product.p_category).order_by('-p_id')[:6]
+    related_product = Product.objects.prefetch_related(product_image).filter(p_category = product.p_category).order_by('-p_id')[:6]
     context = {
         'product':product,
         'related_product':related_product
