@@ -1,0 +1,61 @@
+{% extends "server/base/main.html" %}
+{% block superMain %}
+<div class="flex flex-col items-center justify-center">
+    
+    <div class="w-1/2">
+        <div>Division Add</div>
+        <form action="{% url "server_app:division_upload" %}"  method="POST" enctype="multipart/form-data" >
+            {% csrf_token %}
+            <div class="mt-4">
+                <label class="form-control w-full">
+                    <div class="label">
+                    <span class="label-text">Division CSV File</span>
+                    </div>
+                    <input type="file" name="division_file" class="file-input file-input-bordered w-full" required/>
+                </label>
+            </div>
+            
+            <div class="mt-4 w-full flex justify-center">
+                <input type="submit" class="px-3 py-2 bg-green-700 hover:bg-green-800 text-white font-[700] rounded-md" value="Add Product">
+            </div>
+        </form>
+    </div>
+    <div class="w-1/2">
+        <div>District Add</div>
+        <form action="{% url "server_app:district_upload" %}"  method="POST" enctype="multipart/form-data" >
+            {% csrf_token %}
+            <div class="mt-4">
+                <label class="form-control w-full">
+                    <div class="label">
+                    <span class="label-text">District CSV File</span>
+                    </div>
+                    <input type="file" name="district_file" class="file-input file-input-bordered w-full" required/>
+                </label>
+            </div>
+            
+            <div class="mt-4 w-full flex justify-center">
+                <input type="submit" class="px-3 py-2 bg-green-700 hover:bg-green-800 text-white font-[700] rounded-md" value="Add Product">
+            </div>
+        </form>
+    </div>
+    <div class="w-1/2">
+        <div>Upazila Add</div>
+        <form action="{% url "server_app:upazila_upload" %}"  method="POST" enctype="multipart/form-data" >
+            {% csrf_token %}
+            <div class="mt-4">
+                <label class="form-control w-full">
+                    <div class="label">
+                    <span class="label-text">Upazila CSV File</span>
+                    </div>
+                    <input type="file" name="upazila_file" class="file-input file-input-bordered w-full" required/>
+                </label>
+            </div>
+            
+            <div class="mt-4 w-full flex justify-center">
+                <input type="submit" class="px-3 py-2 bg-green-700 hover:bg-green-800 text-white font-[700] rounded-md" value="Add Product">
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock superMain %}

@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django_ckeditor_5',
     'fontawesomefree',
     'django_extensions',
-    'gtm'
+    'gtm',
+    'import_export'
 ]
 
 MIDDLEWARE = [

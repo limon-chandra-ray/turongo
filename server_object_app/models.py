@@ -31,7 +31,7 @@ class District(models.Model):
 
 class Upazila(models.Model):
     district = models.ForeignKey(District,on_delete=models.CASCADE)
-    upazila_name = models.CharField(max_length=150,unique=True,null=True,blank=True)
+    upazila_name = models.CharField(max_length=150,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

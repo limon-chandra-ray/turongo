@@ -13,6 +13,7 @@ from product_server_app.models import Product,ProductImage,Category,ProductSize,
 from product_server_app.utils import date_to_str
 from server_object_app.models import Slider
 from order_server_app.models import Order,BagItem
+from server_object_app.models import Division,District,Upazila
 # Create your views here.
 
 @login_required(login_url='/super-server/login')
@@ -517,3 +518,84 @@ def order_status_update(request,order_id):
         order.save()
         messages.add_message(request,messages.SUCCESS,f'{order.order_number} order status {order.order_status} to {order_status}')
         return redirect(reverse("server_app:order_detail_view",kwargs={'order_id':order_id}))
+    
+import csv,io
+from server_object_app.resourses import DistrictResourse,DivisionResourse,UpazilaResourse
+from tablib import Dataset
+def csv_file_upload_view(request):
+    return render(request,'server/super-admin/csv_file_upload.html')
+
+def division_upload(request):
+    if request.method == 'POST':
+        division_file = request.FILES['division_file']
+        if division_file.name.endswith("csv"):
+            data_set = division_file.read().decode("UTF-8")
+            data_set_io_String = io.StringIO(data_set)
+            for division in csv.reader(data_set_io_String):
+                created, _  = Division.objects.update_or_create(
+                    division_name = division[1]
+                )
+            messages.add_message(request,messages.SUCCESS,'Division add successfully')
+
+        else:
+            messages.add_message(request,messages.SUCCESS,'Please add only csv file')
+    return redirect("server_app:csv_file_upload_view")
+
+def district_upload(request):
+    if request.method == 'POST':
+        district_file = request.FILES['district_file']
+        if district_file.name.endswith("csv"):
+            data_set = district_file.read().decode("UTF-8")
+            data_set_io_String = io.StringIO(data_set)
+            for district in csv.reader(data_set_io_String):
+                division_id = 0
+                if district[1] == '1':
+                    division_id = 15
+                elif district[1] == '2':
+                    division_id = 16
+                elif district[1] == '3':
+                    division_id = 17
+                elif district[1] == '4':
+                    division_id = 18
+                elif district[1] == '5':
+                    division_id = 19
+                elif district[1] == '6':
+                    division_id = 20
+                elif district[1] == '7':
+                    division_id = 21
+                elif district[1] == '8':
+                    division_id = 22
+                created, _  = District.objects.update_or_create(
+                       division =Division.objects.get(id = int(division_id)),
+                       district_name = district[2]
+                    )
+            messages.add_message(request,messages.SUCCESS,'Division add successfully')
+
+        else:
+            messages.add_message(request,messages.SUCCESS,'Please add only csv file')
+    return redirect("server_app:csv_file_upload_view")
+
+
+def upazila_upload(request):
+    if request.method == 'POST':
+        upazila_file = request.FILES['upazila_file']
+        if upazila_file.name.endswith("csv"):
+            data_set = upazila_file.read().decode("UTF-8")
+            data_set_io_String = io.StringIO(data_set)
+
+            for upazila in csv.reader(data_set_io_String):
+                main_id = 195
+
+                district_id = main_id + int(upazila[1])
+                print(district_id)
+                print(upazila)
+                print(District.objects.filter(id = int(district_id)).first())
+                created, _  = Upazila.objects.update_or_create(
+                       district = District.objects.get(id = int(district_id)),
+                       upazila_name = upazila[2]
+                    )
+            messages.add_message(request,messages.SUCCESS,'Division add successfully')
+
+        else:
+            messages.add_message(request,messages.SUCCESS,'Please add only csv file')
+    return redirect("server_app:csv_file_upload_view")

@@ -3,7 +3,7 @@ from . import views
 
 app_name = 'server_app'
 urlpatterns = [
-    path('dashboard',views.dashboard,name='dashboard')
+    path('dashboard',views.dashboard,name='dashboard'),
 ]
 
 # product section urls
@@ -61,4 +61,11 @@ urlpatterns +=[
     path('cancel-order-list',views.cancel_order_list,name='cancel_order_list'),
     path('order-<int:order_id>-details',views.order_detail_view,name='order_detail_view'),
     path('order-<int:order_id>-details-status-update',views.order_status_update,name='order_status_update')
+]
+
+urlpatterns +=[
+    path('csv-file-upload',views.csv_file_upload_view,name='csv_file_upload_view'),
+    path("division-uploads",views.division_upload,name='division_upload'),
+    path('district-upload',views.district_upload,name='district_upload'),
+    path('upazila-upload',views.upazila_upload,name='upazila_upload')
 ]
