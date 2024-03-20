@@ -548,7 +548,7 @@ def district_upload(request):
             data_set = district_file.read().decode("UTF-8")
             data_set_io_String = io.StringIO(data_set)
             for district in csv.reader(data_set_io_String):
-                main_id = 195
+                main_id = 5
                 division_id = main_id + int(district[1])
                 created, _  = District.objects.update_or_create(
                        division =Division.objects.get(id = int(division_id)),
