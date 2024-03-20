@@ -44,8 +44,12 @@ def customer_home_view(request):
     return render(request,'customer/home.html',context)
 
 def category_product_list(request,category,category_id):
+    product_image =Prefetch(
+            'product_images',
+            queryset=ProductImage.objects.filter(pimage_type="phone") 
+        )
     category = RootCategoryThree.objects.get(id = int(category_id))
-    products = Product.objects.filter(p_third_category = category).order_by('-p_id')
+    products = Product.objects.prefetch_related(product_image).filter(p_third_category = category).order_by('-p_id')
     context={
         'products': products
     }
