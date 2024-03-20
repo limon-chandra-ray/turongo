@@ -40,7 +40,8 @@ def customer_home_view(request):
         'slide_images':slide_image,
         'polo_shirts':polo_shirt,
         'slide_image2':slide_image2,
-        'formal_shirt':formal_shirt
+        'formal_shirt':formal_shirt,
+        'combo_offer':combo_offer
     }
     return render(request,'customer/home.html',context)
 
@@ -65,7 +66,7 @@ def product_details_view(request,product_id):
             queryset=ProductImage.objects.filter(pimage_type="phone",pimage_priority = 1) 
         )
     product = Product.objects.prefetch_related(product_iamge_prefetch,product_size_prefetch).get(p_id= product_id)
-    related_product = Product.objects.prefetch_related(product_image).filter(p_category = product.p_category).order_by('-p_id')[:6]
+    related_product = Product.objects.prefetch_related(product_image).filter(p_category = product.p_category).order_by('-p_id')[:3]
     context = {
         'product':product,
         'related_product':related_product
