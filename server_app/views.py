@@ -548,23 +548,8 @@ def district_upload(request):
             data_set = district_file.read().decode("UTF-8")
             data_set_io_String = io.StringIO(data_set)
             for district in csv.reader(data_set_io_String):
-                division_id = 0
-                if district[1] == '1':
-                    division_id = 15
-                elif district[1] == '2':
-                    division_id = 16
-                elif district[1] == '3':
-                    division_id = 17
-                elif district[1] == '4':
-                    division_id = 18
-                elif district[1] == '5':
-                    division_id = 19
-                elif district[1] == '6':
-                    division_id = 20
-                elif district[1] == '7':
-                    division_id = 21
-                elif district[1] == '8':
-                    division_id = 22
+                main_id = 195
+                division_id = main_id + int(district[1])
                 created, _  = District.objects.update_or_create(
                        division =Division.objects.get(id = int(division_id)),
                        district_name = district[2]
