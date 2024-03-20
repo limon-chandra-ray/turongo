@@ -7,14 +7,12 @@
             <small>Home</small>
         </div>
     </a>
-    <a href="#">
+    {% comment %} <a href="#">
         <div class="d-flex flex-column align-items-center">
             <i class="fa-brands fa-product-hunt"></i>
             <small>Products</small>
         </div>
-    </a>
-
-
+    </a> {% endcomment %}
     <a 
         {% if user.is_authenticated %}
             href="{{profile}}" 

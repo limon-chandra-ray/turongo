@@ -270,8 +270,9 @@
     right: 4%;
     background: #0b641e;
     color: white;
-    padding: 2px 9px;
+    padding: 2px 2px 1px 1px;
     border-radius: 0px 0.5rem 0px 0px;
+    font-size: 11px;
 }
 .new-arrival-content .regular_price{
     font-size: 15px;
