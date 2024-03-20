@@ -6,7 +6,7 @@
             <div class="owl-carousel owl-theme" id="homeslider">
                 {% for slide in slide_images %}
                     <div class="item">
-                        <a href="/{{slide.slide_link}}">
+                        <a href="{{slide.slide_link}}">
                             <img src="{{slide.slide_image.url}}" style="width:100%" alt="">
                         </a>
                     </div>
@@ -15,7 +15,7 @@
         </div>
         <div class="col-lg-4 col-12 p-0">
             <div class="w-100" style="height:100%">
-                <a href="/{{slide_image2.slide_link}}">
+                <a href="{{slide_image2.slide_link}}">
                     <img src="{{slide_image2.slide_image.url}}"  style="width:100%;height:92%" alt="">
                 </a>
             </div>
