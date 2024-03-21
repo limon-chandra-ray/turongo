@@ -156,11 +156,12 @@
                                         <p class="price float-start d-block offer_percentage">{{product.p_offer}}% off</p>
                                     </div>
                                     <p>Availability: 
-                                        {% if product.total_product > 0 %}
+                                        <span class="item"> In stock <i class="fa fa-shopping-basket"></i></span>
+                                        {% comment %} {% if product.total_product > 0 %}
                                             <span class="item"> In stock <i class="fa fa-shopping-basket"></i></span>
                                         {% else %}
                                             <span class="item"> out stock</span>
-                                        {% endif %}
+                                        {% endif %} {% endcomment %}
 
                                     </p>
                                     <p>Brand: <span class="item">{{product.p_brand.brand_name}}</span></p>
