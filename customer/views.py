@@ -53,7 +53,8 @@ def category_product_list(request,category):
     category = RootCategoryThree.objects.filter(rc_three_name__icontains = category).first()
     products = Product.objects.prefetch_related(product_image).filter(p_third_category = category).order_by('-p_id')
     context={
-        'products': products
+        'products': products,
+        'category':category
     }
     return render(request,'customer/product/products.html',context)
 

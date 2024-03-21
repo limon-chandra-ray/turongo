@@ -1,5 +1,8 @@
 {% extends 'customer/layouts/index.html' %}
 {% load static %}
+{% block customertitle %}
+    {% block customerProfileTitle %}{% endblock customerProfileTitle %}
+{% endblock customertitle %}
 {% block customerbody %}
 <style>
     .account-card{
