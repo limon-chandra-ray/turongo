@@ -4,6 +4,7 @@ from . import views
 app_name = 'server_app'
 urlpatterns = [
     path('dashboard',views.dashboard,name='dashboard'),
+    path('product-feed-make',views.product_feed,name='product_feed')
 ]
 
 # product section urls

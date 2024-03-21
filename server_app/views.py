@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.urls import reverse
-from django.http import JsonResponse
+from django.http import JsonResponse,HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate,login,logout,hashers
 from django.db.models import Prefetch
@@ -584,3 +584,28 @@ def upazila_upload(request):
         else:
             messages.add_message(request,messages.SUCCESS,'Please add only csv file')
     return redirect("server_app:csv_file_upload_view")
+
+# product_feed make csv
+def product_feed(request):
+    response = HttpResponse(content_type = 'text/csv')
+    response['Content-Disposition']  = 'attachment; filename=product-feed.csv'
+
+    #create csv writer
+    writer = csv.writer(response)
+    #Add columns Headings name
+    writer.writerow(['id','title','availability','price','link','image_link','Brand'])
+
+    product_image =Prefetch(
+            'product_images',
+            queryset=ProductImage.objects.filter(pimage_type="phone",pimage_priority = 1) 
+        )
+    
+    products = Product.objects.prefetch_related(product_image).all()
+
+    for product in products:
+        image_obj = product.product_images.first()
+        image = "https://"+ request.get_host() + image_obj.p_image.url
+        product_link = "https://"+ request.get_host() +f"/product-{product.p_id}-details"
+        writer.writerow([product.p_id,product.p_name,'In stock',product.p_price,product_link,image,'Turongo'])
+
+    return response
