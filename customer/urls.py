@@ -58,7 +58,7 @@ urlpatterns +=[
 
 #category product list
 urlpatterns +=[
-    path('<str:category>-list',views.category_product_list,name='category_product_list')
+    path('<str:category>',views.category_product_list,name='category_product_list')
 ]
 
 urlpatterns +=[
