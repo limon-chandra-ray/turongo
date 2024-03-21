@@ -303,9 +303,11 @@
                 <div class="card">
                     <div class="card-body">
                         <h2>Related Produdcts</h2>
-                        {% for product in related_product %}
-                            {% include "customer/product/product-card.html" %}
-                        {% endfor %}
+                        <div class="row p-0 m-0">
+                            {% for product in related_product %}
+                                {% include "customer/product/product-card.html" %}
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
             </div>
