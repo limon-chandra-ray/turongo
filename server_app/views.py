@@ -593,7 +593,7 @@ def product_feed(request):
     #create csv writer
     writer = csv.writer(response)
     #Add columns Headings name
-    writer.writerow(['id','title','availability','price','link','image_link','Brand'])
+    writer.writerow(['id','title','availability','price','link','image_link','Brand','condition','description'])
 
     product_image =Prefetch(
             'product_images',
@@ -606,6 +606,6 @@ def product_feed(request):
         image_obj = product.product_images.first()
         image = "https://"+ request.get_host() + image_obj.p_image.url
         product_link = "https://"+ request.get_host() +f"/product-{product.p_id}-details"
-        writer.writerow([product.p_id,product.p_name,'In stock',product.p_price,product_link,image,'Turongo'])
+        writer.writerow([product.p_id,product.p_name,'In stock',product.p_price,product_link,image,'Turongo','new',product.p_description])
 
     return response
