@@ -586,6 +586,7 @@ def upazila_upload(request):
     return redirect("server_app:csv_file_upload_view")
 
 # product_feed make csv
+import html2text
 def product_feed(request):
     response = HttpResponse(content_type = 'text/csv')
     response['Content-Disposition']  = 'attachment; filename=product-feed.csv'
@@ -606,6 +607,13 @@ def product_feed(request):
         image_obj = product.product_images.first()
         image = "https://"+ request.get_host() + image_obj.p_image.url
         product_link = "https://"+ request.get_host() +f"/product-{product.p_id}-details"
-        writer.writerow([product.p_id,product.p_name,'In stock',product.p_price,product_link,image,'Turongo','new',product.p_description])
+        convert = html2text.HTML2Text()
+        convert.ignore_images = True
+        convert.ignore_links =True
+        convert.ignore_mailto_links =True
+        description = convert.handle(product.p_description)
+        description = description.replace('\n','').replace('**','').replace('##','').replace('*','').replace('  ','')
+        
+        writer.writerow([product.p_id,product.p_name,'In stock',product.p_price,product_link,image,'Turongo','new',description])
 
     return response
