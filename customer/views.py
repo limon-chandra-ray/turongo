@@ -448,24 +448,40 @@ def profile_password_change_view(request):
 
 
 #footer page about policy
-def about_us_view(request):
-    return render(request,'customer/about/about-us.html')
-def cookie_policy_view(request):
-    return render(request,'customer/about/cookie-policy.html')
-def order_procedure_view(request):
-    return render(request,'customer/about/order-procedure.html')
-def order_traking_view(request):
-    return render(request,'customer/about/order-traking.html')
-def payment_method_view(request):
-    return render(request,'customer/about/payment-method.html')
+def website_about_us(request):
+    return render(request,'footer-link/about_us_.html')
 
-def payment_shipping_policy_view(request):
-    return render(request,'customer/about/payment-shipping-policy.html')
-def privacy_policy_view(request):
-    return render(request,'customer/about/privacy-policy.html')
-def return_refund_policy_view(request):
-    return render(request,'customer/about/return-refund-policy.html')
-def size_guide_view(request):
-    return render(request,'customer/about/size-guide.html')
-def trems_conditions_view(request):
-    return render(request,'customer/about/trems-conditions.html')
+def website_trems_and_condition(request):
+    return render(request,'footer-link/trems-conditions.html')
+
+def website_return_and_refund(request):
+    return render(request,'footer-link/return-refund-policy.html')
+def website_cookie_policy_(request):
+    return render(request,'footer-link/cookie-policy.html')
+def website_product_size_guide(request):
+    return render(request,'footer-link/size-guide.html')
+# def about_view(request):
+#     return 'work'
+# def limon_work(request):
+#     return render(request,'customer/footer-link/about-us.html')
+# def abp_view(request):
+#     return render(request,'customer/footer-link/about-us.html')
+# def cookie_policy_view(request):
+#     return render(request,'customer/about/cookie-policy.html')
+# def order_procedure_view(request):
+#     return render(request,'customer/about/order-procedure.html')
+def order_traking_view(request):
+    return render(request,'footer-link/order-traking.html')
+# def payment_method_view(request):
+#     return render(request,'customer/about/payment-method.html')
+
+# def payment_shipping_policy_view(request):
+#     return render(request,'customer/about/payment-shipping-policy.html')
+# def privacy_policy_view(request):
+#     return render(request,'customer/about/privacy-policy.html')
+# def return_refund_policy_view(request):
+#     return render(request,'customer/about/return-refund-policy.html')
+# def size_guide_view(request):
+#     return render(request,'customer/about/size-guide.html')
+# def trems_conditions_view(request):
+#     return render(request,'customer/about/trems-conditions.html')

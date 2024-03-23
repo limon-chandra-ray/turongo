@@ -614,6 +614,6 @@ def product_feed(request):
         description = convert.handle(product.p_description)
         description = description.replace('\n','').replace('**','').replace('##','').replace('*','').replace('  ','')
         
-        writer.writerow([product.p_id,product.p_name,'In stock',product.p_price,product_link,image,'Turongo','new',description])
+        writer.writerow([product.p_id,product.p_name,'In stock',product.p_offer_price,product_link,image,'Turongo','new',description])
 
     return response
