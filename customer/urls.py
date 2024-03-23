@@ -75,11 +75,12 @@ urlpatterns +=[
 #     path("limon-work",views.limon_work,name='limon_work')
 # ]
 urlpatterns +=[
-      path("about-us/",views.website_about_us,name='website_about_us'),
-      path('trems-and-conditions/',views.website_trems_and_condition,name='website_trems_and_condition'),
-      path('return-and-refund-policy/',views.website_return_and_refund,name='website_return_and_refund'),
-      path('cookies-policy/',views.website_cookie_policy_,name='website_cookie_policy_'),
-      path('product-size-guide/',views.website_product_size_guide,name='website_product_size_guide'),
-      path('order-traking/',views.order_traking_view,name='order_traking_view'),
-
+    path("about-us/",views.website_about_us,name='website_about_us'),
+    path('trems-and-conditions/',views.website_trems_and_condition,name='website_trems_and_condition'),
+    path('return-and-refund-policy/',views.website_return_and_refund,name='website_return_and_refund'),
+    path('cookies-policy/',views.website_cookie_policy_,name='website_cookie_policy_'),
+    path('product-size-guide/',views.website_product_size_guide,name='website_product_size_guide'),
+    path('order-traking/',views.order_traking_view,name='order_traking_view'),
+    path('payment-and-shipping-policy/',views.payment_shipping_policy_view,name='payment_shipping_policy_view'),
+    path("privacy-policy/",views.privacy_policy_view,name='privacy_policy_view'),
 ]

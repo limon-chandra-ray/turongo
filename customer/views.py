@@ -475,10 +475,10 @@ def order_traking_view(request):
 # def payment_method_view(request):
 #     return render(request,'customer/about/payment-method.html')
 
-# def payment_shipping_policy_view(request):
-#     return render(request,'customer/about/payment-shipping-policy.html')
-# def privacy_policy_view(request):
-#     return render(request,'customer/about/privacy-policy.html')
+def payment_shipping_policy_view(request):
+    return render(request,'customer/about/payment-shipping-policy.html')
+def privacy_policy_view(request):
+    return render(request,'customer/about/privacy-policy.html')
 # def return_refund_policy_view(request):
 #     return render(request,'customer/about/return-refund-policy.html')
 # def size_guide_view(request):

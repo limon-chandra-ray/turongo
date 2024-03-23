@@ -17,18 +17,18 @@
                 <ul>
                     <li><a href="{% url 'customer:website_about_us' %}" class="footer-link">About us</a></li>
                     <li><a href="{% url 'customer:website_product_size_guide' %}" class="footer-link">Size Guide</a></li>
-                    <li><a href="#" class="footer-link">Privacy Policy</a></li>
+                    <li><a href="{% url 'customer:privacy_policy_view' %}" class="footer-link">Privacy Policy</a></li>
                     <li><a href="{% url 'customer:website_cookie_policy_' %}" class="footer-link">Cokkie Policy</a></li>
-                    <li><a href="{% url 'customer:order_traking_view' %}" class="footer-link">Order Traking</a></li> 
+                    {% comment %} <li><a href="{% url 'customer:order_traking_view' %}" class="footer-link">Order Traking</a></li>  {% endcomment %}
                 </ul>
             </div>
             <div class="col-lg-3 col-6 d-flex flex-column justify-content-center align-items-center pt-2">
                 <ul>
-                    <li><a href="#" class="footer-link">Payment & Shipping Policy</a></li>
+                    <li><a href="{% url 'customer:payment_shipping_policy_view' %}" class="footer-link">Payment & Shipping Policy</a></li>
                     <li><a href="{% url 'customer:website_trems_and_condition' %}" class="footer-link">Terms & Conditions</a></li>
                     <li><a href="{% url 'customer:website_return_and_refund' %}" class="footer-link">Return & Refund Policy</a></li>
-                    <li><a href="#" class="footer-link">Payment Method</a></li>
-                    <li><a href="#" class="footer-link">Order Procedure</a></li>
+                    {% comment %} <li><a href="#" class="footer-link">Payment Method</a></li>
+                    <li><a href="#" class="footer-link">Order Procedure</a></li> {% endcomment %}
                     
                     
                 </ul>
