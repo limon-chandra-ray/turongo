@@ -4,7 +4,9 @@
             <div class="new-arrival-product">
                 <div class="new-arrivals-img-contnent">
                     <span class="product_offer">{{product.p_offer}}% off</span>
-                    <img class="img-fluid" style="border-radius:0.5rem 0.5rem 0rem 0rem" src="{{product.product_images.first.p_image.url}}" alt="">
+                    <a href="{% url "customer:product_details_view" product.p_id %}" class="text-decoration-none">
+                        <img class="img-fluid" style="border-radius:0.5rem 0.5rem 0rem 0rem" src="{{product.product_images.first.p_image.url}}" alt="">
+                    </a>
                 </div>
                 <div class="new-arrival-content text-center mt-3">
                     <h4 class="m-0"><a href="{% url "customer:product_details_view" product.p_id %}">{{product.p_name}}</a></h4>

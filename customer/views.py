@@ -249,7 +249,10 @@ def view_cart_datalayer_item(request):
             item['discount_price'] = float(bitem.product.p_offer_price)
             item['item_brand'] = bitem.product.p_brand.brand_name
             item['item_category'] = bitem.product.p_third_category.rc_three_name
-            item['item_category2'] = bitem.product.p_category.category_name
+            if bitem.product.p_category:
+                item['item_category2'] = bitem.product.p_category.category_name
+            else:
+                item['item_category2'] = None
             item['quantity'] = bitem.quantity
             item['size'] = bitem.product_size
             item['sub_total'] = float(bitem.sub_total)
@@ -315,8 +318,6 @@ def checkout_view(request):
         fbq_item['quantity'] = int(bitem.quantity)
         fbq_items.append(fbq_item)
         product_ids.append(str(bitem.product.p_id))
-    print(fbq_items)
-    print(product_ids)
     divisions = Division.objects.all()
     context={
         'cart':cart,

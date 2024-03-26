@@ -1,19 +1,25 @@
 
 from pathlib import Path
 import os
+import environ
+env = environ.Env(
+    DEBUG=(bool, False)
+)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Take environment variables from .env file
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-4&4ka9ajy-6*@90(+c^7wj=9^=3n3*s#kra%%(0cqrnlr2d4+#'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
 
+DEBUG = env('DEBUG')
 if DEBUG:
     ALLOWED_HOSTS = []
 else:
@@ -81,11 +87,11 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
 	'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME':  'turo_2024_ngo_2090',
-        'USER': 'lr010120242090turongo',
-        'PASSWORD': 'clo@th$2024!limon&Rashed*2090',
+        'NAME':  env("DB_NAME"),
+        'USER': env("DB_USER"),
+        'PASSWORD': env("DB_PASSWORD"),
         'HOST': 'localhost',
-        'PORT': '5432'
+        'PORT': env("DB_PORT")
     }
 }
 

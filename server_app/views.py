@@ -617,3 +617,41 @@ def product_feed(request):
         writer.writerow([product.p_id,product.p_name,'In stock',product.p_offer_price,product_link,image,'Turongo','new',description])
 
     return response
+
+#order invoice create html to pdf
+def order_invoice(request):
+    return render(request,'server/super-admin/invoice/order-invoice.html')
+
+
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+def render_pdf_view(request):
+    template_path = 'server/super-admin/invoice/order-invoice.html'
+    context = {'myvar': 'this is your template context'}
+    html = render(request, template_path, context).content.decode('utf-8')
+    
+    # Create a PDF file
+    result = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode('utf-8')), result, encoding='utf-8')
+
+    if not pdf.err:
+        # Serve PDF as a response
+        response = HttpResponse(result.getvalue(), content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="output.pdf"'
+        return response
+    else:
+        return HttpResponse('Error generating PDF: {}'.format(pdf.err))
+    # Create a Django response object, and specify content_type as pdf
+    # response = HttpResponse(content_type='application/pdf')
+    # response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+    # # find the template and render it.
+    # template = get_template(template_path)
+    # html = template.render(context)
+
+    # # create a pdf
+    # pisa_status = pisa.CreatePDF(
+    #    html.encode("utf-8"), dest=response,encoding="utf-8")
+    # # if error then show some funny view
+    # if pisa_status.err:
+    #    return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    # return response

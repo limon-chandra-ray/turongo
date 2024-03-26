@@ -96,8 +96,8 @@
         <div class="card">
             <div class="card-body">
                 <div class="d-flex justify-content-between ">
-                    <div>Items : <b id="total_items">{{cart.bag_total_items}}</b> </div>
-                    <div>Totals : <b id="total_amount">{{cart.bag_total_amount}}</b> (taka)</div>
+                    <div>Items : <b id="tiw">{{cart.bag_total_items}}</b> </div>
+                    <div>Totals : <b id="tmw">{{cart.bag_total_amount}}</b> (taka)</div>
                     <div>
                         <a href="{% url 'customer:checkout_view' %}" class="btn btn-primary">Checkout</a>
                     </div>
@@ -117,8 +117,8 @@
             var item_id = item.getAttribute('bag-item');
             var action_type = item.getAttribute('data-action');
             var product_price = parseInt(item.getAttribute('product-price'));
-            var total_items = parseInt($("#total_items").text())
-            var total_amount = parseInt($("#total_amount").text())
+            var total_items = parseInt($("#tiw").text())
+            var total_amount = parseInt($("#tmw").text())
             var sub_total_id = "#itemsubtotal"+item_id;
             var item_quantity = "#itemquantity"+item_id;
             var sub_total_amount = parseInt($(sub_total_id).text())
@@ -141,8 +141,8 @@
                                 sub_item_quantity -= 1
                                 $(item_quantity).text(sub_item_quantity.toString());
                                 $(sub_total_id).text(sub_total_amount.toString());
-                                $("#total_items").text(total_items.toString());
-                                $("#total_amount").text(total_amount.toString());
+                                $("#tiw").text(total_items.toString());
+                                $("#tmw").text(total_amount.toString());
                             }else{
                                 sub_total_amount = sub_total_amount + product_price;
                                 total_items += 1;
@@ -150,8 +150,9 @@
                                 sub_item_quantity += 1
                                 $(item_quantity).text(sub_item_quantity.toString());
                                 $(sub_total_id).text(sub_total_amount.toString());
-                                $("#total_items").text(total_items.toString());
-                                $("#total_amount").text(total_amount.toString());
+                                $("#tiw").text(total_items.toString());
+                                $("#tmw").text(total_amount.toString());
+                                
                             }
                         }
                         if(sub_item_quantity == 0){

@@ -61,7 +61,9 @@ urlpatterns +=[
     path('return-order-list',views.return_order_list,name='return_order_list'),
     path('cancel-order-list',views.cancel_order_list,name='cancel_order_list'),
     path('order-<int:order_id>-details',views.order_detail_view,name='order_detail_view'),
-    path('order-<int:order_id>-details-status-update',views.order_status_update,name='order_status_update')
+    path('order-<int:order_id>-details-status-update',views.order_status_update,name='order_status_update'),
+    path('order-invoice',views.order_invoice,name='order_invoice'),
+    path('order-invoice-download/',views.render_pdf_view,name='render_pdf_view')
 ]
 
 urlpatterns +=[

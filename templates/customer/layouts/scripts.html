@@ -170,18 +170,16 @@
             url:"{% url 'customer:view_cart_datalayer_item' %}",
             success:(res)=>{
                 if(res['status'] == 'success'){
-					console.log("View cart data layer")
-					console.log(res['items'])
                     dataLayer.push({
-                        event: "view_cart",
-                        ecommerce: {
-                                currency: "BDT",
-                                value: res['ctp'],
-                                quantity: res['ctq'],
-                                items: res['items']
-                            }
-                    });
-                }
+					event: "view_cart",
+					ecommerce: {
+						currency: "BDT",
+						value: res['ctp'],
+						quantity: res['ctq'],
+						items: res['items']
+					}
+				});
+                	}
             }
         });
     }
