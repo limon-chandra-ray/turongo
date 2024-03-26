@@ -77,6 +77,11 @@
         margin: 0  !important;
         font-size: 0.79rem !important;
     }
+    .select_product_size{
+        border-color:#237268;
+        background:#3abfae;
+        color:white;
+    }
 </style>
     <div class="row page-titles">
         <ol class="breadcrumb">
@@ -367,13 +372,13 @@
     productSize.forEach((size)=>{
         size.addEventListener("click",()=>{
             productSize.forEach((color)=>{
-                color.classList.remove('border-success');
+                color.classList.remove('select_product_size');
                 color.classList.add('border-dark');
                 
             });
             select_product_size = size.getAttribute("product-size");
             size.classList.remove('border-dark');
-            size.classList.add('border-success');
+            size.classList.add('select_product_size');
         })
     })
     $("#add_to_card").on('click',()=>{
