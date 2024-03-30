@@ -23,7 +23,7 @@ DEBUG = env('DEBUG')
 if DEBUG:
     ALLOWED_HOSTS = []
 else:
-    ALLOWED_HOSTS = ['*',"turongo.com"]
+    ALLOWED_HOSTS = ['*',"turongo.com","www.turongo.com"]
 
 
 # Application definition
