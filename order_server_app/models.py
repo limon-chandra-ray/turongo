@@ -80,6 +80,7 @@ class Order(models.Model):
     delivery_charge = models.IntegerField(default = 0)
     first_name = models.CharField(max_length = 250,null=True,blank=True)
     last_name = models.CharField(max_length = 250,null=True,blank=True)
+    full_name = models.CharField(max_length=255, null=True, blank=True)
     phone_number = models.CharField(max_length = 250,null=True,blank=True)
     email = models.EmailField(null=True,blank=True)
     address = models.TextField(null=True,blank=True)

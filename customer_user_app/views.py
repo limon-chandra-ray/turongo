@@ -19,14 +19,14 @@ def customer_add(request):
     if request.method == 'POST':
         user_name = request.POST['user_name']
         phone_number = request.POST['phone_number']
-        password = request.POST['password']
-        password2 = request.POST['password2']
+        # password = request.POST['password']
+        # password2 = request.POST['password2']
 
         check_phone_number = CustomUser.objects.filter(phone_number = phone_number).first()
         valid_check = 0
-        if validetors.is_valid_username(user_name) != True:
-            messages.add_message(request,messages.WARNING,'Bad request. user name min=3 max=15 letter and number')
-            valid_check = 1
+        # if validetors.is_valid_username(user_name) != True:
+        #     messages.add_message(request,messages.WARNING,'Bad request. user name min=3 max=15 letter and number')
+        #     valid_check = 1
         
         
         if validetors.is_valid_bangladesh_phone_number(phone_number):
@@ -36,18 +36,18 @@ def customer_add(request):
         else:
             messages.add_message(request,messages.WARNING,'bad request. Please add valid phone number')
             valid_check = 1
-        if password != password2:
-            messages.add_message(request,messages.WARNING,"Password and confirm-password dont's match")
-            valid_check = 1
+        # if password != password2:
+        #     messages.add_message(request,messages.WARNING,"Password and confirm-password dont's match")
+        #     valid_check = 1
 
         if valid_check != 1:
             new_customer = Customer.objects.create_customer(
                     phone_number = phone_number,
                     user_name = user_name,
-                    password = password2
+                    password = phone_number
                 )
             new_customer.save()
-            user = authenticate(request,username = phone_number,password=password2)
+            user = authenticate(request,username = phone_number,password=phone_number)
             if user:
                 login(request,user)
                 if request.user.role == 'CUSTOMER':
@@ -61,19 +61,21 @@ def customer_add(request):
 def customer_login(request):
     if request.method == 'POST':
         phone_number = request.POST['phone_number']
-        password = request.POST['password']
-        user = authenticate(request,username = phone_number,password=password)
-        if user:
-            login(request,user)
-            if request.user.role == 'CUSTOMER':
-                messages.add_message(request,messages.SUCCESS,'your acctount active successfully')
-                return redirect('customer:customer_home_view')
+        if CustomUser.objects.filter(phone_number = phone_number).exists():
+            password = request.POST['phone_number']
+            user = authenticate(request,username = phone_number,password=password)
+            if user:
+                login(request,user)
+                if request.user.role == 'CUSTOMER':
+                    messages.add_message(request,messages.SUCCESS,'your acctount active successfully')
+                    return redirect('customer:customer_home_view')
+                else:
+                    logout(request)
+                    messages.add_message(request,messages.WARNING,'Please add valid information')
             else:
-                logout(request)
                 messages.add_message(request,messages.WARNING,'Please add valid information')
         else:
             messages.add_message(request,messages.WARNING,'Please add valid information')
-
     return redirect('customer:login_view')
 
 def customer_change_password(request):

@@ -25,15 +25,15 @@ def place_order_confirm(request):
         payment_method = request.POST['payment_method']
 
 
-        first_name = request.POST['first_name']
-        last_name = request.POST['last_name']
-
+        # first_name = request.POST['first_name']
+        # last_name = request.POST['last_name']
+        user_name = request.POST['user_name']
         phone_number = request.POST['phone_number']
         if validetors.is_valid_bangladesh_phone_number(phone_number) != True:
             messages.add_message(request,messages.WARNING,'Bad request. user name min=3 max=15 letter and number')
             check_value = 1
         
-        email = request.POST['email']
+        # email = request.POST['email']
         try:
             address = request.POST['address']
         except:
@@ -74,9 +74,10 @@ def place_order_confirm(request):
                     bag = product_bag,
                     payment_method = payment_method,
                     delivery_charge = int(shipping_method),
-                    first_name = first_name,
-                    last_name = last_name,
-                    email = email,
+                    # first_name = first_name,
+                    # last_name = last_name,
+                    full_name = user_name,
+                    # email = email,
                     phone_number = phone_number,
                     address = address,
                     order_number=order_number,
@@ -99,19 +100,20 @@ def place_order_confirm(request):
             else:
                 check_phone_number = CustomUser.objects.filter(phone_number = phone_number).first()
                 if check_phone_number is None:
+                    user_name_list = user_name.split()
                     new_customer = Customer.objects.create_customer(
                         phone_number = phone_number,
-                        user_name = first_name,
+                        user_name = user_name_list[0],
                         password = phone_number,
                         )
                     new_customer.save()
                     user = authenticate(request,username = phone_number,password=phone_number)
                     if user:
-                        CustomUser.objects.filter(phone_number = phone_number).update(
-                            email =email,
-                            first_name = first_name,
-                            last_name = last_name
-                        )
+                        # CustomUser.objects.filter(phone_number = phone_number).update(
+                        #     email =email,
+                        #     first_name = first_name,
+                        #     last_name = last_name
+                        # )
                         login(request,user)
                     guest_user_update_product_bag(request)
                     product_bag = ProductBag.objects.filter(user = request.user,bag_status=False).first()
@@ -120,9 +122,10 @@ def place_order_confirm(request):
                         bag = product_bag,
                         payment_method = payment_method,
                         delivery_charge = int(shipping_method),
-                        first_name = first_name,
-                        last_name = last_name,
-                        email = email,
+                        # first_name = first_name,
+                        # last_name = last_name,
+                        # email = email,
+                        full_name = user_name,
                         phone_number = phone_number,
                         address = address,
                         order_number=order_number,

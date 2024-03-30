@@ -38,11 +38,11 @@
                                                 <label class="mb-1"><strong>Phone Number</strong></label>
                                                 <input type="text" class="form-control" name='phone_number' placeholder="01797856XXX">
                                             </div>
-                                            <div class="mb-3 position-relative">
+                                            {% comment %} <div class="mb-3 position-relative">
                                                 <label class="mb-1"><strong>Password</strong></label>
                                                 <input type="password" id="ipassword" class="form-control" name="password" placeholder="Password">
                                                 <span class="password_show_hide position-absolute" style="top:53%;right:10px" id="password"><i class="far fa-eye"></i></span>
-                                            </div>
+                                            </div> {% endcomment %}
                                             <div class="row d-flex justify-content-between mt-4 mb-2">
                                                 <div class="mb-3">
                                                    <div class="form-check custom-checkbox ms-1">
@@ -50,9 +50,9 @@
                                                         <label class="form-check-label" for="basic_checkbox_1">Remember my preference</label>
                                                     </div>
                                                 </div>
-                                                <div class="mb-3">
+                                                {% comment %} <div class="mb-3">
                                                     <a href="#">Forgot Password?</a>
-                                                </div>
+                                                </div> {% endcomment %}
                                             </div>
                                             <div class="text-center">
                                                 <button type="submit" class="btn btn-primary btn-block">Sign In</button>
