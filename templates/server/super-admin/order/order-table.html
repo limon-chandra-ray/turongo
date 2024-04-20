@@ -16,7 +16,7 @@
             {% for order in orders %}
                 <tr>
                     <td>{{order.order_number}}</td> 
-                    <td>{{order.first_name}} {{order.last_name}}</td>
+                    <td>{{order.full_name}}</td>
                     <td>{{order.phone_number}}</td> 
                     <td>
                         {% if order.delivery_charge == 60 %}
