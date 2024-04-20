@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="{% static 'js/jquery3.7.1-min.js' %}"></script>
+    <script src="{% static 'js/printThis1.15.0.js' %}"></script>
+    <title>Payment invoice turongo.com</title>
+</head>
+<body>
+    <div id="invoiceContent">
+        <div style="display: flex;justify-content: space-between;align-items: center;padding: 4rem 4rem 0px 4rem;">
+            <div>
+                <img style="width: 150px;" src="{% static 'images/logo11.png' %}" alt="">
+            </div>
+            <div style="display: flex;flex-direction: column;text-align: right;font-size: 16px;">
+                <div>Turongo LiftStyle Store</div>
+                <div>Contact Us</div>
+                <div style="font-size: 14px;">House-49, Road-16, Sector-14,</div>
+                <div style="font-size: 14px;">Uttara,Dhaka,Bangladesh</div>
+                <div style="font-size: 14px;">+8801824-074287</div>
+                <div style="font-size: 14px;">+8801797-856496</div>
+                <div style="font-size: 14px;">Whatsapp: +8801824-074287(Message Only)</div>
+            </div>
+        </div>
+        <div style="display: flex;justify-content: space-between;align-items: center;padding: 3rem 4rem;">
+            <div style="display: flex;flex-direction: column;text-align: left;font-size: 16px;">
+                <div>Bill To:</div>
+                <div>{{order.first_name}} {{order.last_name}}</div>
+                <div>{{order.address}} </div>
+                {% comment %} <div>Uttara, Dhaka,Bangladesh</div> {% endcomment %}
+                <div>Phone: {{order.phone_number}}</div>
+            </div>
+            <div style="display: flex;flex-direction: column;text-align: end;font-size: 16px;">
+                <div>Order Number: #{{order.order_number}}</div>
+                <div>Order Date: {{order.created_at|date:"M d,Y h:m a"}}</div>
+                {% comment %} <div>Invoice Number: TURI-3490</div>
+                <div>Invoice Date: 12/04/2024</div> {% endcomment %}
+                <div>Payment Method: Cash on delivery</div>
+            </div>
+        </div>
+        <table style="width: 100%;padding: 1rem 2rem;">
+            <tr style="width: 100%;text-align: left;">
+                    <th style="padding: 10px;border: none;width: 55%;border-bottom: 1px solid rgb(193, 189, 189);">Product Title</th>
+                    <th style="width: 15%;border-bottom: 1px solid rgb(193, 189, 189);">Price <sub style="font-size: 10px;opacity: 0.65;">(TK)</sub></th>
+                    <th style="width: 15%;border-bottom: 1px solid rgb(193, 189, 189);">Quantity</th>
+                    <th style="width: 15%;border-bottom: 1px solid rgb(193, 189, 189);">Total <sub style="font-size: 10px;opacity: 0.65;">(TK)</sub></th>
+            </tr>
+            {% for item in bag_items %}
+                <tr>
+                    <td style="border-bottom: 1px solid rgb(193, 189, 189);padding: 10px;">{{item.product.p_name}} size:{{item.product_size}}</td>
+                    <td  style="border-bottom: 1px solid rgb(193, 189, 189);padding: 10px;">{{item.order_price}}</td>
+                    <td  style="border-bottom: 1px solid rgb(193, 189, 189);padding: 10px;">{{item.quantity}}</td>
+                    <td  style="border-bottom: 1px solid rgb(193, 189, 189);padding: 10px;">{{item.sub_total}}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        <div style="display: flex;justify-content: end;padding: 0rem 3rem;">
+            <table style="width: 40%;">
+                    <tr>
+                        <th style="width: 25%;text-align: center;padding: 10px;">Sub Total</th>
+                        <td style="width: 15%;text-align: left;padding: 10px;">{{order.bag.bag_total_amount}} tk.</td>   
+                    </tr>
+                    <tr>
+                        <th style="width: 25%;text-align: center;padding: 10px;">Deliveray Charge</th>
+                        <td style="width: 15%;text-align: left;padding: 10px;">{{order.delivery_charge}} tk.</td>   
+                    </tr>
+                    <tr>
+                        <th style="width: 25%;text-align: center;padding: 10px;">Total</th>
+                        <td style="width: 15%;text-align: left;padding: 10px;">{{order.total_amount}} tk.</td>   
+                    </tr>
+            </table>
+        </div>
+    
+    </div>
+    <div style="width: 100%;text-align: center;">
+        <button type="button" style="    
+                                padding: 25px 1rem;
+                                border-radius: 10px;
+                                cursor: pointer;
+                                background: green;
+                                color: white;
+                                width: 250px;
+                                font-size: 23px;
+                                font-weight: 700;
+                                border: none;" id="invoicePrint">Print Invoice</button>
+    </div>
+    <script>
+        $("#invoicePrint").on('click',()=>{
+            $("#invoiceContent").printThis();
+        })
+    </script>
+</body>
+</html>

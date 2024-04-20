@@ -372,6 +372,30 @@ def customer_cart_item_delete(request,item_id):
     return redirect('customer:card_product_view')
     
 
+def buy_now_view(request):
+    divisions = Division.objects.all()
+    context={
+        'divisions':divisions
+    }
+    return render(request,'customer/order/buy-now.html',context)
+
+def get_buy_now_data(request):
+    if request.method == 'POST':
+        product_id = request.POST['product_id']
+        product_size = request.POST['size']
+        quantity = int(request.POST['quantity'])
+        product = Product.objects.filter(p_id = product_id).first()
+        product_images = ProductImage.objects.filter(product = product).first()
+
+        product_details = dict()
+        product_details['p_id'] = product.p_id
+        product_details['title'] = product.p_name
+        product_details['price'] = product.p_offer_price
+        product_details['quantity'] = quantity
+        product_details['size'] = product_size
+        product_details['p_img'] = product_images.p_image.url
+        product_details['total_amount'] = quantity * product.p_offer_price
+        return JsonResponse({"status":"success",'product':product_details})
 
 #customer profile section
 def customer_profile_view(request):

@@ -1,7 +1,13 @@
 {% extends "server/base/main.html" %}
+{% block superTitle %}Payment Invoice {% endblock superTitle %}
 {% block superMain %}
 <div class="mr-5">
-    <div class="py-4">Order Details</div>
+    <div class="py-4 flex justify-between">
+        <div>Order Details</div>
+        <div>
+            <a href="{% url "server_app:order_invoice" order.id %}" type="button" class="px-3 py-2 bg-orange-500 rounded text-white no-underline" id="invoicePrint">Invoice Print</a>
+        </div>
+    </div>
     <div class="bg-base-200 p-4 drop-shadow-md rounded-lg flex justify-between">
         <div>
             <div>Order ID: #{{order.order_number}}</div>
@@ -135,8 +141,6 @@
             </div>
         </div>
     </div>
-    <div>
-        <a href="{% url "server_app:render_pdf_view" %}">Download Invoice</a>
-    </div>
+
 </div>
 {% endblock superMain %}

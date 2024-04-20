@@ -1,7 +1,10 @@
 from django.urls import path
 from . import views
 from customer_user_app.views import (customer_login,customer_add,login_view,register_view,user_logout,customer_change_password)
-from order_server_app.views import place_order_confirm,checkout_gtag
+from order_server_app.views import (place_order_confirm,checkout_gtag,
+                                    buy_now_to_place_order_confirm
+                                    
+                                    )
 app_name = 'customer'
 urlpatterns = [
     path('',views.customer_home_view,name='customer_home_view'),
@@ -24,8 +27,11 @@ urlpatterns +=[
 urlpatterns += [
     path('cart-product-checkout',views.checkout_view,name="checkout_view"),
     path('place-order-save',place_order_confirm,name='place_order_confirm'),
+    path('buy-now-place-order-save',buy_now_to_place_order_confirm,name='buy_now_to_place_order_confirm'),
     path('checkout-gtag-data',checkout_gtag,name='checkout_gtag'),
-    path('chckout-fbq-data',views.checkout_json_data,name='checkout_json_data')
+    path('chckout-fbq-data',views.checkout_json_data,name='checkout_json_data'),
+    path('buy-now/',views.buy_now_view,name='buy_now_view'),
+    path('buy-now-session-data/',views.get_buy_now_data,name='get_buy_now_data')
 ]
 
 #division,district,upazila

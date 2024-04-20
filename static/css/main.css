@@ -292,6 +292,82 @@
     background: var(--main-color);
     color: white;
 }
+
+.product-order-action-content{
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+    padding-top: 10px;
+}
+.prqu-content-section{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 10px;
+}
+.prqu-content-section input{
+    padding: 7px 0px;
+    background: white;
+    width: 150px;
+    text-align: center;
+    border-radius: 7px;
+}
+.prqu-content-section button{
+    border: none;
+    font-size: 20px;
+    padding: 7px 35px;
+    border-radius: 7px;
+}
+.prqu-cs-negative{
+
+}
+.prqu-cs-postitive{
+
+}
+.prqu-add-pur{
+    display:grid;
+    grid-template-columns: repeat(2,1fr);
+    column-gap: 10px;
+}
+.prqu-add-pur button{
+    border: none;
+    border-radius: 7px;
+    padding: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 10px;
+    font-size: 18px;
+}
+.prqu-what{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+.prqu-what-button{
+    border: none;
+    border-radius: 7px;
+    padding: 9px;
+    width: 80%;
+    padding: 9px;
+    font-size: 17px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 14px;
+    color: white;
+    background: #00A10B;
+
+}
+.prqu-add-button{
+    color: white;
+    background: #3abfae;
+}
+.prqu-pur-button{
+    background: #d3600d;
+    color: white;
+}
 /*End Product details page*/
 @media only screen and (max-width: 650px) {
     .button-groups{

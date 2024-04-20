@@ -179,16 +179,36 @@
                                         {% endfor %}
                                     </div>
                                     
-                                    <div class="d-flex align-items-end flex-wrap mt-4 justify-content-center">
+                                    <div class="product-order-action-content">
                                         <!--Quantity start-->
-                                        <div class="col-6 px-0">
-                                            <input type="number" id="quantity" class="form-control input-btn input-number py-0" value="1">
+                                        <div class="prqu-content-section">
+                                            <button type="button" id="pNegative" class="prqu-cs-negative"><i class="fa-solid fa-minus"></i></button>
+                                            <input type="text" id="quantity" class="input-btn input-numbe" value="1" disabled>
+                                            <button type="button" id="pPositive" class="prqu-cs-postitive"><i class="fa-solid fa-plus"></i></button>
                                         </div>
+                                        <div>
+                                            <div class="prqu-add-pur">
+                                                <button class="prqu-add-button" id="add_to_card" type="button">
+                                                    <i class="fa fa-shopping-basket me-2"></i><span>Add To Cart</span>
+                                                </button>
+                                                <button class="prqu-pur-button" id="buy_now" type="button">
+                                                    <i class="fa fa-shopping-basket me-2"></i><span>Buy Now </span>
+                                                </button>
+                                            </div>
+                                            {% comment %} <div class="prqu-what">
+                                                <button class="prqu-what-button" id="whatsapp" type="button">
+                                                    <i class="fa-brands fa-whatsapp"></i><span>Whatsapp Us</span>
+                                                </button>
+                                            </div> {% endcomment %}
+                                        </div>
+                                        <!-- <div class="col-6 px-0">
+                                            <input type="number" id="quantity" class="form-control input-btn input-number py-0" value="1">
+                                        </div> -->
                                         <!--Quanatity End-->
-                                        <div class="shopping-cart">
+                                        <!-- <div class="shopping-cart">
                                             <button class="btn btn-primary" style="padding: 9px;" id="add_to_card" type="submit"><i class="fa fa-shopping-basket me-2"></i>Add
                                                 to cart</button>
-                                        </div>
+                                        </div> -->
                                     </div>
                                     
                                 </div>
@@ -364,6 +384,7 @@
         </div>
     </div>
 </div>
+<div id="buyNowL" data-buylink="{% url 'customer:buy_now_view' %}" hidden></div>
 {% endblock customerbody %}
 {% block customerScript %}
 <script>
@@ -466,6 +487,35 @@
             });
         }
     }
+    //Buy Now Section
+    $("#buy_now").on('click',()=>{
+        if(select_product_size != ''){
+            var product_id = "{{product.p_id}}";
+            var product_quantity =  $("#quantity").val()
+            sessionStorage.setItem('p_id',product_id)
+            sessionStorage.setItem('p_size',select_product_size)
+            sessionStorage.setItem('p_qu',product_quantity)
+            var buy_now_link = $("#buyNowL").data("buylink");
+            window.location.replace(buy_now_link)
+        }else{
+            alert("Please Select product size");
+        }
+    })
+
+    $("#pNegative").on("click",()=>{
+        var quantity_number = parseInt($("#quantity").val());
+        if(quantity_number > 1){
+            quantity_number --;
+            $("#quantity").val(quantity_number)
+        }
+    })
+    $("#pPositive").on("click",()=>{
+        var quantity_number = parseInt($("#quantity").val());
+        if(quantity_number >= 1){
+            quantity_number ++;
+            $("#quantity").val(quantity_number);
+        }
+    })
 </script>
 {% endblock customerScript %}
 {% block customermodal %}

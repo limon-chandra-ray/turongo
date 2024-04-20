@@ -1,8 +1,11 @@
 from django.shortcuts import render,redirect
 from django.http import JsonResponse
 from django.contrib import messages
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate,login
 from product_accessorie_app import validetors
+from product_accessorie_app.models import PSize
+from product_server_app.models import Product
 from .models import ProductBag, BagItem, Order
 from server_object_app.models import Division,District,Upazila
 from customer_user_app.models import Customer
@@ -155,6 +158,155 @@ def place_order_confirm(request):
                     messages.add_message(request,messages.WARNING,'Please add valid phone number. Number already add')
             
         return redirect('customer:checkout_view')
+
+
+
+
+def buy_now_to_place_order_confirm(request):
+    if request.method == 'POST':
+        try:
+            shipping_method = request.POST['shipping_method']
+        except:
+            shipping_method = None
+        check_value = 0
+        if shipping_method == None:
+            check_value = 1
+            messages.add_message(request,messages.WARNING,'Please add shipping method')
+        payment_method = request.POST['payment_method']
+
+
+        # first_name = request.POST['first_name']
+        # last_name = request.POST['last_name']
+        user_name = request.POST['user_name']
+        phone_number = request.POST['phone_number']
+        if validetors.is_valid_bangladesh_phone_number(phone_number) != True:
+            messages.add_message(request,messages.WARNING,'Bad request. user name min=3 max=15 letter and number')
+            check_value = 1
+        
+        # email = request.POST['email']
+        try:
+            address = request.POST['address']
+        except:
+            address = None
+        if address == None:
+            check_value = 1
+            messages.add_message(request,messages.WARNING,'Please add Deliviery Address')
+        try:
+            division = request.POST['division']
+        except:
+            division = None
+        if division == None:
+            check_value = 1
+            messages.add_message(request,messages.WARNING,'Please add your Division')
+        try:
+            district = request.POST['district']
+        except:
+            district = None
+        if district == None:
+            check_value = 1
+            messages.add_message(request,messages.WARNING,'Please add your District')
+        try:
+            upazila = request.POST['upazila']
+        except:
+            upazila = None
+        if upazila == None:
+            check_value = 1
+            messages.add_message(request,messages.WARNING,'Please add your Upazila')
+        if check_value == 1:
+            return redirect('customer:checkout_view')
+        else:
+            order_number = "Turongo-"+str(random.randint(111111,999999))
+            while Order.objects.filter(order_number = order_number) is None:
+                order_number = "Turongo-"+str(random.randint(111111,999999)) 
+            
+
+            check_status = 0
+            if request.user.is_authenticated:
+                bag = ProductBag.objects.create(
+                    user = request.user,
+                    bag_status = True
+                )
+                check_status = 1
+            else:
+                check_phone_number = CustomUser.objects.filter(phone_number = phone_number).first()
+                if check_phone_number:
+                    CustomUser.objects.filter(phone_number = phone_number).update(
+                        password = make_password(phone_number)
+                    )
+                    user = authenticate(request,username = phone_number,password=phone_number)
+                    login(request,user)
+                    bag = ProductBag.objects.create(
+                        user = request.user,
+                        bag_status = True
+                    )
+                    check_status = 1
+                else:
+                    user_name_list = user_name.split()
+                    new_customer = Customer.objects.create_customer(
+                        phone_number = phone_number,
+                        user_name = user_name_list[0],
+                        password = phone_number,
+                        )
+                    new_customer.save()
+                    user = authenticate(request,username = phone_number,password=phone_number)
+                    login(request,user)
+                    bag = ProductBag.objects.create(
+                        user = request.user,
+                        bag_status = True
+                    )
+                    check_status = 1
+        
+        if check_status == 1:
+            product_id = request.POST['product_id']
+            product_size = request.POST['product_size']
+            product_quantity = request.POST['product_quantity']
+            product = Product.objects.filter(p_id = product_id).first()
+            size = PSize.objects.filter(size_name = product_size).first()
+            BagItem.objects.create(
+                bag = bag,
+                product = product,
+                order_price = product.p_offer_price,
+                regular_price = product.p_price,
+                product_size = size,
+                quantity = int(product_quantity)
+            )
+            order_save = Order.objects.create(
+                bag = bag,
+                payment_method = payment_method,
+                delivery_charge = int(shipping_method),
+                # first_name = first_name,
+                # last_name = last_name,
+                # email = email,
+                full_name = user_name,
+                phone_number = phone_number,
+                address = address,
+                order_number=order_number,
+                division = Division.objects.get(id = int(division)),
+                district = District.objects.get(id = int(district)),
+                upazila = Upazila.objects.get(id= int(upazila))
+            )
+            profile = CustomerProfile.objects.get(user = request.user)
+            profile.address = address
+            profile.division = Division.objects.get(id = int(division))
+            profile.district = District.objects.get(id = int(district))
+            profile.upazila = Upazila.objects.get(id= int(upazila))
+            profile.save()
+            if order_save:
+                order_save.save()
+                messages.add_message(request,messages.SUCCESS,'Congratulations,Your order create successfully')
+
+                return redirect('customer:profile_order_list_view')
+    return redirect('customer:buy_now_view')
+
+
+
+
+
+
+
+
+
+
 
 
 def checkout_gtag(request):
