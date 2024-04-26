@@ -67,7 +67,7 @@ def product_details_view(request,product_id):
             queryset=ProductImage.objects.filter(pimage_type="phone",pimage_priority = 1) 
         )
     product = Product.objects.prefetch_related(product_iamge_prefetch,product_size_prefetch).get(p_id= product_id)
-    related_product = Product.objects.prefetch_related(product_image).filter(p_category = product.p_category).order_by('-p_id')[:3]
+    related_product = Product.objects.prefetch_related(product_image).filter(p_category = product.p_category,p_status=True).order_by('-p_id')[:3]
     context = {
         'product':product,
         'related_product':related_product
