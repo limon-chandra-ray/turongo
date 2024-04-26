@@ -29,7 +29,7 @@ def customer_home_view(request):
             'product_images',
             queryset=ProductImage.objects.filter(pimage_type="phone",pimage_priority = 1) 
         )
-    products = Product.objects.prefetch_related(product_image).all().order_by('-p_id')
+    products = Product.objects.prefetch_related(product_image).filter(p_status = True).order_by('-created_at')
     slide_image = Slider.objects.filter(slide_priority = 1,slide_status = True).order_by('-id')[:3]
     slide_image2 = Slider.objects.filter(slide_priority = 2,slide_status = True).last()
 
@@ -51,7 +51,7 @@ def category_product_list(request,category):
             queryset=ProductImage.objects.filter(pimage_type="phone",pimage_priority = 1) 
         )
     category = RootCategoryThree.objects.filter(rc_three_name__icontains = category).first()
-    products = Product.objects.prefetch_related(product_image).filter(p_third_category = category).order_by('-p_id')
+    products = Product.objects.prefetch_related(product_image).filter(p_third_category = category,p_status = True).order_by('-created_at')
     context={
         'products': products,
         'category':category

@@ -14,6 +14,7 @@ urlpatterns += [
     path('product-<uuid:product_id>-edit',views.product_edit_view,name='product_edit_view'),
     path('product-<uuid:product_id>-save-edit',views.product_edit_save,name='product_edit_save'),
     path('product-<uuid:product__uuid>-delete',views.delete_product,name='delete_product'),
+    path('product-<uuid:product__uuid>-status-change',views.product_status_change,name='product_status_change'),
     path('active-products',views.active_product_view,name='active_product_view'),
     path('category-get',views.category_get,name='category_get')
 ]

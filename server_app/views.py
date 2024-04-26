@@ -196,6 +196,19 @@ def delete_product(request,product__uuid):
     else:
         messages.add_message(request,messages.WARNING,'Empty Product')
     return redirect("server_app:active_product_view")
+def product_status_change(request,product__uuid):
+    product = Product.objects.get(
+        p_id = product__uuid
+    )
+    if product.p_status is True:
+        product.p_status = False
+        messages.add_message(request,messages.SUCCESS,'Product in-active')
+    else:
+        product.p_status = True
+        messages.add_message(request,messages.SUCCESS,'Product active')
+    product.save()
+    return redirect("server_app:active_product_view")
+
 def active_product_view(request):
     product_image_prefetch = Prefetch('product_images',queryset=ProductImage.objects.filter(pimage_type="phone"))
     products = Product.objects.prefetch_related(product_image_prefetch).all().order_by('-created_at')
