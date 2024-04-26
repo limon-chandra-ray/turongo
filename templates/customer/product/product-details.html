@@ -61,26 +61,31 @@
         box-shadow:none
     }
     .regular_price{
-        font-size: 16px;
+        font-size: 14px;
         opacity: 0.8;
-        text-decoration: line-through;
-        color: #d11717;
+        text-decoration: line-through rgb(243, 18, 18) !important;
+        color: #696969 !important;
+
     }
     .offer_price{
         font-size: 1.6rem !important;
+        color: black !important;
     }
     .offer_percentage{
         padding: 2px 8px;
-        background: green;
-        color: white !important;
         border-radius: 7px;
+        color: rgb(199, 20, 20) !important;
         margin: 0  !important;
-        font-size: 0.79rem !important;
+        font-size: 0.65rem !important;
     }
     .select_product_size{
         border-color:#237268;
         background:#3abfae;
         color:white;
+    }
+    .d_table{
+        display:flex;
+        column-gap:5px
     }
 </style>
     <div class="row page-titles">
@@ -155,9 +160,9 @@
                                     <h4 style="font-size:1.3rem !important">{{product.p_name}}</h4>
                                     
                                         
-                                    <div class="d-table mb-2">
-                                        <p class="price float-start d-block regular_price">TK.{{product.p_price}}</p>
+                                    <div class="d_table mb-2">
                                         <p class="price float-start d-block offer_price">TK.{{product.p_offer_price}}</p>
+                                        <p class="price float-start d-block regular_price">TK.{{product.p_price}}</p>
                                         <p class="price float-start d-block offer_percentage">{{product.p_offer}}% off</p>
                                     </div>
                                     <p>Availability: 

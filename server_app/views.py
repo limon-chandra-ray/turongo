@@ -216,6 +216,15 @@ def active_product_view(request):
         'products':products
     }
     return render(request,'server/super-admin/product/active-product.html',context)
+def inactive_product_view(request):
+    product_image_prefetch = Prefetch('product_images',queryset=ProductImage.objects.filter(pimage_type="phone"))
+    products = Product.objects.prefetch_related(product_image_prefetch).filter(p_status = False).order_by('-created_at')
+    context={
+        'products':products
+    }
+    return render(request,'server/super-admin/product/inactive-product.html',context)
+
+
 
 #product quantity size by
 @login_required(redirect_field_name='super_admin_login_view')

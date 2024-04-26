@@ -275,14 +275,15 @@
     font-size: 11px;
 }
 .new-arrival-content .regular_price{
-    font-size: 15px;
-    text-decoration: line-through;
-    color: #d55353;
+    font-size: 13px;
+    text-decoration: line-through #d55353;
+    color: #c1c1c1;
     font-weight: 400;
 }
 .new-arrival-content .offer_price{
-    font-size: 17px !important;
-    font-weight: 500 !important;
+    font-size: 16px !important;
+    font-weight: 400 !important;
+    color: #121212 !important;
 }
 .shopping-cart button{
     font-size: 20px;

@@ -1,26 +1,10 @@
-<img width="600" height="800" src="https://easyfashion.com.bd/wp-content/uploads/2023/10/DSC08315-Black-600x800.webp" 
-class="rey-thumbImg img--1 attachment-woocommerce_thumbnail size-woocommerce_thumbnail" 
-alt="durga puja 2023" 
-decoding="async" 
-loading="lazy" 
-srcset="https://easyfashion.com.bd/wp-content/uploads/2023/10/DSC08315-Black-600x800.webp 600w, 
-https://easyfashion.com.bd/wp-content/uploads/2023/10/DSC08315-Black-225x300.webp 225w, 
-https://easyfashion.com.bd/wp-content/uploads/2023/10/DSC08315-Black-768x1024.webp 768w, 
-https://easyfashion.com.bd/wp-content/uploads/2023/10/DSC08315-Black-1152x1536.webp 1152w,
- https://easyfashion.com.bd/wp-content/uploads/2023/10/DSC08315-Black-1536x2048.webp 1536w,
-  https://easyfashion.com.bd/wp-content/uploads/2023/10/DSC08315-Black-800x1067.webp 800w, 
-  https://easyfashion.com.bd/wp-content/uploads/2023/10/DSC08315-Black.webp 1800w" 
-  sizes="(max-width: 600px) 100vw, 600px">
+{% extends "server/base/main.html" %}
+{% block superMain %}
+<div >
+    <div>In-Active Products</div>
+    <div>
+        {% include "server/super-admin/product/product-table.html" %}
+    </div>
+</div>
 
-
-
-  <img alt="" src="https://m.media-amazon.com/images/I/91Msaw3t1kL._AC_SL1500_.jpg" 
-  onload="markFeatureRenderForImageBlock(); 
-  this.onload='';
-  setCSMReq('af');
-  if(typeof addlongPoleTag === 'function'){
-     addlongPoleTag('af','desktop-image-atf-marker');
-    };setCSMReq('cf')" 
-    data-a-hires="https://m.media-amazon.com/images/I/91Msaw3t1kL._AC_SL1500_.jpg" 
-    data-a-manual-replacement="true" 
-    style="transform: scale(1); transition: transform 0.5s ease-out 0s;">
+{% endblock superMain %}

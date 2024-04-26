@@ -16,6 +16,7 @@ urlpatterns += [
     path('product-<uuid:product__uuid>-delete',views.delete_product,name='delete_product'),
     path('product-<uuid:product__uuid>-status-change',views.product_status_change,name='product_status_change'),
     path('active-products',views.active_product_view,name='active_product_view'),
+    path('in-active-products',views.inactive_product_view,name='inactive_product_view'),
     path('category-get',views.category_get,name='category_get')
 ]
 #product detials urls
