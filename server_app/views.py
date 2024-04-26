@@ -211,7 +211,7 @@ def product_status_change(request,product__uuid):
 
 def active_product_view(request):
     product_image_prefetch = Prefetch('product_images',queryset=ProductImage.objects.filter(pimage_type="phone"))
-    products = Product.objects.prefetch_related(product_image_prefetch).all().order_by('-created_at')
+    products = Product.objects.prefetch_related(product_image_prefetch).filter(p_status = True).order_by('-created_at')
     context={
         'products':products
     }
